@@ -9,7 +9,6 @@ import com.semantyca.yatt.model.embedded.Reader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @JsonPropertyOrder({"kind", "readers", "editors"})
 public class ACL {
@@ -19,7 +18,7 @@ public class ACL {
 
 
 
-    public ACL(IAppEntity<UUID> e) {
+    public ACL(IAppEntity<Integer> e) {
         SecureAppEntity entity = (SecureAppEntity) e;
 
         Map<Long, Reader> readerMap = entity.getReaders();

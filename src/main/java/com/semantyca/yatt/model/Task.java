@@ -4,10 +4,19 @@ import java.time.LocalDateTime;
 
 public class Task  extends SecureAppEntity {
 
+    private int status;
     private Assignee assignee;
     private String description;
     private TaskType type;
     private LocalDateTime deadLine;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Assignee getAssignee() {
         return assignee;

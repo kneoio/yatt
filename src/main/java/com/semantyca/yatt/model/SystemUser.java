@@ -1,7 +1,6 @@
 package com.semantyca.yatt.model;
 
 import javax.security.auth.Subject;
-import java.time.ZonedDateTime;
 
 public abstract class SystemUser implements IUser {
 
@@ -35,11 +34,6 @@ public abstract class SystemUser implements IUser {
 
     @Override
     public void setEmail(String value) {
-
-    }
-
-    @Override
-    public void setRegDate(ZonedDateTime date) {
 
     }
 

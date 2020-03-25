@@ -21,10 +21,6 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
 
     private String title = "";
 
-    public void setId(String id) {
-        this.id = (K)UUID.fromString(id);
-    }
-
     public void setId(K id) {
         this.id = id;
     }

@@ -1,7 +1,6 @@
 package com.semantyca.yatt.model;
 
 import java.security.Principal;
-import java.time.ZonedDateTime;
 
 
 public interface IUser extends Principal {
@@ -20,6 +19,5 @@ public interface IUser extends Principal {
 
     void setEmail(String value);
 
-    void setRegDate(ZonedDateTime date);
 
 }

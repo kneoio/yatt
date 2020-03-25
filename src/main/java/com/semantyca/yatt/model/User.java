@@ -1,27 +1,38 @@
 package com.semantyca.yatt.model;
 
-import java.util.UUID;
-
-public class User extends AppEntity<UUID> implements IUser{
+public class User extends AppEntity<Integer> implements IUser{
+    private String login;
+    private String email;
+    private boolean authorized;
 
     @Override
     public String getLogin() {
-        return null;
+        return login;
     }
 
     @Override
-    public void setLogin(String string) {
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public boolean isAuthorized() {
-        return false;
+        return authorized;
     }
 
     @Override
-    public void setAuthorized(boolean isAuthorized) {
-
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 
     @Override
@@ -30,18 +41,7 @@ public class User extends AppEntity<UUID> implements IUser{
     }
 
     @Override
-    public String getEmail() {
-        return null;
-    }
-
-    @Override
-    public void setEmail(String value) {
-
-    }
-
-
-    @Override
     public String getName() {
-        return null;
+        return login;
     }
 }

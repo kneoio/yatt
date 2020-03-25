@@ -5,7 +5,7 @@ import com.semantyca.yatt.model.embedded.Reader;
 
 import java.util.*;
 
-public abstract class SecureAppEntity extends AppEntity<UUID> {
+public abstract class SecureAppEntity extends AppEntity<Integer> {
 
     private Set<Long> editors = new HashSet<>();
 
