@@ -13,7 +13,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.util.List;
 
 @UseClasspathSqlLocator
-public interface IUserDAO extends IDAO {
+public interface IUserDAO extends IDAO<User> {
 
     @SqlQuery
     @RegisterColumnMapper(UserMapper.class)

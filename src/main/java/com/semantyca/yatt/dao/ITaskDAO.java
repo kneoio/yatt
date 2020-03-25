@@ -12,7 +12,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.util.List;
 
 @UseClasspathSqlLocator
-public interface ITaskDAO extends IDAO {
+public interface ITaskDAO extends IDAO<Task> {
 
     @SqlQuery
     @RegisterColumnMapper(TaskMapper.class)
@@ -21,6 +21,10 @@ public interface ITaskDAO extends IDAO {
     @SqlQuery
     @RegisterColumnMapper(TaskMapper.class)
     List<Task> findAll(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader);
+
+    @SqlQuery
+    @RegisterColumnMapper(TaskMapper.class)
+    List<Task> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
 
     @SqlQuery
     long getCountOfAll(@Bind("reader") long reader);

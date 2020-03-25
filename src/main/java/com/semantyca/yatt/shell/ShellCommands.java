@@ -15,6 +15,11 @@ public class ShellCommands {
     @Autowired
     IUserDAO userDAO;
 
+    @ShellMethod("Show info")
+    public String info() {
+        service.info();
+        return "done";
+    }
 
     @ShellMethod("Initialize database")
     public String init_db() {

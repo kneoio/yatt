@@ -50,18 +50,31 @@ public class DatabaseService {
     public boolean populate() {
         try {
             EntityGenerator generator = new EntityGenerator(userDAO, assigneeDAO);
-            generator.generateUsers()
-                    .forEach(user -> {
-                        System.out.println(user.getLogin());
-                        userDAO.insert(user);
 
-                    });
+            generator.generateUsers().forEach(user -> {
+                System.out.println(user.getLogin());
+                userDAO.insert(user);
+            });
+
+            generator.generateAssignees().forEach(assignee -> {
+                System.out.println(assignee.getName());
+                assigneeDAO.insert(assignee);
+            });
+
 
         } catch (UnableToExecuteStatementException e) {
             System.out.println(e);
             return false;
         }
         return true;
+    }
 
+    public boolean info() {
+        IDAO daos[] = {userDAO, taskDAO, assigneeDAO};
+        for (IDAO dao : daos) {
+            System.out.println(dao);
+            dao.findAll(999, 0).forEach(u -> System.out.printf(ShellCommands.format, u));
+        }
+        return true;
     }
 }

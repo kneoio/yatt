@@ -2,7 +2,6 @@ package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.model.Task;
-import com.semantyca.yatt.model.User;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -17,12 +16,13 @@ import java.util.List;
 public interface IAssigneeDAO extends IDAO<Assignee> {
 
     @SqlQuery
-    @RegisterColumnMapper(TaskMapper.class)
+    @RegisterColumnMapper(AssigneeMapper.class)
     Task findById(@Bind("id") int id);
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
-    List<User> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<Assignee> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
+
 
     @SqlQuery
     long getCountOfAll();

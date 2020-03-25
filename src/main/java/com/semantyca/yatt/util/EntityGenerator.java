@@ -34,7 +34,6 @@ public class EntityGenerator {
                 entity.setLogin(data[i]);
                 entity.setLastModifiedDate(currentMoment);
                 entity.setAuthor(AnonymousUser.ID);
-                entity.setAuthor(AnonymousUser.ID);
                 entity.setLastModifier(AnonymousUser.ID);
                 entity.setTitle(entity.getLogin());
                 users.add(entity);
@@ -53,7 +52,6 @@ public class EntityGenerator {
                 ZonedDateTime currentMoment = ZonedDateTime.now();
                 entity.setRegDate(currentMoment);
                 entity.setLastModifiedDate(currentMoment);
-                entity.setAuthor(AnonymousUser.ID);
                 entity.setAuthor(AnonymousUser.ID);
                 entity.setLastModifier(AnonymousUser.ID);
                 try {
