@@ -8,8 +8,9 @@ CREATE TABLE tasks
               last_mod_user INT NOT NULL,
               assignee INT,
               type INT NOT NULL,
-              description VARCHAR(512),
               status INT NOT NULL,
+              stage INT NOT NULL,
+              description VARCHAR(512),
               deadline DATE,
               CONSTRAINT tasks_pkey PRIMARY KEY (id)
             );

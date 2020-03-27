@@ -9,13 +9,13 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
 
     protected K id;
 
-    protected long author;
+    protected int author;
 
     private ZonedDateTime regDate;
 
     private ZonedDateTime lastModifiedDate = ZonedDateTime.now();
 
-    private Long lastModifier;
+    private int lastModifier;
 
     private boolean editable = true;
 
@@ -29,12 +29,12 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return id;
     }
 
-    public void setAuthor(long author) {
+    public void setAuthor(int author) {
         this.author = author;
     }
 
     @Override
-    public long getAuthor() {
+    public int getAuthor() {
         return author;
     }
 
@@ -57,12 +57,12 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return lastModifiedDate;
     }
 
-    public Long getLastModifier() {
+    public int getLastModifier() {
         return lastModifier;
     }
 
     @JsonSetter("last_mod_user")
-    public void setLastModifier(Long lastModifier) {
+    public void setLastModifier(int lastModifier) {
         this.lastModifier = lastModifier;
     }
 

@@ -8,13 +8,13 @@ public class Reader {
 
     private Date readingTime;
 
-    private Long reader;
+    private int reader;
 
-    public Long getReader() {
+    public int getReader() {
         return reader;
     }
 
-    public void setReader(Long reader) {
+    public void setReader(int reader) {
         this.reader = reader;
     }
 

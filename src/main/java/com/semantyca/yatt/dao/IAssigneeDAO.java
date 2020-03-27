@@ -1,7 +1,6 @@
 package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.model.Assignee;
-import com.semantyca.yatt.model.Task;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -17,15 +16,11 @@ public interface IAssigneeDAO extends IDAO<Assignee> {
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
-    Task findById(@Bind("id") int id);
+    Assignee findById(@Bind("id") int id);
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
     List<Assignee> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
-
-
-    @SqlQuery
-    long getCountOfAll();
 
     @SqlUpdate
     @GetGeneratedKeys("id")
@@ -33,7 +28,7 @@ public interface IAssigneeDAO extends IDAO<Assignee> {
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
-    Assignee findByLogin(String datum);
+    Assignee findByLogin(String login);
 }
 
 

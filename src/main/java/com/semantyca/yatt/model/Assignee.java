@@ -18,6 +18,10 @@ public class Assignee extends AppEntity<Integer> {
         return user;
     }
 
+    public Integer getUserId() {
+        return user.id;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

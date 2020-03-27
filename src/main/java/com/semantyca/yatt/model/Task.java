@@ -1,21 +1,43 @@
 package com.semantyca.yatt.model;
 
-import java.time.LocalDateTime;
+import com.semantyca.yatt.model.constant.StageType;
+import com.semantyca.yatt.model.constant.StatusType;
+import com.semantyca.yatt.model.constant.TaskType;
+
+import java.time.ZonedDateTime;
 
 public class Task  extends SecureAppEntity {
 
-    private int status;
+    private StatusType status;
+    private StageType stage;
+    private TaskType type;
     private Assignee assignee;
     private String description;
-    private TaskType type;
-    private LocalDateTime deadLine;
+    private ZonedDateTime deadLine;
 
-    public int getStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public int getStatusCode() {
+        return status.getCode();
+    }
+
+
+    public void setStatus(StatusType status) {
         this.status = status;
+    }
+
+    public StageType getStage() {
+        return stage;
+    }
+
+    public int getStageCode() {
+        return stage.getCode();
+    }
+
+    public void setStage(StageType stage) {
+        this.stage = stage;
     }
 
     public Assignee getAssignee() {
@@ -38,15 +60,19 @@ public class Task  extends SecureAppEntity {
         return type;
     }
 
+    public int getTypeCode() {
+        return type.getCode();
+    }
+
     public void setType(TaskType type) {
         this.type = type;
     }
 
-    public LocalDateTime getDeadLine() {
+    public ZonedDateTime getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(LocalDateTime deadLine) {
+    public void setDeadLine(ZonedDateTime deadLine) {
         this.deadLine = deadLine;
     }
 }

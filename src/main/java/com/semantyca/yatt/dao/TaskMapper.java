@@ -1,6 +1,10 @@
 package com.semantyca.yatt.dao;
 
+import com.semantyca.yatt.configuration.ApplicationContextKeeper;
 import com.semantyca.yatt.model.Task;
+import com.semantyca.yatt.model.constant.StageType;
+import com.semantyca.yatt.model.constant.StatusType;
+import com.semantyca.yatt.model.constant.TaskType;
 import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
@@ -8,16 +12,23 @@ import java.sql.SQLException;
 
 public class TaskMapper  extends AbstractMapper<Task> {
 
+    private IAssigneeDAO assigneeDAO;
+
+    public TaskMapper() {
+        super();
+        assigneeDAO = ApplicationContextKeeper.getContext().getBean(IAssigneeDAO.class);
+    }
+
     @Override
     public Task map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
         Task task = new Task();
-        task.setId(rs.getInt("id"));
-        task.setLastModifiedDate(getDateTime(rs.getTimestamp("last_mod_date")));
-        task.setLastModifier(rs.getLong("last_mod_user"));
-        task.setRegDate(getDateTime(rs.getTimestamp("reg_date")));
-        task.setTitle(rs.getString("title"));
-        task.setAuthor(rs.getLong("author"));
-        task.setEditable(rs.getInt("is_editable"));
+        transferCommonData(task, rs);
+        task.setType(TaskType.getType(rs.getInt("type")));
+        task.setStage(StageType.getType(rs.getInt("stage")));
+        task.setStatus(StatusType.getType(rs.getInt("status")));
+        task.setDescription(rs.getString("description"));
+        task.setAssignee(assigneeDAO.findById(rs.getInt("assignee")));
+        task.setDeadLine(getDateTime(rs.getTimestamp("deadline")));
        return task;
     }
 

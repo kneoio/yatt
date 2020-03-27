@@ -12,12 +12,7 @@ public class UserMapper extends AbstractMapper<User> {
     @Override
     public User map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
         User entity = new User();
-        entity.setId(rs.getInt("id"));
-        entity.setLastModifiedDate(getDateTime(rs.getTimestamp("last_mod_date")));
-        entity.setLastModifier(rs.getLong("last_mod_user"));
-        entity.setRegDate(getDateTime(rs.getTimestamp("reg_date")));
-        entity.setTitle(rs.getString("title"));
-        entity.setAuthor(rs.getLong("author"));
+        transferCommonData(entity, rs);
         entity.setEmail(rs.getString("email"));
         entity.setLogin(rs.getString("login"));
        return entity;
