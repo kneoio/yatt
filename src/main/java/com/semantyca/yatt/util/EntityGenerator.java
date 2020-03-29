@@ -91,7 +91,7 @@ public class EntityGenerator {
             entity.setAssignee((Assignee) ListUtil.getRndListElement(assignees));
             entity.setTitle(StringUtil.getRndArticle(10));
             entity.setDescription(StringUtil.getRndParagraph(1));
-            entity.setDeadLine(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
+            entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
             Map readers = new HashMap();
             Reader reader = new Reader();
             reader.setReader(AnonymousUser.ID);

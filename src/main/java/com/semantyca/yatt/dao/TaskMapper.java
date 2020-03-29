@@ -28,7 +28,7 @@ public class TaskMapper  extends AbstractMapper<Task> {
         task.setStatus(StatusType.getType(rs.getInt("status")));
         task.setDescription(rs.getString("description"));
         task.setAssignee(assigneeDAO.findById(rs.getInt("assignee")));
-        task.setDeadLine(getDateTime(rs.getTimestamp("deadline")));
+        task.setDeadline(getDateTime(rs.getTimestamp("deadline")));
        return task;
     }
 

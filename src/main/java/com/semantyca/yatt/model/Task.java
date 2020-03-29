@@ -1,5 +1,6 @@
 package com.semantyca.yatt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
@@ -13,12 +14,13 @@ public class Task  extends SecureAppEntity {
     private TaskType type;
     private Assignee assignee;
     private String description;
-    private ZonedDateTime deadLine;
+    private ZonedDateTime deadline;
 
     public StatusType getStatus() {
         return status;
     }
 
+    @JsonIgnore
     public int getStatusCode() {
         return status.getCode();
     }
@@ -32,6 +34,7 @@ public class Task  extends SecureAppEntity {
         return stage;
     }
 
+    @JsonIgnore
     public int getStageCode() {
         return stage.getCode();
     }
@@ -60,6 +63,7 @@ public class Task  extends SecureAppEntity {
         return type;
     }
 
+    @JsonIgnore
     public int getTypeCode() {
         return type.getCode();
     }
@@ -68,11 +72,11 @@ public class Task  extends SecureAppEntity {
         this.type = type;
     }
 
-    public ZonedDateTime getDeadLine() {
-        return deadLine;
+    public ZonedDateTime getDeadline() {
+        return deadline;
     }
 
-    public void setDeadLine(ZonedDateTime deadLine) {
-        this.deadLine = deadLine;
+    public void setDeadline(ZonedDateTime deadline) {
+        this.deadline = deadline;
     }
 }

@@ -2,6 +2,7 @@ package com.semantyca.yatt.controller;
 
 
 import com.semantyca.yatt.EnvConst;
+import com.semantyca.yatt.dto.Outcome;
 import com.semantyca.yatt.dto.ViewPage;
 import com.semantyca.yatt.model.AnonymousUser;
 import com.semantyca.yatt.model.Task;
@@ -22,12 +23,12 @@ public class TaskController {
 
     @GetMapping("tasks")
     public @ResponseBody
-    ViewPage getAll(String pageNum, String pageSize){
+    Outcome getAll(String pageNum, String pageSize){
         int reader = AnonymousUser.ID;
         long count = service.getCountOfAll(reader);
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
         int num = NumberUtil.stringToInt(pageNum, 1);
         List<Task> result = service.findAll(size, NumberUtil.calcStartEntry(num, size), 0);
-        return new ViewPage(result, count, NumberUtil.countMaxPage(count, size), num, size);
+        return new Outcome().setViewPage(new ViewPage(result, count, NumberUtil.countMaxPage(count, size), num, size)).setPageName("all tasks");
     }
 }

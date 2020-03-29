@@ -1,7 +1,5 @@
 package com.semantyca.yatt.model;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -43,12 +41,10 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return regDate;
     }
 
-    @JsonSetter("reg_date")
     public void setRegDate(ZonedDateTime regDate) {
         this.regDate = regDate;
     }
 
-    @JsonSetter("last_mod_date")
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
@@ -61,7 +57,6 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return lastModifier;
     }
 
-    @JsonSetter("last_mod_user")
     public void setLastModifier(int lastModifier) {
         this.lastModifier = lastModifier;
     }
