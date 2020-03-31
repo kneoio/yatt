@@ -21,4 +21,8 @@ public class TaskService {
     public List<Task> findAll(int pageSize, int calcStartEntry, int i) {
         return taskDAO.findAll(pageSize, calcStartEntry);
     }
+
+    public long post(Task task) {
+        return taskDAO.insert(task);
+    }
 }

@@ -7,29 +7,36 @@ import java.util.*;
 
 public abstract class SecureAppEntity extends AppEntity<Integer> {
 
-    private Set<Long> editors = new HashSet<>();
+    private Set<Integer> editors = new HashSet<>();
 
-    private Map<Long, Reader> readers = new HashMap<>();
+    private Map<Integer, Reader> readers = new HashMap<>();
 
-    public Set<Long> getEditors() {
+    public Set<Integer> getEditors() {
         return editors;
     }
 
-    public void setEditors(Set<Long> editors) {
+    public void setEditors(Set<Integer> editors) {
         this.editors = editors;
     }
 
 
-    public Map<Long, Reader> getReaders() {
+    public Map<Integer, Reader> getReaders() {
         return readers;
     }
 
-    public void setReaders(Map<Long, Reader> readers) {
+    public void setReaders(Map<Integer, Reader> readers) {
         this.readers = readers;
+    }
+
+    public SecureAppEntity addReader(Reader reader){
+        readers.put(reader.getReader(), reader);
+        return this;
     }
 
     @Override
     public boolean isEditable() {
         return super.isEditable();
     }
+
+
 }

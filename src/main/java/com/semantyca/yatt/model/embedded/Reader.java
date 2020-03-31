@@ -14,8 +14,9 @@ public class Reader {
         return reader;
     }
 
-    public void setReader(int reader) {
+    public Reader setReader(Integer reader) {
         this.reader = reader;
+        return this;
     }
 
     public boolean isWasRead() {

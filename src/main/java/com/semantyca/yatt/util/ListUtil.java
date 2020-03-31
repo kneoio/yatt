@@ -11,4 +11,10 @@ public class ListUtil {
         return list.get(index);
     }
 
+    public static Integer getRndArrayElement(Integer[] numberArray) {
+        Random random = new Random();
+        int index = random.nextInt(numberArray.length);
+        return numberArray[index];
+    }
+
 }

@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EntityGenerator {
     private static final String FIRST_NAME_SOURCE = "Roman.txt";
@@ -77,6 +75,7 @@ public class EntityGenerator {
     public List<Task> generateTasks(int count) throws IOException {
         List entities = new ArrayList();
         List<User> users = userDAO.findAll(100, 0);
+        Integer[] userIds =  users.stream().map((user) -> user.getId()).toArray(Integer[]::new);
         List<Assignee> assignees = assigneeDAO.findAll(100, 0);
         for (int i = 0; i < count; i++) {
             Task entity = new Task();
@@ -92,10 +91,8 @@ public class EntityGenerator {
             entity.setTitle(StringUtil.getRndArticle(10));
             entity.setDescription(StringUtil.getRndParagraph(1));
             entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
-            Map readers = new HashMap();
-            Reader reader = new Reader();
-            reader.setReader(AnonymousUser.ID);
-            entity.setReaders(readers);
+            entity.addReader(new Reader().setReader(AnonymousUser.ID));
+            entity.addReader(new Reader().setReader(ListUtil.getRndArrayElement(userIds)));
             entities.add(entity);
 
         }

@@ -11,6 +11,7 @@ import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -30,5 +31,13 @@ public class TaskController {
         int num = NumberUtil.stringToInt(pageNum, 1);
         List<Task> result = service.findAll(size, NumberUtil.calcStartEntry(num, size), 0);
         return new Outcome().setViewPage(new ViewPage(result, count, NumberUtil.countMaxPage(count, size), num, size)).setPageName("all tasks");
+    }
+
+    @PostMapping("tasks")
+    public @ResponseBody
+    Outcome post(Task task){
+        int reader = AnonymousUser.ID;
+        long count = service.post(task);
+        return new Outcome().setResult(ResultType.SUCCESS).setPageName("all tasks");
     }
 }

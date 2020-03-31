@@ -4,6 +4,7 @@ package com.semantyca.yatt.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.semantyca.yatt.EnvConst;
+import com.semantyca.yatt.controller.ResultType;
 
 @JsonPropertyOrder({"type", "title", "pageName", "payload"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,4 +54,8 @@ public class Outcome {
         return "type=" + type + ", title=" + title;
     }
 
+    public Outcome setResult(ResultType success) {
+        type = OutcomeType.SAVING_RESULT;
+        return this;
+    }
 }
