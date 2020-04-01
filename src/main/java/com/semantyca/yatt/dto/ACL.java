@@ -13,17 +13,17 @@ import java.util.Map;
 @JsonPropertyOrder({"kind", "readers", "editors"})
 public class ACL {
 
-    public Map<Long, Object> readers = new HashMap<>();
-    public Map<Long, Object> editors = new HashMap<>();
+    public Map<Integer, Object> readers = new HashMap<>();
+    public Map<Integer, Object> editors = new HashMap<>();
 
 
 
     public ACL(IAppEntity<Integer> e) {
         SecureAppEntity entity = (SecureAppEntity) e;
 
-        Map<Long, Reader> readerMap = entity.getReaders();
+        Map<Integer, Reader> readerMap = entity.getReaders();
         if (readerMap != null) {
-            for (Map.Entry<Long, Reader> reader : readerMap.entrySet()) {
+            for (Map.Entry<Integer, Reader> reader : readerMap.entrySet()) {
                 Date readingTime = reader.getValue().getReadingTime();
                 if (readingTime != null) {
                     readers.put(reader.getKey(), getUserName(reader.getKey()) + " - " + readingTime.toString());
@@ -33,7 +33,7 @@ public class ACL {
             }
         }
 
-        for (Long id : entity.getEditors()) {
+        for (Integer id : entity.getEditors()) {
             editors.put(id, getUserName(id));
         }
     }
