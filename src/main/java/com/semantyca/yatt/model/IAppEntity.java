@@ -26,7 +26,7 @@ public interface IAppEntity<K>{
 
     void setLastModifiedDate(ZonedDateTime last_mod_date);
 
-    void setLastModifier(int lastModifier);
+    void setLastModifier(int last_mod_user);
 
 
 

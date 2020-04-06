@@ -19,7 +19,6 @@ public abstract class SecureAppEntity extends AppEntity<Integer> {
         this.editors = editors;
     }
 
-
     public Map<Integer, Reader> getReaders() {
         return readers;
     }

@@ -23,6 +23,9 @@ public interface IDAO<T> {
     int insert(@BindBean T entity);
 
     @SqlUpdate
+    int delete(int id);
+
+    @SqlUpdate
     void createTable();
 
     @SqlUpdate

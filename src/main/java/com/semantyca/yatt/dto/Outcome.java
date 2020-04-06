@@ -8,47 +8,40 @@ import com.semantyca.yatt.controller.ResultType;
 
 @JsonPropertyOrder({"type", "title", "pageName", "payload"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Outcome {
+public abstract class Outcome<T> {
     protected OutcomeType type = OutcomeType.DEFAULT;
     protected String title = EnvConst.APP_ID;
     protected String pageName = "";
-    protected ViewPage viewPage;
-
-    public Outcome() {
-
-    }
+    protected T payload;
 
     public Outcome setTitle(String title) {
         this.title = title;
         return this;
     }
 
+    public abstract Outcome<T> setPayload(T payload);
+
+    public T getPayload(){
+        return payload;
+    }
+
     public String getTitle() {
         return title;
-    }
-
-    public String getPageName() {
-        return pageName;
-    }
-
-    public Outcome setPageName(String pageName) {
-        this.pageName = pageName;
-        return this;
-    }
-
-    public Outcome setViewPage(ViewPage viewPage) {
-        this.viewPage = viewPage;
-        type = OutcomeType.VIEW_PAGE;
-        return this;
     }
 
     public OutcomeType getType() {
         return type;
     }
 
-    public ViewPage getViewPage() {
-        return viewPage;
+    public String getPageName() {
+        return pageName;
     }
+
+    public Outcome<T> setPageName(String pageName) {
+        this.pageName = pageName;
+        return this;
+    }
+
 
     public String toString() {
         return "type=" + type + ", title=" + title;

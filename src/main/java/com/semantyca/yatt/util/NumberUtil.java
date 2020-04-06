@@ -38,12 +38,20 @@ public class NumberUtil {
         return pageNumMinusOne * pageSize;
     }
 
-    public static int stringToInt(String d, int defaultValue) {
+    public static int stringToInt(String text, int defaultValue) {
         try {
-            d = d.replaceAll("\\s+", "").replaceAll(",", "").replaceAll("/\\D/g", "").replaceAll("\\p{IsCyrillic}", "");
-            return Integer.parseInt(d);
+            return stringToInt(text);
         } catch (Exception e) {
             return defaultValue;
+        }
+    }
+
+    public static int stringToInt(String text) {
+        try {
+            text = text.replaceAll("\\s+", "").replaceAll(",", "").replaceAll("/\\D/g", "").replaceAll("\\p{IsCyrillic}", "");
+            return Integer.parseInt(text);
+        } catch (Exception e) {
+            throw e;
         }
     }
 

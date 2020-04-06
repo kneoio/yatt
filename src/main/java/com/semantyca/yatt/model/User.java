@@ -1,5 +1,7 @@
 package com.semantyca.yatt.model;
 
+import java.util.Date;
+
 public class User extends AppEntity<Integer> implements IUser{
     private String login;
     private String email;
@@ -43,5 +45,9 @@ public class User extends AppEntity<Integer> implements IUser{
     @Override
     public String getName() {
         return login;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return new Date();
     }
 }

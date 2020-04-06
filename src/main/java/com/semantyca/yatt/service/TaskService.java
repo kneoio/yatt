@@ -13,7 +13,6 @@ public class TaskService {
     @Autowired
     ITaskDAO taskDAO;
 
-
     public long getCountOfAll(long reader) {
         return taskDAO.getCountAll();
     }
@@ -22,7 +21,20 @@ public class TaskService {
         return taskDAO.findAll(pageSize, calcStartEntry);
     }
 
-    public long post(Task task) {
+
+    public Task findById(int id, int userId) {
+         return taskDAO.findById(id, userId);
+    }
+
+    public long post(Task task, int userId) {
         return taskDAO.insert(task);
+    }
+
+    public int put(Task task, int reader) {
+        return taskDAO.update(task);
+    }
+
+    public int delete(Task task, int reader) {
+        return taskDAO.delete(task.getId());
     }
 }

@@ -1,151 +1,86 @@
 package com.semantyca.yatt.security;
 
-import org.pac4j.core.config.Config;
-import org.pac4j.springframework.security.web.CallbackFilter;
-import org.pac4j.springframework.security.web.LogoutFilter;
-import org.pac4j.springframework.security.web.Pac4jEntryPoint;
-import org.pac4j.springframework.security.web.SecurityFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@EnableWebSecurity
-public class SecurityConfig {
+import java.util.Arrays;
+import java.util.List;
 
-    @Configuration
-    @Order(5)
-    public static class FormWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(securedEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        private Config config;
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/do_login").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .addFilter(new JwtAuthentFilter(authenticationManager()))
+            .addFilter(new JwtAuthorFilter(authenticationManager()))
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors().configurationSource(corsConfigurationSource());
+        http.headers()
+                .frameOptions().sameOrigin()
+                .httpStrictTransportSecurity().disable();
 
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            final SecurityFilter filter = new SecurityFilter(config, "DirectBasicAuthClient,AnonymousClient");
-
-            http
-                    .antMatcher("/form/**")
-                    .authorizeRequests().anyRequest().authenticated()
-                    .and()
-                    .exceptionHandling().authenticationEntryPoint(new Pac4jEntryPoint(config, "FormClient"))
-                    .and()
-                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        }
     }
 
-    @Configuration
-    @Order(8)
-    public static class GoogleOidcWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        private Config config;
-
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            final SecurityFilter filter = new SecurityFilter(config, "GoogleOidcClient");
-
-            http
-                    .antMatcher("/oidc/**")
-                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails userDetails = User.withDefaultPasswordEncoder()
+                .username("u")
+                .password("1")
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(userDetails);
     }
 
-    @Configuration
-    @Order(9)
-    public static class GoogleWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        private Config config;
-
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            final SecurityFilter filter = new SecurityFilter(config, "Google2Client");
-
-            http
-                    .antMatcher("/google/**")
-                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        }
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("u")
+                .password(passwordEncoder().encode("1"))
+                .authorities("ROLE_USER");
     }
 
-    @Configuration
-    @Order(10)
-    public static class ProtectedWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        private Config config;
-
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            final SecurityFilter filter = new SecurityFilter(config);
-
-            http
-                    .antMatcher("/protected/**")
-                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-    @Configuration
-    @Order(11)
-    public static class JwtWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH"));
 
-        @Autowired
-        private Config config;
-
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            final SecurityFilter filter = new SecurityFilter(config, "ParameterClient");
-
-            http
-                    .antMatcher("/rest-jwt/**")
-                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-        }
-    }
-
-    @Configuration
-    @Order(15)
-    public static class DefaultWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Autowired
-        private Config config;
-
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            final CallbackFilter callbackFilter = new CallbackFilter(config);
-            callbackFilter.setMultiProfile(true);
-
-            final LogoutFilter logoutFilter = new LogoutFilter(config, "/?defaulturlafterlogout");
-            logoutFilter.setDestroySession(true);
-            logoutFilter.setSuffix("/pac4jLogout");
-
-            final LogoutFilter centralLogoutFilter = new LogoutFilter(config, "http://localhost:8080/?defaulturlafterlogoutafteridp");
-            centralLogoutFilter.setLocalLogout(false);
-            centralLogoutFilter.setCentralLogout(true);
-            centralLogoutFilter.setLogoutUrlPattern("http://localhost:8080/.*");
-            centralLogoutFilter.setSuffix("/pac4jCentralLogout");
-
-            http
-                    .authorizeRequests()
-                    .antMatchers("/cas/**").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .exceptionHandling().authenticationEntryPoint(new Pac4jEntryPoint(config, "CasClient"))
-                    .and()
-                    .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
-                    .addFilterBefore(logoutFilter, CallbackFilter.class)
-                    .addFilterAfter(centralLogoutFilter, CallbackFilter.class)
-                    .csrf().disable()
-                    .logout()
-                    .logoutSuccessUrl("/");
-        }
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
+                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
