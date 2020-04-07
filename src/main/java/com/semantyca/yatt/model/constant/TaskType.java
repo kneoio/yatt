@@ -1,7 +1,7 @@
 package com.semantyca.yatt.model.constant;
 
 public enum TaskType {
-    UNKNOWN(0, "unknown");
+    UNKNOWN(0, "unknown"), DEVELOPING(21, "developing"), TESTING(22, "testing"), DOCUMENT(23, "document");
 
     private int code;
     private String alias;

@@ -47,6 +47,10 @@ public class Task  extends SecureAppEntity {
         return assignee;
     }
 
+    public int getAssigneeCode() {
+        return assignee.id;
+    }
+
     public void setAssignee(Assignee assignee) {
         this.assignee = assignee;
     }

@@ -8,6 +8,8 @@ import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.service.TaskService;
 import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,12 +43,13 @@ public class TaskController {
         }
     }
 
-/*    @PostMapping("tasks")
-    public @ResponseBody Outcome post(HttpServletRequest request, Task task){
+    @PostMapping("tasks")
+    public @ResponseBody Outcome post(Task task){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         int reader = AnonymousUser.ID;
         long count = service.post(task, reader);
         return new DefaultOutcome().setResult(ResultType.SUCCESS).setPageName("task");
-    }*/
+    }
 
     @PutMapping("tasks")
     public @ResponseBody Outcome put(Task task){

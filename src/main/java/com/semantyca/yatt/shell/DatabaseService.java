@@ -64,9 +64,8 @@ public class DatabaseService {
                 assigneeDAO.insert(assignee);
             });
 
-            generator.generateTasks(100).forEach(task -> {
-                System.out.println(task.getTitle());
-                taskDAO.insert(task);
+            generator.generateTasks(1000).forEach(task -> {
+                System.out.println(task.getTitle());taskDAO.insert(task);
             });
 
 
