@@ -43,7 +43,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("tasks")
+    @PostMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
     public @ResponseBody Outcome post(Task task){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         int reader = AnonymousUser.ID;
