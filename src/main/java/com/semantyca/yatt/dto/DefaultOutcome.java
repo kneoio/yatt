@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"type", "title", "pageName", "payload"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefaultOutcome extends Outcome<Object> {
+public class DefaultOutcome extends AbstractOutcome<Object> {
 
     public DefaultOutcome setPayload(Object result) {
         payload = result;

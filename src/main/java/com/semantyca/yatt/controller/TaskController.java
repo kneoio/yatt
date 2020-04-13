@@ -1,8 +1,12 @@
 package com.semantyca.yatt.controller;
 
-
 import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dto.*;
+import com.semantyca.yatt.dto.document.SecuredDocumentOutcome;
+import com.semantyca.yatt.dto.error.ApplicationError;
+import com.semantyca.yatt.dto.error.ErrorOutcome;
+import com.semantyca.yatt.dto.view.ViewPage;
+import com.semantyca.yatt.dto.view.ViewPageOutcome;
 import com.semantyca.yatt.model.AnonymousUser;
 import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.service.TaskService;
@@ -22,7 +26,8 @@ public class TaskController {
     private TaskService service;
 
     @GetMapping("tasks")
-    public @ResponseBody Outcome getAll(String pageNum, String pageSize){
+    public @ResponseBody
+    AbstractOutcome getAll(String pageNum, String pageSize){
         int reader = AnonymousUser.ID;
         long count = service.getCountOfAll(reader);
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
@@ -32,19 +37,21 @@ public class TaskController {
     }
 
     @RequestMapping("tasks/{id}")
-    public @ResponseBody Outcome get(@PathVariable(value="id") String id) {
+    public @ResponseBody
+    AbstractOutcome get(@PathVariable(value="id") String id) {
         int reader = AnonymousUser.ID;
         try {
             int userId = NumberUtil.stringToInt(id);
             Task result = service.findById(userId, reader);
             return new SecuredDocumentOutcome().setPayload(result).setPageName("task " + result.getTitle());
         }catch (Exception e){
-            return new ErrorOutcome().setPayload(e.getMessage());
+            return new ErrorOutcome().setPayload(new ApplicationError(e.getMessage()));
         }
     }
 
     @PostMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
-    public @ResponseBody Outcome post(Task task){
+    public @ResponseBody
+    AbstractOutcome post(@RequestBody Task task){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         int reader = AnonymousUser.ID;
         long count = service.post(task, reader);
@@ -52,14 +59,16 @@ public class TaskController {
     }
 
     @PutMapping("tasks")
-    public @ResponseBody Outcome put(Task task){
+    public @ResponseBody
+    AbstractOutcome put(Task task){
         int reader = AnonymousUser.ID;
         long count = service.put(task, reader);
         return new DefaultOutcome().setResult(ResultType.SUCCESS).setPageName("task");
     }
 
     @DeleteMapping("tasks")
-    public @ResponseBody Outcome delete(Task task){
+    public @ResponseBody
+    AbstractOutcome delete(Task task){
         int reader = AnonymousUser.ID;
         long count = service.delete(task, reader);
         return new DefaultOutcome().setResult(ResultType.SUCCESS).setPageName("task");

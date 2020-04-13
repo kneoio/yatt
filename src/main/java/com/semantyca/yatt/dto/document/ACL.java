@@ -1,4 +1,4 @@
-package com.semantyca.yatt.dto;
+package com.semantyca.yatt.dto.document;
 
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

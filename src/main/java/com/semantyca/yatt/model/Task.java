@@ -1,6 +1,5 @@
 package com.semantyca.yatt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
@@ -20,7 +19,6 @@ public class Task  extends SecureAppEntity {
         return status;
     }
 
-    @JsonIgnore
     public int getStatusCode() {
         return status.getCode();
     }
@@ -34,7 +32,6 @@ public class Task  extends SecureAppEntity {
         return stage;
     }
 
-    @JsonIgnore
     public int getStageCode() {
         return stage.getCode();
     }
@@ -49,6 +46,10 @@ public class Task  extends SecureAppEntity {
 
     public int getAssigneeCode() {
         return assignee.id;
+    }
+
+    public void setAssignee(String a) {
+        assignee.setId(Integer.parseInt(a));
     }
 
     public void setAssignee(Assignee assignee) {
@@ -67,7 +68,6 @@ public class Task  extends SecureAppEntity {
         return type;
     }
 
-    @JsonIgnore
     public int getTypeCode() {
         return type.getCode();
     }

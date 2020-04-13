@@ -3,7 +3,7 @@ package com.semantyca.yatt.controller;
 
 import com.semantyca.yatt.dto.Home;
 import com.semantyca.yatt.dto.Login;
-import com.semantyca.yatt.dto.Outcome;
+import com.semantyca.yatt.dto.AbstractOutcome;
 import com.semantyca.yatt.dto.PageOutcome;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -18,12 +18,13 @@ public class AuthController {
 
     @GetMapping("sign_in")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public @ResponseBody Outcome login(){
+    public @ResponseBody AbstractOutcome login(){
         return new PageOutcome().setPayload(new Login()).setPageName("login page");
     }
 
     @GetMapping("user_profile")
-    public @ResponseBody Outcome getUserProfile(){
+    public @ResponseBody
+    AbstractOutcome getUserProfile(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Home home = new Home();
         home.setInfo("{principal:" + auth.getPrincipal() + ", roles:" + auth.getAuthorities() + "}");

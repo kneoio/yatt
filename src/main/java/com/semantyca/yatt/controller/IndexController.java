@@ -1,7 +1,7 @@
 package com.semantyca.yatt.controller;
 
 import com.semantyca.yatt.dto.Home;
-import com.semantyca.yatt.dto.Outcome;
+import com.semantyca.yatt.dto.AbstractOutcome;
 import com.semantyca.yatt.dto.PageOutcome;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +14,7 @@ public class IndexController {
 
     @GetMapping("home")
     public @ResponseBody
-    Outcome home(){
+    AbstractOutcome home(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Home home = new Home();
         home.setInfo("{principal:" + auth.getPrincipal() + ", roles:" + auth.getAuthorities() + "}");

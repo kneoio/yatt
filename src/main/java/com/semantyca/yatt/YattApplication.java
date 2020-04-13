@@ -8,11 +8,9 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @SpringBootApplication
 public class YattApplication {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(YattApplication.class, args);
 	}
-
 
 
 	@Bean
@@ -22,10 +20,7 @@ public class YattApplication {
 		loggingFilter.setIncludeQueryString(true);
 		loggingFilter.setIncludePayload(true);
 		loggingFilter.setMaxPayloadLength(1000000);
-
 		return loggingFilter;
 	}
-
-
 
 }

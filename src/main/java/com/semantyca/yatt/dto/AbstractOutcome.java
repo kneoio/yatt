@@ -8,18 +8,18 @@ import com.semantyca.yatt.controller.ResultType;
 
 @JsonPropertyOrder({"type", "title", "pageName", "payload"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class Outcome<T> {
+public abstract class AbstractOutcome<T> {
     protected OutcomeType type = OutcomeType.DEFAULT;
     protected String title = EnvConst.APP_ID;
     protected String pageName = "";
     protected T payload;
 
-    public Outcome setTitle(String title) {
+    public AbstractOutcome setTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public abstract Outcome<T> setPayload(T payload);
+    public abstract AbstractOutcome<T> setPayload(T payload);
 
     public T getPayload(){
         return payload;
@@ -37,7 +37,7 @@ public abstract class Outcome<T> {
         return pageName;
     }
 
-    public Outcome<T> setPageName(String pageName) {
+    public AbstractOutcome<T> setPageName(String pageName) {
         this.pageName = pageName;
         return this;
     }
@@ -47,7 +47,7 @@ public abstract class Outcome<T> {
         return "type=" + type + ", title=" + title;
     }
 
-    public Outcome setResult(ResultType success) {
+    public AbstractOutcome setResult(ResultType success) {
         type = OutcomeType.SAVING_RESULT;
         return this;
     }

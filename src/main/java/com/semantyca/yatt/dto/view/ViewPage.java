@@ -1,4 +1,4 @@
-package com.semantyca.yatt.dto;
+package com.semantyca.yatt.dto.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
