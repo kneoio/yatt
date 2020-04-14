@@ -1,7 +1,7 @@
 package com.semantyca.yatt.model.constant;
 
 public enum StatusType {
-    UNKNOWN(0, "unknown"),ONTIME(11, "ontime"), DELAYING(12, "delaying"), STOPPED(13, "stopped"); ;
+    UNKNOWN(0, "unknown"),ON_TIME(11, "on_time"), DELAYING(12, "delaying"), STOPPED(13, "stopped"); ;
 
     private int code;
     private String alias;

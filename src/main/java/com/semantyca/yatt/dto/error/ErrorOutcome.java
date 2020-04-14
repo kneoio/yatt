@@ -8,7 +8,7 @@ import com.semantyca.yatt.dto.OutcomeType;
 
 @JsonPropertyOrder({"type", "title", "pageName", "payload"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorOutcome extends AbstractOutcome<IErrorPage> {
+public class ErrorOutcome extends AbstractOutcome<IErrorPage> implements IErrorPage {
 
     public AbstractOutcome<IErrorPage> setPayload(IErrorPage error){
         type = OutcomeType.ERROR;
@@ -17,4 +17,8 @@ public class ErrorOutcome extends AbstractOutcome<IErrorPage> {
         return this;
     }
 
+    @Override
+    public String getMessage() {
+        return title;
+    }
 }

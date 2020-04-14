@@ -18,8 +18,14 @@ public class AuthController {
 
     @GetMapping("sign_in")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public @ResponseBody AbstractOutcome login(){
+    public @ResponseBody AbstractOutcome getSignInPage(){
         return new PageOutcome().setPayload(new Login()).setPageName("login page");
+    }
+
+    @GetMapping("do_login")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public @ResponseBody AbstractOutcome login(){
+        return new PageOutcome().setPageName("login_result");
     }
 
     @GetMapping("user_profile")

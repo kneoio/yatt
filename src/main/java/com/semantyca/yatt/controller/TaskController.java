@@ -1,7 +1,8 @@
 package com.semantyca.yatt.controller;
 
 import com.semantyca.yatt.EnvConst;
-import com.semantyca.yatt.dto.*;
+import com.semantyca.yatt.dto.AbstractOutcome;
+import com.semantyca.yatt.dto.DefaultOutcome;
 import com.semantyca.yatt.dto.document.SecuredDocumentOutcome;
 import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
@@ -14,12 +15,11 @@ import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class TaskController {
 
     @Autowired

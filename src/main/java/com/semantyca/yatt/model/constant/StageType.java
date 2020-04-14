@@ -1,7 +1,11 @@
 package com.semantyca.yatt.model.constant;
 
 public enum StageType {
-    UNKNOWN(0, "unknown"),DRAFT(1, "draft"),INPROGRESS(2, "in progress"), DONE(3, "done"), SUSPEND(4, "suspend");
+    UNKNOWN(0, "unknown"),
+    DRAFT(1, "draft"),
+    IN_PROGRESS(2, "in progress"),
+    DONE(3, "done"),
+    SUSPEND(4, "suspend");
 
     private int code;
     private String alias;

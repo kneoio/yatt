@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-public class ApiError implements IErrorPage {
+public class ApiError extends ErrorOutcome {
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
@@ -24,7 +24,11 @@ public class ApiError implements IErrorPage {
     }
 
     public String getDebugMessage() {
-        return debugMessage;
+        if (debugMessage == null){
+            return "";
+        } else {
+            return debugMessage;
+        }
     }
 
     public HttpStatus getStatus() {
