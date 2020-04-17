@@ -18,6 +18,8 @@ public class DatabaseService {
     @Autowired
     ITaskDAO taskDAO;
 
+
+
     @Autowired
     IUserDAO userDAO;
 
@@ -56,16 +58,16 @@ public class DatabaseService {
 
             generator.generateUsers().forEach(user -> {
                 System.out.println(user.getLogin());
-                userDAO.insert(user);
+                userDAO.bareInsert(user);
             });
 
             generator.generateAssignees().forEach(assignee -> {
                 System.out.println(assignee.getName());
-                assigneeDAO.insert(assignee);
+                assigneeDAO.bareInsert(assignee);
             });
 
-            generator.generateTasks(1000).forEach(task -> {
-                System.out.println(task.getTitle());taskDAO.insert(task);
+            generator.generateTasks(10).forEach(task -> {
+                System.out.println(task.getTitle());taskDAO.insertSecured(task);
             });
 
 
@@ -80,7 +82,7 @@ public class DatabaseService {
         IDAO daos[] = {userDAO, taskDAO, assigneeDAO};
         for (IDAO dao : daos) {
             System.out.println(dao);
-            dao.findAll(999, 0).forEach(u -> System.out.printf(ShellCommands.format, ((IAppEntity)u).getId(),  ((IAppEntity)u).getTitle()));
+            dao.findAllUnrestricted(999, 0).forEach(u -> System.out.printf(ShellCommands.format, ((IAppEntity)u).getId(),  ((IAppEntity)u).getTitle()));
         }
         return true;
     }

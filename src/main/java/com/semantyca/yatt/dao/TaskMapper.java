@@ -19,6 +19,7 @@ public class TaskMapper  extends AbstractMapper<Task> {
         assigneeDAO = ApplicationContextKeeper.getContext().getBean(IAssigneeDAO.class);
     }
 
+
     @Override
     public Task map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
         Task task = new Task();

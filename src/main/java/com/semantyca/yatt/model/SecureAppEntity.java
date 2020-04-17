@@ -1,7 +1,7 @@
 package com.semantyca.yatt.model;
 
 
-import com.semantyca.yatt.model.embedded.Reader;
+import com.semantyca.yatt.model.embedded.RLS;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ public abstract class SecureAppEntity extends AppEntity<Integer> {
 
     private Set<Integer> editors = new HashSet<>();
 
-    private Map<Integer, Reader> readers = new HashMap<>();
+    private Map<Integer, RLS> readers = new HashMap<>();
 
     public Set<Integer> getEditors() {
         return editors;
@@ -19,15 +19,15 @@ public abstract class SecureAppEntity extends AppEntity<Integer> {
         this.editors = editors;
     }
 
-    public Map<Integer, Reader> getReaders() {
+    public Map<Integer, RLS> getReaders() {
         return readers;
     }
 
-    public void setReaders(Map<Integer, Reader> readers) {
+    public void setReaders(Map<Integer, RLS> readers) {
         this.readers = readers;
     }
 
-    public SecureAppEntity addReader(Reader reader){
+    public SecureAppEntity addReader(RLS reader){
         readers.put(reader.getReader(), reader);
         return this;
     }

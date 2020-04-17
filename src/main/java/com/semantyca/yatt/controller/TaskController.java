@@ -28,6 +28,7 @@ public class TaskController {
     @GetMapping("tasks")
     public @ResponseBody
     AbstractOutcome getAll(String pageNum, String pageSize){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         int reader = AnonymousUser.ID;
         long count = service.getCountOfAll(reader);
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
@@ -50,8 +51,7 @@ public class TaskController {
     }
 
     @PostMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
-    public @ResponseBody
-    AbstractOutcome post(@RequestBody Task task){
+    public @ResponseBody AbstractOutcome post(@RequestBody Task task){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         int reader = AnonymousUser.ID;
         long count = service.post(task, reader);

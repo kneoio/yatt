@@ -21,14 +21,14 @@ public interface IUserDAO extends IDAO<User> {
 
     @SqlQuery
     @RegisterColumnMapper(UserMapper.class)
-    List<User> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<User> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
     @SqlQuery
     long getCountOfAll(@Bind("reader") long reader);
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int insert(@BindBean User user);
+    int bareInsert(@BindBean User user);
 
     @SqlUpdate
     @GetGeneratedKeys

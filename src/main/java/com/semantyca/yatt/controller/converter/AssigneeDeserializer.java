@@ -1,0 +1,31 @@
+package com.semantyca.yatt.controller.converter;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.node.IntNode;
+import com.semantyca.yatt.configuration.ApplicationContextKeeper;
+import com.semantyca.yatt.dao.IAssigneeDAO;
+import com.semantyca.yatt.model.Assignee;
+
+import java.io.IOException;
+
+public class AssigneeDeserializer extends StdDeserializer<Assignee> {
+
+    public AssigneeDeserializer() {
+        this(null);
+    }
+
+    public AssigneeDeserializer(Class<?> vc) {
+        super(vc);
+    }
+
+    @Override
+    public Assignee deserialize(JsonParser jp, DeserializationContext context) throws IOException {
+        TreeNode treeNode = jp.getCodec().readTree(jp);
+        int id = ((IntNode) treeNode).intValue();
+        IAssigneeDAO assigneeDAO = ApplicationContextKeeper.getContext().getBean(IAssigneeDAO .class);
+        return assigneeDAO.findById(id);
+    }
+}

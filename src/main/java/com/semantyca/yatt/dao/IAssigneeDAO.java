@@ -20,11 +20,11 @@ public interface IAssigneeDAO extends IDAO<Assignee> {
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
-    List<Assignee> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<Assignee> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int insert(@BindBean Assignee assignee);
+    int bareInsert(@BindBean Assignee assignee);
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)

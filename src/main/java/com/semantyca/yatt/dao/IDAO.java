@@ -5,12 +5,13 @@ import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+import org.jdbi.v3.sqlobject.transaction.Transaction;
 
 import java.util.List;
 
 public interface IDAO<T> {
 
-    List<T> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<T> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
     @SqlQuery
     long getCountAll();
@@ -20,7 +21,7 @@ public interface IDAO<T> {
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int insert(@BindBean T entity);
+    int bareInsert(@BindBean T entity);
 
     @SqlUpdate
     int delete(int id);
@@ -28,6 +29,7 @@ public interface IDAO<T> {
     @SqlUpdate
     void createTable();
 
+    @Transaction
     @SqlUpdate
     int dropTable();
 

@@ -53,7 +53,7 @@ public class ShellCommands {
 
     @ShellMethod("Show all users")
     public String show_users() {
-        userDAO.findAll(999, 0).forEach(u -> System.out.printf(format, u.getId() + ": ", u.getLogin()));
+        userDAO.findAllUnrestricted(999, 0).forEach(u -> System.out.printf(format, u.getId() + ": ", u.getLogin()));
         return "done";
     }
 }

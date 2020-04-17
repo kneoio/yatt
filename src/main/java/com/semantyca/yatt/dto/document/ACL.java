@@ -4,7 +4,7 @@ package com.semantyca.yatt.dto.document;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.semantyca.yatt.model.IAppEntity;
 import com.semantyca.yatt.model.SecureAppEntity;
-import com.semantyca.yatt.model.embedded.Reader;
+import com.semantyca.yatt.model.embedded.RLS;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,9 +21,9 @@ public class ACL {
     public ACL(IAppEntity<Integer> e) {
         SecureAppEntity entity = (SecureAppEntity) e;
 
-        Map<Integer, Reader> readerMap = entity.getReaders();
+        Map<Integer, RLS> readerMap = entity.getReaders();
         if (readerMap != null) {
-            for (Map.Entry<Integer, Reader> reader : readerMap.entrySet()) {
+            for (Map.Entry<Integer, RLS> reader : readerMap.entrySet()) {
                 Date readingTime = reader.getValue().getReadingTime();
                 if (readingTime != null) {
                     readers.put(reader.getKey(), getUserName(reader.getKey()) + " - " + readingTime.toString());

@@ -14,11 +14,12 @@ CREATE TABLE tasks
                   deadline DATE,
                   CONSTRAINT tasks_pkey PRIMARY KEY (id)
             );
-CREATE TABLE task_readers
+CREATE TABLE task_rls
             (
                  entity_id INT NOT NULL,
                  reader INT NOT NULL,
                  reading_time timestamp with time zone,
+                 is_edit_allowed INT NOT NULL,
                  UNIQUE (entity_id, reader)
             );
 

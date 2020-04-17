@@ -2,7 +2,7 @@ package com.semantyca.yatt.model.embedded;
 
 import java.util.Date;
 
-public class Reader {
+public class RLS {
 
     private boolean wasRead;
 
@@ -10,13 +10,23 @@ public class Reader {
 
     private int reader;
 
+    private int editAllowed;
+
     public int getReader() {
         return reader;
     }
 
-    public Reader setReader(Integer reader) {
+    public RLS setReader(Integer reader) {
         this.reader = reader;
         return this;
+    }
+
+    public int getEditAllowed() {
+        return editAllowed;
+    }
+
+    public void setEditAllowed(int editAllowed) {
+        this.editAllowed = editAllowed;
     }
 
     public boolean isWasRead() {
@@ -38,5 +48,15 @@ public class Reader {
 
     public Date getReadingTime() {
         return readingTime;
+    }
+
+    public RLS allowEdit() {
+        editAllowed = 1;
+        return this;
+    }
+
+    public RLS revokeEdit() {
+        editAllowed = 0;
+        return this;
     }
 }

@@ -1,6 +1,8 @@
 package com.semantyca.yatt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.semantyca.yatt.controller.converter.AssigneeDeserializer;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
@@ -54,19 +56,11 @@ public class Task  extends SecureAppEntity {
         return assignee;
     }
 
-    public void setAssigneeId(int id) {
-        this.assignee.setId(id);
-    }
-
-
     public int getAssigneeId() {
         return assignee.id;
     }
 
-    public void setAssignee(String a) {
-        assignee.setId(Integer.parseInt(a));
-    }
-
+    @JsonDeserialize(using = AssigneeDeserializer.class)
     public void setAssignee(Assignee assignee) {
         this.assignee = assignee;
     }

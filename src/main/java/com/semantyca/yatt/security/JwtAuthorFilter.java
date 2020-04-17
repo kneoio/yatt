@@ -31,8 +31,7 @@ public class JwtAuthorFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         var authentication = getAuthentication(request);
         if (authentication == null) {
             filterChain.doFilter(request, response);

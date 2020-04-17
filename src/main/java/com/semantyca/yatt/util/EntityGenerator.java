@@ -9,7 +9,7 @@ import com.semantyca.yatt.model.User;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
-import com.semantyca.yatt.model.embedded.Reader;
+import com.semantyca.yatt.model.embedded.RLS;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -52,7 +52,7 @@ public class EntityGenerator {
         NameGenerator nameGeneratorLastName = new NameGenerator(EntityGenerator.class.getClassLoader().getResource(LAST_NAME_SOURCE).getFile());
         NameGenerator nameGeneratorFirstName = new NameGenerator(EntityGenerator.class.getClassLoader().getResource(FIRST_NAME_SOURCE).getFile());
         List entities = new ArrayList();
-        List<User> users = userDAO.findAll(100, 0);
+        List<User> users = userDAO.findAllUnrestricted(100, 0);
         for (User user : users) {
             Assignee entity = assigneeDAO.findByLogin(user.getLogin());
             if (entity == null) {
@@ -74,9 +74,9 @@ public class EntityGenerator {
 
     public List<Task> generateTasks(int count) throws IOException {
         List entities = new ArrayList();
-        List<User> users = userDAO.findAll(100, 0);
+        List<User> users = userDAO.findAllUnrestricted(100, 0);
         Integer[] userIds =  users.stream().map((user) -> user.getId()).toArray(Integer[]::new);
-        List<Assignee> assignees = assigneeDAO.findAll(100, 0);
+        List<Assignee> assignees = assigneeDAO.findAllUnrestricted(100, 0);
         for (int i = 0; i < count; i++) {
             Task entity = new Task();
             ZonedDateTime currentMoment = ZonedDateTime.now();
@@ -91,8 +91,8 @@ public class EntityGenerator {
             entity.setTitle(StringUtil.getRndArticle(10));
             entity.setDescription(StringUtil.getRndParagraph(1));
             entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
-            entity.addReader(new Reader().setReader(AnonymousUser.ID));
-            entity.addReader(new Reader().setReader(ListUtil.getRndArrayElement(userIds)));
+            entity.addReader(new RLS().setReader(AnonymousUser.ID).allowEdit());
+            entity.addReader(new RLS().setReader(ListUtil.getRndArrayElement(userIds)));
             entities.add(entity);
 
         }

@@ -12,23 +12,18 @@ import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.service.AssigneeService;
 import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class AssigneeController {
 
     @Autowired
     private AssigneeService service;
 
     @GetMapping("assignees")
-    public @ResponseBody
-    AbstractOutcome getAll(String pageNum, String pageSize){
+    public @ResponseBody AbstractOutcome getAll(String pageNum, String pageSize){
         int reader = AnonymousUser.ID;
         long count = service.getCountOfAll(reader);
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
@@ -38,8 +33,7 @@ public class AssigneeController {
     }
 
     @RequestMapping("assignees/{id}")
-    public @ResponseBody
-    AbstractOutcome get(@PathVariable(value="id") String id) {
+    public @ResponseBody AbstractOutcome get(@PathVariable(value="id") String id) {
         int reader = AnonymousUser.ID;
         try {
             int userId = NumberUtil.stringToInt(id);

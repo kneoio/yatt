@@ -8,7 +8,9 @@ import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+import org.jdbi.v3.sqlobject.transaction.Transaction;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @UseClasspathSqlLocator
@@ -23,11 +25,23 @@ public interface ITaskDAO extends IDAO<Task> {
 
     @SqlQuery
     @RegisterColumnMapper(TaskMapper.class)
-    List<Task> findAll(@Bind("limit") int limit, @Bind("offset") int offset);
+    List<Task> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
+
+
+    @SqlUpdate
+    int addReader(int id, int user, ZonedDateTime readingTime, int editAllowed);
+
+
+    @Transaction
+    default void insertSecured(Task task) {
+        addReader(bareInsert(task), task.getAuthor(), ZonedDateTime.now(), 1);
+    }
+
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int insert(@BindBean Task task);
+    int bareInsert(@BindBean Task task);
+
 
     @SqlUpdate
     @GetGeneratedKeys

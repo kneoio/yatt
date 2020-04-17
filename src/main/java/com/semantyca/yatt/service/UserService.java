@@ -17,6 +17,6 @@ public class UserService {
     }
 
     public List<User> findAll(int pageSize, int calcStartEntry, int i) {
-        return userDAO.findAll(pageSize, calcStartEntry);
+        return userDAO.findAllUnrestricted(pageSize, calcStartEntry);
     }
 }

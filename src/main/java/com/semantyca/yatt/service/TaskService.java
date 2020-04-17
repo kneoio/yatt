@@ -5,6 +5,7 @@ import com.semantyca.yatt.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -18,7 +19,7 @@ public class TaskService {
     }
 
     public List<Task> findAll(int pageSize, int calcStartEntry, int i) {
-        return taskDAO.findAll(pageSize, calcStartEntry);
+        return taskDAO.findAllUnrestricted(pageSize, calcStartEntry);
     }
 
 
@@ -27,10 +28,16 @@ public class TaskService {
     }
 
     public long post(Task task, int userId) {
-        return taskDAO.insert(task);
+        task.setRegDate(ZonedDateTime.now());
+        task.setAuthor(userId);
+        task.setLastModifiedDate(task.getRegDate());
+        task.setLastModifier(userId);
+        return taskDAO.bareInsert(task);
     }
 
-    public int put(Task task, int reader) {
+    public int put(Task task, int userId) {
+        task.setLastModifiedDate(ZonedDateTime.now());
+        task.setLastModifier(userId);
         return taskDAO.update(task);
     }
 

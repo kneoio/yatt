@@ -18,7 +18,7 @@ public class AssigneeService {
     }
 
     public List<Assignee> findAll(int pageSize, int calcStartEntry, int i) {
-        return assigneeDAO.findAll(pageSize, calcStartEntry);
+        return assigneeDAO.findAllUnrestricted(pageSize, calcStartEntry);
     }
 
     public Assignee findById(int id, int userId) {

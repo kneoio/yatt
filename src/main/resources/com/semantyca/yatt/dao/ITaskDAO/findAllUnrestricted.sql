@@ -1,0 +1,1 @@
+SELECT * FROM tasks LIMIT :limit OFFSET :offset;
