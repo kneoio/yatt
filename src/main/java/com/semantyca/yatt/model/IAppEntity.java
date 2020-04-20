@@ -1,7 +1,9 @@
 package com.semantyca.yatt.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.ZonedDateTime;
 
+@JsonPropertyOrder({"entityType", "id", "author", "regDate", "lastModifier", "lastModifiedDate", "title", "new"})
 public interface IAppEntity<K>{
 
     void setId(K id);
@@ -27,8 +29,6 @@ public interface IAppEntity<K>{
     void setLastModifiedDate(ZonedDateTime last_mod_date);
 
     void setLastModifier(int last_mod_user);
-
-
 
     void setRegDate(ZonedDateTime reg_date);
 

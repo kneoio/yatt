@@ -1,6 +1,7 @@
 package com.semantyca.yatt.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semantyca.yatt.model.embedded.RLS;
 
 import java.util.*;
@@ -19,12 +20,9 @@ public abstract class SecureAppEntity extends AppEntity<Integer> {
         this.editors = editors;
     }
 
+    @JsonIgnore
     public Map<Integer, RLS> getReaders() {
         return readers;
-    }
-
-    public void setReaders(Map<Integer, RLS> readers) {
-        this.readers = readers;
     }
 
     public SecureAppEntity addReader(RLS reader){
@@ -38,4 +36,9 @@ public abstract class SecureAppEntity extends AppEntity<Integer> {
     }
 
 
+    public void setReaders(RLS rls) {
+        Map readersMap = new HashMap();
+        readersMap.put(rls.getReader(), rls);
+        this.readers =  readersMap;
+    }
 }

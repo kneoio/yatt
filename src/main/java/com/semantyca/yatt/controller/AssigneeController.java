@@ -7,7 +7,7 @@ import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
 import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.dto.view.ViewPageOutcome;
-import com.semantyca.yatt.model.AnonymousUser;
+import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.service.AssigneeService;
 import com.semantyca.yatt.util.NumberUtil;

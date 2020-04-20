@@ -1,8 +1,11 @@
-package com.semantyca.yatt.model;
+package com.semantyca.yatt.model.system;
+
+import com.semantyca.yatt.model.AppEntity;
+import com.semantyca.yatt.model.IUser;
 
 import java.util.Date;
 
-public class User extends AppEntity<Integer> implements IUser{
+public class User extends AppEntity<Integer> implements IUser {
     private String login;
     private String email;
     private boolean authorized;

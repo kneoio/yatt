@@ -3,9 +3,7 @@ package com.semantyca.yatt.dao;
 import com.semantyca.yatt.model.Task;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
-import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
-import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.jdbi.v3.sqlobject.transaction.Transaction;
@@ -24,7 +22,7 @@ public interface ITaskDAO extends IDAO<Task> {
     List<Task> findAll(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader);
 
     @SqlQuery
-    @RegisterColumnMapper(TaskMapper.class)
+    @RegisterColumnMapper(UnrestrictedTaskMapper.class)
     List<Task> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
 
@@ -37,15 +35,6 @@ public interface ITaskDAO extends IDAO<Task> {
         addReader(bareInsert(task), task.getAuthor(), ZonedDateTime.now(), 1);
     }
 
-
-    @SqlUpdate
-    @GetGeneratedKeys("id")
-    int bareInsert(@BindBean Task task);
-
-
-    @SqlUpdate
-    @GetGeneratedKeys
-    int update(@BindBean Task task);
 
 }
 

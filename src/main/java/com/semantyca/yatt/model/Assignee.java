@@ -1,6 +1,8 @@
 package com.semantyca.yatt.model;
 
 
+import com.semantyca.yatt.model.system.User;
+
 public class Assignee extends AppEntity<Integer> {
     private String name;
     private User user;

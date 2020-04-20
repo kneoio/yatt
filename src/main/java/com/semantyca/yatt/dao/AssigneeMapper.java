@@ -2,7 +2,7 @@ package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.configuration.ApplicationContextKeeper;
 import com.semantyca.yatt.model.Assignee;
-import com.semantyca.yatt.model.User;
+import com.semantyca.yatt.model.system.User;
 import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;

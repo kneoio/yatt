@@ -1,5 +1,7 @@
 package com.semantyca.yatt.model.embedded;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class RLS {
@@ -12,10 +14,12 @@ public class RLS {
 
     private int editAllowed;
 
+    @JsonIgnore
     public int getReader() {
         return reader;
     }
 
+    @JsonIgnore
     public RLS setReader(Integer reader) {
         this.reader = reader;
         return this;
@@ -25,6 +29,7 @@ public class RLS {
         return editAllowed;
     }
 
+    @JsonIgnore
     public void setEditAllowed(int editAllowed) {
         this.editAllowed = editAllowed;
     }
@@ -33,7 +38,17 @@ public class RLS {
         return wasRead;
     }
 
+    @JsonIgnore
+    public void setReadingTime(Date readingTime) {
+        this.readingTime = readingTime;
+    }
 
+    @JsonIgnore
+    public void setReader(int reader) {
+        this.reader = reader;
+    }
+
+    @JsonIgnore
     public void setWasRead(boolean wasRead) {
         if (wasRead != this.wasRead) {
             if (wasRead) {
@@ -50,11 +65,12 @@ public class RLS {
         return readingTime;
     }
 
+    @JsonIgnore
     public RLS allowEdit() {
         editAllowed = 1;
         return this;
     }
-
+    @JsonIgnore
     public RLS revokeEdit() {
         editAllowed = 0;
         return this;

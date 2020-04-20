@@ -5,17 +5,16 @@ import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
-import com.semantyca.yatt.model.embedded.RLS;
 import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TaskMapper  extends AbstractMapper<Task> {
+public class UnrestrictedTaskMapper extends AbstractMapper<Task> {
 
     private IAssigneeDAO assigneeDAO;
 
-    public TaskMapper() {
+    public UnrestrictedTaskMapper() {
         super();
         assigneeDAO = ApplicationContextKeeper.getContext().getBean(IAssigneeDAO.class);
     }
@@ -25,14 +24,6 @@ public class TaskMapper  extends AbstractMapper<Task> {
     public Task map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
         Task task = new Task();
         transferCommonData(task, rs);
-
-        RLS rls = new RLS();
-        rls.setReader(rs.getInt("reader"));
-        rls.setEditAllowed(rs.getInt("is_edit_allowed"));
-        //rls.setReadingTime(getDateTime(rs.getTimestamp("reading_time")));
-
-
-        task.setReaders(rls);
         task.setType(TaskType.getType(rs.getInt("type")));
         task.setStage(StageType.getType(rs.getInt("stage")));
         task.setStatus(StatusType.getType(rs.getInt("status")));

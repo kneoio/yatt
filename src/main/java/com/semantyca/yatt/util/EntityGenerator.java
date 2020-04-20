@@ -2,10 +2,10 @@ package com.semantyca.yatt.util;
 
 import com.semantyca.yatt.dao.IAssigneeDAO;
 import com.semantyca.yatt.dao.IUserDAO;
-import com.semantyca.yatt.model.AnonymousUser;
+import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.model.Task;
-import com.semantyca.yatt.model.User;
+import com.semantyca.yatt.model.system.User;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
@@ -91,7 +91,7 @@ public class EntityGenerator {
             entity.setTitle(StringUtil.getRndArticle(10));
             entity.setDescription(StringUtil.getRndParagraph(1));
             entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
-            entity.addReader(new RLS().setReader(AnonymousUser.ID).allowEdit());
+            //entity.addReader(new RLS().setReader(AnonymousUser.ID).allowEdit());
             entity.addReader(new RLS().setReader(ListUtil.getRndArrayElement(userIds)));
             entities.add(entity);
 

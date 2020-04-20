@@ -6,9 +6,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.controller.ResultType;
 
-@JsonPropertyOrder({"type", "title", "pageName", "payload"})
+@JsonPropertyOrder({"identifier", "type", "title", "pageName", "payload"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class AbstractOutcome<T> {
+    protected String identifier = "undefined";
     protected OutcomeType type = OutcomeType.DEFAULT;
     protected String title = EnvConst.APP_ID;
     protected String pageName = "";
@@ -17,6 +18,19 @@ public abstract class AbstractOutcome<T> {
     public AbstractOutcome setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public AbstractOutcome<T> setIdentifier(String identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    public void setType(OutcomeType type) {
+        this.type = type;
     }
 
     public abstract AbstractOutcome<T> setPayload(T payload);
@@ -44,7 +58,7 @@ public abstract class AbstractOutcome<T> {
 
 
     public String toString() {
-        return "type=" + type + ", title=" + title;
+        return "identifier=" + identifier + ",type=" + type + ", title=" + title;
     }
 
     public AbstractOutcome setResult(ResultType success) {

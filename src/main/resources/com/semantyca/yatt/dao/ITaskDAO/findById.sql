@@ -1,1 +1,1 @@
-SELECT * FROM tasks WHERE tasks.id = :id;
+SELECT * FROM tasks AS t, task_rls AS rls WHERE t.id = rls.entity_id AND rls.reader = :reader AND t.id = :id;

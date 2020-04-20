@@ -2,6 +2,7 @@ package com.semantyca.yatt.dto.document;
 
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.semantyca.yatt.model.IAppEntity;
 import com.semantyca.yatt.model.SecureAppEntity;
 import com.semantyca.yatt.model.embedded.RLS;
@@ -10,15 +11,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonPropertyOrder({"kind", "readers", "editors"})
-public class ACL {
-
+@JsonPropertyOrder({"readers", "editors"})
+@JsonRootName("ACL")
+public class ACLDto {
     public Map<Integer, Object> readers = new HashMap<>();
     public Map<Integer, Object> editors = new HashMap<>();
 
 
-
-    public ACL(IAppEntity<Integer> e) {
+    public ACLDto(IAppEntity<Integer> e) {
         SecureAppEntity entity = (SecureAppEntity) e;
 
         Map<Integer, RLS> readerMap = entity.getReaders();

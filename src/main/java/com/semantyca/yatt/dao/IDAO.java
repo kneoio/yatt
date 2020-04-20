@@ -24,6 +24,9 @@ public interface IDAO<T> {
     int bareInsert(@BindBean T entity);
 
     @SqlUpdate
+    int bareUpdate(@BindBean T task);
+
+    @SqlUpdate
     int delete(int id);
 
     @SqlUpdate

@@ -19,7 +19,7 @@ public class TaskService {
     }
 
     public List<Task> findAll(int pageSize, int calcStartEntry, int i) {
-        return taskDAO.findAllUnrestricted(pageSize, calcStartEntry);
+        return taskDAO.findAll(pageSize, calcStartEntry, i);
     }
 
 
@@ -28,17 +28,21 @@ public class TaskService {
     }
 
     public long post(Task task, int userId) {
-        task.setRegDate(ZonedDateTime.now());
-        task.setAuthor(userId);
-        task.setLastModifiedDate(task.getRegDate());
-        task.setLastModifier(userId);
-        return taskDAO.bareInsert(task);
+        if (task.getId() == null) {
+            task.setRegDate(ZonedDateTime.now());
+            task.setAuthor(userId);
+            task.setLastModifiedDate(task.getRegDate());
+            task.setLastModifier(userId);
+            return taskDAO.bareInsert(task);
+        } else {
+            return put(task, userId);
+        }
     }
 
     public int put(Task task, int userId) {
         task.setLastModifiedDate(ZonedDateTime.now());
         task.setLastModifier(userId);
-        return taskDAO.update(task);
+        return taskDAO.bareUpdate(task);
     }
 
     public int delete(Task task, int reader) {

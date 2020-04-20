@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/do_login").permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilter(new JwtAuthentFilter(authenticationManager()))
-            .addFilter(new JwtAuthorFilter(authenticationManager()))
+            .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+            .addFilter(new JwtAuthorizationFilter(authenticationManager()))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().configurationSource(corsConfigurationSource());

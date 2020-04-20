@@ -1,4 +1,6 @@
-package com.semantyca.yatt.model;
+package com.semantyca.yatt.model.system;
+
+import com.semantyca.yatt.model.IUser;
 
 import javax.security.auth.Subject;
 

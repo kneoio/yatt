@@ -8,8 +8,4 @@ SELECT
   login,
   email,
   name
-from
-  users
-where
-  login = :login
-;
+FROM users WHERE login = :login;

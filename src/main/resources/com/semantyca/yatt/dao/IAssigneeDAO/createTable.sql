@@ -1,6 +1,6 @@
 CREATE TABLE assignees
             (
-              id INT IDENTITY,
+              id SERIAL,
               reg_date DATE NOT NULL,
               title VARCHAR(255),
               author INT NOT NULL,

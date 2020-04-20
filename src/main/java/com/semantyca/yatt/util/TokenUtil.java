@@ -1,6 +1,6 @@
 package com.semantyca.yatt.util;
 
-import com.semantyca.yatt.model.User;
+import com.semantyca.yatt.model.system.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
