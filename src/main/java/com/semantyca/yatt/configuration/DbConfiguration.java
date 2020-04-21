@@ -7,6 +7,7 @@ import com.semantyca.yatt.shell.DatabaseService;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.spi.JdbiPlugin;
+import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,7 @@ public class DbConfiguration {
         TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(ds);
         Jdbi jdbi = Jdbi.create(proxy);
         jdbiPlugins.forEach(plugin -> jdbi.installPlugin(plugin));
+        jdbi.installPlugin(new PostgresPlugin());
         rowMappers.forEach(mapper -> jdbi.registerRowMapper(mapper));
         return jdbi;
     }

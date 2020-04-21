@@ -13,7 +13,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.util.List;
 
 @UseClasspathSqlLocator
-public interface IUserDAO extends IDAO<User> {
+public interface IUserDAO extends IDAO<User, Integer> {
 
     @SqlQuery
     @RegisterColumnMapper(UserMapper.class)
@@ -28,7 +28,9 @@ public interface IUserDAO extends IDAO<User> {
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int bareInsert(@BindBean User user);
+    Integer bareInsert(@BindBean User user);
+
+
 
     @SqlUpdate
     @GetGeneratedKeys

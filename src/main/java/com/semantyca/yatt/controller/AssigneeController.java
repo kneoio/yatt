@@ -7,14 +7,15 @@ import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
 import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.dto.view.ViewPageOutcome;
-import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.Assignee;
+import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.service.AssigneeService;
 import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class AssigneeController {
@@ -36,8 +37,8 @@ public class AssigneeController {
     public @ResponseBody AbstractOutcome get(@PathVariable(value="id") String id) {
         int reader = AnonymousUser.ID;
         try {
-            int userId = NumberUtil.stringToInt(id);
-            Assignee result = service.findById(userId, reader);
+            UUID idAsUUID = UUID.fromString(id);
+            Assignee result = service.findById(idAsUUID, reader);
             return new DocumentOutcome().setPayload(result).setPageName("assignee " + result.getTitle());
         }catch (Exception e){
             return new ErrorOutcome().setPayload(new ApplicationError(e.getMessage()));

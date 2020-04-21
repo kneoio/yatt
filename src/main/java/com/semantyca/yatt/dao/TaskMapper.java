@@ -10,6 +10,7 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class TaskMapper  extends AbstractMapper<Task> {
 
@@ -23,24 +24,25 @@ public class TaskMapper  extends AbstractMapper<Task> {
 
     @Override
     public Task map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
-        Task task = new Task();
-        transferCommonData(task, rs);
-
+        Task entity = new Task();
+        transferIdUUID(entity, rs);
+        transferCommonData(entity, rs);
         RLS rls = new RLS();
         rls.setReader(rs.getInt("reader"));
         rls.setEditAllowed(rs.getInt("is_edit_allowed"));
         //rls.setReadingTime(getDateTime(rs.getTimestamp("reading_time")));
 
 
-        task.setReaders(rls);
-        task.setType(TaskType.getType(rs.getInt("type")));
-        task.setStage(StageType.getType(rs.getInt("stage")));
-        task.setStatus(StatusType.getType(rs.getInt("status")));
-        task.setDescription(rs.getString("description"));
-        task.setAssignee(assigneeDAO.findById(rs.getInt("assignee")));
-        task.setDeadline(getDateTime(rs.getTimestamp("deadline")));
-       return task;
+        entity.setReaders(rls);
+        entity.setType(TaskType.getType(rs.getInt("type")));
+        entity.setStage(StageType.getType(rs.getInt("stage")));
+        entity.setStatus(StatusType.getType(rs.getInt("status")));
+        entity.setDescription(rs.getString("description"));
+        entity.setAssignee(assigneeDAO.findById(rs.getObject("assignee", UUID.class)));
+        entity.setDeadline(getDateTime(rs.getTimestamp("deadline")));
+       return entity;
     }
+
 
 
 

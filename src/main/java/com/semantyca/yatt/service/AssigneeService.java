@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AssigneeService {
@@ -21,7 +22,7 @@ public class AssigneeService {
         return assigneeDAO.findAllUnrestricted(pageSize, calcStartEntry);
     }
 
-    public Assignee findById(int id, int userId) {
+    public Assignee findById(UUID id, int userId) {
          return assigneeDAO.findById(id);
     }
 

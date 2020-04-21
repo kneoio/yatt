@@ -20,6 +20,7 @@ public class AssigneeMapper extends AbstractMapper<Assignee> {
     @Override
     public Assignee map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
         Assignee entity = new Assignee();
+        transferIdUUID(entity, rs);
         transferCommonData(entity, rs);
         entity.setName(rs.getString("name"));
         entity.setRank(rs.getInt("rank"));

@@ -1,12 +1,12 @@
 CREATE TABLE tasks
             (
-                  id SERIAL,
+                  id uuid DEFAULT uuid_generate_v4(),
                   reg_date DATE NOT NULL,
                   title VARCHAR(255),
                   author INT NOT NULL,
                   last_mod_date DATE NOT NULL,
                   last_mod_user INT NOT NULL,
-                  assignee INT,
+                  assignee uuid,
                   type INT NOT NULL,
                   status INT NOT NULL,
                   stage INT NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE tasks
             );
 CREATE TABLE task_rls
             (
-                 entity_id INT NOT NULL,
+                 entity_id uuid NOT NULL,
                  reader INT NOT NULL,
                  reading_time timestamp with time zone,
                  is_edit_allowed INT NOT NULL,

@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class TaskController {
@@ -43,7 +44,7 @@ public class TaskController {
     public ResponseEntity get(@PathVariable(value="id") String id) {
         int reader = AnonymousUser.ID;
         try {
-            int userId = NumberUtil.stringToInt(id);
+            UUID userId = UUID.fromString(id);
             Task result = service.findById(userId, reader);
             if (result != null) {
                 return ResponseEntity.status(HttpStatus.OK)

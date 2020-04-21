@@ -1,6 +1,6 @@
 CREATE TABLE assignees
             (
-              id SERIAL,
+              id uuid DEFAULT uuid_generate_v4(),
               reg_date DATE NOT NULL,
               title VARCHAR(255),
               author INT NOT NULL,

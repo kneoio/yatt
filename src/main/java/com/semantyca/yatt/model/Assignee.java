@@ -3,7 +3,9 @@ package com.semantyca.yatt.model;
 
 import com.semantyca.yatt.model.system.User;
 
-public class Assignee extends AppEntity<Integer> {
+import java.util.UUID;
+
+public class Assignee extends AppEntity<UUID> {
     private String name;
     private User user;
     private int rank;

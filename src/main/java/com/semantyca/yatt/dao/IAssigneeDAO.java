@@ -10,13 +10,14 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
+import java.util.UUID;
 
 @UseClasspathSqlLocator
-public interface IAssigneeDAO extends IDAO<Assignee> {
+public interface IAssigneeDAO extends IDAO<Assignee, UUID> {
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
-    Assignee findById(@Bind("id") int id);
+    Assignee findById(@Bind("id") UUID id);
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)
@@ -24,7 +25,8 @@ public interface IAssigneeDAO extends IDAO<Assignee> {
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int bareInsert(@BindBean Assignee assignee);
+    UUID bareInsert(@BindBean Assignee assignee);
+
 
     @SqlQuery
     @RegisterColumnMapper(AssigneeMapper.class)

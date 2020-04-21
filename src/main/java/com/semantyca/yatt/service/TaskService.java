@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TaskService {
@@ -23,17 +24,18 @@ public class TaskService {
     }
 
 
-    public Task findById(int id, int userId) {
+    public Task findById(UUID id, int userId) {
          return taskDAO.findById(id, userId);
     }
 
-    public long post(Task task, int userId) {
+    public int post(Task task, int userId) {
         if (task.getId() == null) {
             task.setRegDate(ZonedDateTime.now());
             task.setAuthor(userId);
             task.setLastModifiedDate(task.getRegDate());
             task.setLastModifier(userId);
-            return taskDAO.bareInsert(task);
+            taskDAO.bareInsert(task);
+            return 1;
         } else {
             return put(task, userId);
         }

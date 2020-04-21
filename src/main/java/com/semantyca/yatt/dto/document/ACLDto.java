@@ -33,9 +33,9 @@ public class ACLDto {
             }
         }
 
-        for (Integer id : entity.getEditors()) {
+        /*for (Integer id : entity.getEditors()) {
             editors.put(id, getUserName(id));
-        }
+        }*/
     }
 
 

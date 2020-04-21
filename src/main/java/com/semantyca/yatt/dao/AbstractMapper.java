@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 public abstract class AbstractMapper<T> implements ColumnMapper<T> {
 
@@ -28,13 +29,22 @@ public abstract class AbstractMapper<T> implements ColumnMapper<T> {
                 Instant.ofEpochMilli(timestamp.getTime()), ZoneOffset.UTC) : null;
     }
 
-    public static void transferCommonData(IAppEntity entity, ResultSet rs) throws SQLException {
+    public static void transferIdInteger(IAppEntity entity, ResultSet rs) throws SQLException {
         entity.setId(rs.getInt("id"));
+    }
+
+    public static void transferIdUUID(IAppEntity entity, ResultSet rs) throws SQLException {
+        entity.setId(rs.getObject("id", UUID.class));
+
+    }
+
+    public static void transferCommonData(IAppEntity entity, ResultSet rs) throws SQLException {
         entity.setLastModifiedDate(getDateTime(rs.getTimestamp("last_mod_date")));
         entity.setLastModifier(rs.getInt("last_mod_user"));
         entity.setRegDate(getDateTime(rs.getTimestamp("reg_date")));
         entity.setTitle(rs.getString("title"));
         entity.setAuthor(rs.getInt("author"));
     }
+
 
 }

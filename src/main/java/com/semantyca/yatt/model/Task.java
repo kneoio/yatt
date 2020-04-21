@@ -8,8 +8,9 @@ import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
-public class Task  extends SecureAppEntity {
+public class Task  extends SecureAppEntity<UUID> {
     private StatusType status;
     private StageType stage;
     private TaskType type;
@@ -56,7 +57,7 @@ public class Task  extends SecureAppEntity {
         return assignee;
     }
 
-    public int getAssigneeId() {
+    public UUID getAssigneeId() {
         return assignee.id;
     }
 

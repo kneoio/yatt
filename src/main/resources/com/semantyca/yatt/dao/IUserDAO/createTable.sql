@@ -9,6 +9,7 @@ CREATE TABLE users
               login  VARCHAR(100),
               email VARCHAR(100),
               name VARCHAR(255),
+              roles jsonb,
               CONSTRAINT users_pkey PRIMARY KEY (id)
             );
 

@@ -9,6 +9,7 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class UnrestrictedTaskMapper extends AbstractMapper<Task> {
 
@@ -28,7 +29,7 @@ public class UnrestrictedTaskMapper extends AbstractMapper<Task> {
         task.setStage(StageType.getType(rs.getInt("stage")));
         task.setStatus(StatusType.getType(rs.getInt("status")));
         task.setDescription(rs.getString("description"));
-        task.setAssignee(assigneeDAO.findById(rs.getInt("assignee")));
+        task.setAssignee(assigneeDAO.findById(rs.getObject("assignee", UUID.class)));
         task.setDeadline(getDateTime(rs.getTimestamp("deadline")));
        return task;
     }

@@ -20,7 +20,7 @@ public class RLS {
     }
 
     @JsonIgnore
-    public RLS setReader(Integer reader) {
+    public RLS setReader(int reader) {
         this.reader = reader;
         return this;
     }
@@ -41,11 +41,6 @@ public class RLS {
     @JsonIgnore
     public void setReadingTime(Date readingTime) {
         this.readingTime = readingTime;
-    }
-
-    @JsonIgnore
-    public void setReader(int reader) {
-        this.reader = reader;
     }
 
     @JsonIgnore

@@ -9,7 +9,7 @@ import org.jdbi.v3.sqlobject.transaction.Transaction;
 
 import java.util.List;
 
-public interface IDAO<T> {
+public interface IDAO<T,I> {
 
     List<T> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
@@ -21,13 +21,13 @@ public interface IDAO<T> {
 
     @SqlUpdate
     @GetGeneratedKeys("id")
-    int bareInsert(@BindBean T entity);
+    I bareInsert(@BindBean T entity);
 
     @SqlUpdate
     int bareUpdate(@BindBean T task);
 
     @SqlUpdate
-    int delete(int id);
+    int delete(I id);
 
     @SqlUpdate
     void createTable();

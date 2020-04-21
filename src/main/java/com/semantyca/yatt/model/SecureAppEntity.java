@@ -1,12 +1,11 @@
 package com.semantyca.yatt.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semantyca.yatt.model.embedded.RLS;
 
 import java.util.*;
 
-public abstract class SecureAppEntity extends AppEntity<Integer> {
+public abstract class SecureAppEntity<T> extends AppEntity<T> {
 
     private Set<Integer> editors = new HashSet<>();
 
