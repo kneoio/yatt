@@ -2,6 +2,7 @@ package com.semantyca.yatt.model.system;
 
 import com.semantyca.yatt.model.AppEntity;
 import com.semantyca.yatt.model.IUser;
+import org.jdbi.v3.json.Json;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +12,7 @@ public class User extends AppEntity<Integer> implements IUser {
     private String login;
     private String email;
     private boolean authorized;
-    private List<Role> roles = new ArrayList();
+    private List<String> roles = new ArrayList();
 
     @Override
     public String getLogin() {
@@ -57,11 +58,20 @@ public class User extends AppEntity<Integer> implements IUser {
         return new Date();
     }
 
-    public List<Role> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    @Json
+    public List<String> getRolesAsJSON() {
+        return roles;
+    }
+
+
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
+
+
 }

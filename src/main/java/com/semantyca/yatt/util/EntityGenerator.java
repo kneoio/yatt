@@ -2,14 +2,15 @@ package com.semantyca.yatt.util;
 
 import com.semantyca.yatt.dao.IAssigneeDAO;
 import com.semantyca.yatt.dao.IUserDAO;
-import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.model.Task;
-import com.semantyca.yatt.model.system.User;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 import com.semantyca.yatt.model.embedded.RLS;
+import com.semantyca.yatt.model.system.AnonymousUser;
+import com.semantyca.yatt.model.system.Role;
+import com.semantyca.yatt.model.system.User;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -42,6 +43,12 @@ public class EntityGenerator {
                 entity.setAuthor(AnonymousUser.ID);
                 entity.setLastModifier(AnonymousUser.ID);
                 entity.setTitle(entity.getLogin());
+                Role role = new Role();
+                role.setName("fake");
+                ArrayList roles = new ArrayList();
+                roles.add(role.getName());
+                roles.add(new Role().setName("super").getName());
+                entity.setRoles(roles);
                 users.add(entity);
             }
         }

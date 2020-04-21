@@ -1,7 +1,7 @@
 package com.semantyca.yatt.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.ArrayType;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.semantyca.yatt.model.system.User;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -10,6 +10,7 @@ import org.postgresql.util.PGobject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper extends AbstractMapper<User> {
     private static ObjectMapper mapper = new ObjectMapper();
@@ -23,8 +24,8 @@ public class UserMapper extends AbstractMapper<User> {
         entity.setLogin(rs.getString("login"));
         try {
             TypeFactory typeFactory = mapper.getTypeFactory();
-            ArrayType arrayType = typeFactory.constructArrayType(String.class);
-            PGobject po = rs.getObject("loc_name", PGobject.class);
+            CollectionType arrayType = typeFactory.constructCollectionType(List.class, String.class);
+            PGobject po = rs.getObject("roles", PGobject.class);
             entity.setRoles(mapper.readValue(po.getValue(), arrayType));
         } catch (Exception e) {
             entity.setRoles(new ArrayList<>());

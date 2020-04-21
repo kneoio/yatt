@@ -1,18 +1,21 @@
 package com.semantyca.yatt.configuration;
 
-import org.postgresql.util.PGobject;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/*
 import org.skife.jdbi.v2.SQLStatement;
 import org.skife.jdbi.v2.sqlobject.Binder;
 import org.skife.jdbi.v2.sqlobject.BinderFactory;
-
-import java.lang.annotation.*;
-import java.sql.SQLException;
+*/
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER})
 public @interface BindJson {
     String value();
-
+/*
     public static class JsonBinderFactory implements BinderFactory {
         @Override
         public Binder build(Annotation annotation) {
@@ -30,6 +33,6 @@ public @interface BindJson {
                 }
             };
         }
-    }
+    }*/
 }
 

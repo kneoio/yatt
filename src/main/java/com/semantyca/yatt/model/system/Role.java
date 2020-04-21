@@ -9,7 +9,8 @@ public class Role extends AppEntity<Integer> {
         return name;
     }
 
-    public void setName(String name) {
+    public Role setName(String name) {
         this.name = name;
+        return this;
     }
 }

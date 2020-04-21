@@ -7,6 +7,7 @@ import com.semantyca.yatt.shell.DatabaseService;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.spi.JdbiPlugin;
+import org.jdbi.v3.jackson2.Jackson2Plugin;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class DbConfiguration {
         Jdbi jdbi = Jdbi.create(proxy);
         jdbiPlugins.forEach(plugin -> jdbi.installPlugin(plugin));
         jdbi.installPlugin(new PostgresPlugin());
+        jdbi.installPlugin(new Jackson2Plugin());
+        //ObjectMapper objectMapper = new ObjectMapper();
+        //jdbi.getConfig(Jackson2Config.class).setMapper(objectMapper);
         rowMappers.forEach(mapper -> jdbi.registerRowMapper(mapper));
         return jdbi;
     }
