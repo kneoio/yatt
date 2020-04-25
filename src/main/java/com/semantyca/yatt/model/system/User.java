@@ -10,6 +10,7 @@ import java.util.List;
 
 public class User extends AppEntity<Integer> implements IUser {
     private String login;
+    private String pwd;
     private String email;
     private boolean authorized;
     private List<String> roles = new ArrayList();
@@ -22,6 +23,15 @@ public class User extends AppEntity<Integer> implements IUser {
     @Override
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    @Override
+    public String getPwd() {
+        return pwd;
     }
 
     @Override
@@ -42,11 +52,6 @@ public class User extends AppEntity<Integer> implements IUser {
     @Override
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
-    }
-
-    @Override
-    public void setEditable(boolean b) {
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.semantyca.yatt.util;
 
+import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dao.IAssigneeDAO;
 import com.semantyca.yatt.dao.IUserDAO;
 import com.semantyca.yatt.model.Assignee;
@@ -11,6 +12,7 @@ import com.semantyca.yatt.model.embedded.RLS;
 import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.system.Role;
 import com.semantyca.yatt.model.system.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,15 +20,21 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class EntityGenerator {
     private static final String FIRST_NAME_SOURCE = "Roman.txt";
     private static final String LAST_NAME_SOURCE = "Simple.txt";
     private IUserDAO userDAO;
     private IAssigneeDAO assigneeDAO;
 
-    public EntityGenerator(IUserDAO userDAO, IAssigneeDAO assigneeDAO) {
+    private PasswordEncoder passwordEncoder;
+
+
+
+    public EntityGenerator(IUserDAO userDAO, IAssigneeDAO assigneeDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.assigneeDAO = assigneeDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> generateUsers() {
@@ -39,6 +47,7 @@ public class EntityGenerator {
                 ZonedDateTime currentMoment = ZonedDateTime.now();
                 entity.setRegDate(currentMoment);
                 entity.setLogin(data[i]);
+                entity.setPwd(passwordEncoder.encode(EnvConst.INITIAL_PWD));
                 entity.setLastModifiedDate(currentMoment);
                 entity.setAuthor(AnonymousUser.ID);
                 entity.setLastModifier(AnonymousUser.ID);

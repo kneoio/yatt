@@ -42,10 +42,10 @@ public class TaskController {
 
     @RequestMapping("tasks/{id}")
     public ResponseEntity get(@PathVariable(value="id") String id) {
-        int reader = AnonymousUser.ID;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
-            UUID userId = UUID.fromString(id);
-            Task result = service.findById(userId, reader);
+            UUID documentId = UUID.fromString(id);
+            Task result = service.findById(documentId, 0);
             if (result != null) {
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(new SecuredDocumentOutcome().setPayload(result).setPageName("task " + result.getTitle()));

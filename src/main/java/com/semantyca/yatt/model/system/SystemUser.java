@@ -3,6 +3,8 @@ package com.semantyca.yatt.model.system;
 import com.semantyca.yatt.model.IUser;
 
 import javax.security.auth.Subject;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SystemUser implements IUser {
 
@@ -25,8 +27,13 @@ public abstract class SystemUser implements IUser {
     }
 
     @Override
-    public void setEditable(boolean b) {
+    public List<String> getRoles() {
+        return new ArrayList<>();
+    }
 
+    @Override
+    public String getPwd() {
+        return null;
     }
 
     @Override

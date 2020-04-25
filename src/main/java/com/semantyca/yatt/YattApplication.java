@@ -3,6 +3,8 @@ package com.semantyca.yatt;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
@@ -12,14 +14,6 @@ public class YattApplication {
 		SpringApplication.run(YattApplication.class, args);
 	}
 
-/*	@Bean
-	public Module module(){
-		SimpleModule module = new SimpleModule();
-		module.addSerializer(ZonedDateTime.class, new TaskConverter.Serialize());
-		module.addDeserializer(Task.class, new TaskConverter.Deserialize());
-		return module;
-	}*/
-
 	@Bean
 	public CommonsRequestLoggingFilter requestLoggingFilter() {
 		CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
@@ -28,6 +22,11 @@ public class YattApplication {
 		loggingFilter.setIncludePayload(true);
 		loggingFilter.setMaxPayloadLength(1000000);
 		return loggingFilter;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(EnvConst.ENCODING_STRENGHT);
 	}
 
 }

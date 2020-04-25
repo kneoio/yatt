@@ -1,6 +1,7 @@
 package com.semantyca.yatt.model;
 
 import java.security.Principal;
+import java.util.List;
 
 
 public interface IUser extends Principal {
@@ -9,11 +10,13 @@ public interface IUser extends Principal {
 
     void setLogin(String string);
 
+    String getPwd();
+
+    List<String> getRoles();
+
     boolean isAuthorized();
 
     void setAuthorized(boolean isAuthorized);
-
-    void setEditable(boolean b);
 
     String getEmail();
 

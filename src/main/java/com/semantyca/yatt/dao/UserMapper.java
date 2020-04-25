@@ -22,6 +22,7 @@ public class UserMapper extends AbstractMapper<User> {
         transferCommonData(entity, rs);
         entity.setEmail(rs.getString("email"));
         entity.setLogin(rs.getString("login"));
+        entity.setPwd(rs.getString("pwd"));
         try {
             TypeFactory typeFactory = mapper.getTypeFactory();
             CollectionType arrayType = typeFactory.constructCollectionType(List.class, String.class);

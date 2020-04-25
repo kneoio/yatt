@@ -9,6 +9,7 @@ import com.semantyca.yatt.model.IAppEntity;
 import com.semantyca.yatt.util.EntityGenerator;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 
@@ -25,6 +26,9 @@ public class DatabaseService {
 
     @Autowired
     IAssigneeDAO assigneeDAO;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public boolean init() {
         IDAO daos[] = {userDAO, taskDAO, assigneeDAO};
@@ -54,7 +58,7 @@ public class DatabaseService {
 
     public boolean populate() {
         try {
-            EntityGenerator generator = new EntityGenerator(userDAO, assigneeDAO);
+            EntityGenerator generator = new EntityGenerator(userDAO, assigneeDAO, passwordEncoder);
 
             generator.generateUsers().forEach(user -> {
                 System.out.println(user.getLogin());

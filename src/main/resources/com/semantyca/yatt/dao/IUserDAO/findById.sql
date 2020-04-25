@@ -6,6 +6,7 @@ SELECT
   last_mod_date,
   last_mod_user,
   login,
+  pwd,
   email,
   name
 FROM
