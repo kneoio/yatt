@@ -1,6 +1,7 @@
 package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.model.Task;
+import com.semantyca.yatt.model.embedded.RLSEntry;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -38,7 +39,14 @@ public interface ITaskDAO extends IDAO<Task,UUID> {
 
     @Transaction
     default void insertSecured(Task task) {
-        addReader(bareInsert(task), task.getAuthor(), ZonedDateTime.now(), 1);
+        UUID documentId = bareInsert(task);
+        for (RLSEntry rlsEntry: task.getReaders()) {
+            if (task.getAuthor() == rlsEntry.getReader()){
+                addReader(documentId, rlsEntry.getReader(), ZonedDateTime.now(), RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED);
+            } else {
+                addReader(documentId, rlsEntry.getReader(), null, rlsEntry.getEditAllowed());
+            }
+        }
     }
 
 }

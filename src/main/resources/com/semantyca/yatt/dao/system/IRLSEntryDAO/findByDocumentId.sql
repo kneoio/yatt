@@ -1,0 +1,1 @@
+SELECT * FROM task_rls AS rls WHERE  rls.entity_id  = :enityId;

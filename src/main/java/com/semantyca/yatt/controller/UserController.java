@@ -9,6 +9,7 @@ import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.dto.view.ViewPageOutcome;
 import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.system.User;
+import com.semantyca.yatt.security.SessionUser;
 import com.semantyca.yatt.service.UserService;
 import com.semantyca.yatt.util.NumberUtil;
 import com.semantyca.yatt.util.StringUtil;
@@ -29,19 +30,18 @@ public class UserController {
 
     @GetMapping("users")
     public ResponseEntity getAll(String pageNum, String pageSize){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        int reader = AnonymousUser.ID;
-        long count = service.getCountOfAll(reader);
+        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long count = service.getCountOfAll(sessionUser.getUserId());
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
         int num = NumberUtil.stringToInt(pageNum, 1);
-        List<User> result = service.findAll(size, NumberUtil.calcStartEntry(num, size), 0);
+        List<User> result = service.findAll(size, NumberUtil.calcStartEntry(num, size), sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ViewPageOutcome().setPayload(new ViewPage(result, count, NumberUtil.countMaxPage(count, size), num, size)).setPageName("all tasks"));
     }
 
     @RequestMapping("users/{id}")
     public ResponseEntity get(@PathVariable(value="id") String id) {
-        int reader = AnonymousUser.ID;
+        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             int userId = NumberUtil.stringToInt(id);
             User result = service.findById(userId);

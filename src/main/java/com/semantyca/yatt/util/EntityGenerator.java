@@ -8,7 +8,7 @@ import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
-import com.semantyca.yatt.model.embedded.RLS;
+import com.semantyca.yatt.model.embedded.RLSEntry;
 import com.semantyca.yatt.model.system.AnonymousUser;
 import com.semantyca.yatt.model.system.Role;
 import com.semantyca.yatt.model.system.User;
@@ -98,8 +98,8 @@ public class EntityGenerator {
             ZonedDateTime currentMoment = ZonedDateTime.now();
             entity.setRegDate(currentMoment);
             entity.setLastModifiedDate(currentMoment);
-            entity.setAuthor(AnonymousUser.ID);
-            entity.setLastModifier(AnonymousUser.ID);
+            entity.setAuthor(ListUtil.getRndArrayElement(userIds));
+            entity.setLastModifier(ListUtil.getRndArrayElement(userIds));
             entity.setStatus(EnumUtil.getRndElement(StatusType.values()));
             entity.setStage(EnumUtil.getRndElement(StageType.values()));
             entity.setType(EnumUtil.getRndElement(TaskType.values()));
@@ -107,8 +107,11 @@ public class EntityGenerator {
             entity.setTitle(StringUtil.getRndArticle(10));
             entity.setDescription(StringUtil.getRndParagraph(1));
             entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
-            //entity.addReader(new RLS().setReader(AnonymousUser.ID).allowEdit());
-            entity.addReader(new RLS().setReader(ListUtil.getRndArrayElement(userIds)));
+            for (int j = 0; j < NumberUtil.getRandomNumber(0,5) ; j++) {
+                entity.addReader(new RLSEntry().setReader(ListUtil.getRndArrayElement(userIds))
+                        .setEditAllowed(NumberUtil.getRandomNumber(0,2))
+                        .setReadRightNow(BoolUtil.getRandomBoolean()));
+            }
             entities.add(entity);
 
         }

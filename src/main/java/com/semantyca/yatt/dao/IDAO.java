@@ -17,14 +17,14 @@ public interface IDAO<T,I> {
     long getCountAll();
 
     @SqlQuery
-    long getCountAll(int reader);
+    long getCountAll(@Bind("reader") long reader);
 
     @SqlUpdate
     @GetGeneratedKeys("id")
     I bareInsert(@BindBean T entity);
 
     @SqlUpdate
-    int bareUpdate(@BindBean T task);
+    int bareUpdate(@BindBean T entity);
 
     @SqlUpdate
     int delete(I id);

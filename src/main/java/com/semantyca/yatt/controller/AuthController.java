@@ -19,6 +19,7 @@ public class AuthController {
     @GetMapping("sign_in")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public @ResponseBody AbstractOutcome getSignInPage(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return new PageOutcome().setPayload(new Login()).setPageName("login page");
     }
 

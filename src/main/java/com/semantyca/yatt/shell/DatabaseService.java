@@ -19,8 +19,6 @@ public class DatabaseService {
     @Autowired
     ITaskDAO taskDAO;
 
-
-
     @Autowired
     IUserDAO userDAO;
 
@@ -70,7 +68,7 @@ public class DatabaseService {
                 assigneeDAO.bareInsert(assignee);
             });
 
-            generator.generateTasks(10).forEach(task -> {
+            generator.generateTasks(100).forEach(task -> {
                 System.out.println(task.getTitle());taskDAO.insertSecured(task);
             });
 

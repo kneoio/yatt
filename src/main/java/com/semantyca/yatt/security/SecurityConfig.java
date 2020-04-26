@@ -12,23 +12,28 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Inject
+    Map<String, SessionUser> allUsersMap;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/do_login").permitAll()
+            .antMatchers("/do_login","/sign_in").permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-            .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+            .addFilter(new AuthenticationFilter(authenticationManager()))
+            .addFilter(new AuthorizationFilter(authenticationManager(), allUsersMap))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().configurationSource(corsConfigurationSource());

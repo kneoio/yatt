@@ -1,12 +1,17 @@
 package com.semantyca.yatt.model;
 
-import java.security.Principal;
 import java.util.List;
 
 
-public interface IUser extends Principal {
+public interface IUser {
+
+    Integer getId();
 
     String getLogin();
+
+    default String getName(){
+        return getLogin();
+    }
 
     void setLogin(String string);
 
@@ -21,6 +26,5 @@ public interface IUser extends Principal {
     String getEmail();
 
     void setEmail(String value);
-
 
 }

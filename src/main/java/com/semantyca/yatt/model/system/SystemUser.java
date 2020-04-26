@@ -2,7 +2,6 @@ package com.semantyca.yatt.model.system;
 
 import com.semantyca.yatt.model.IUser;
 
-import javax.security.auth.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +48,5 @@ public abstract class SystemUser implements IUser {
     @Override
     public abstract String getName();
 
-    @Override
-    public boolean implies(Subject subject) {
-        return false;
-    }
 
 }

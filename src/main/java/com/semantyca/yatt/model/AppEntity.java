@@ -1,5 +1,7 @@
 package com.semantyca.yatt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -9,11 +11,15 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
 
     protected int author;
 
+    private String authorName;
+
     private ZonedDateTime regDate;
 
-    private ZonedDateTime lastModifiedDate = ZonedDateTime.now();
+    private ZonedDateTime lastModifiedDate;
 
     private int lastModifier;
+
+    private String lastModifierName;
 
     private boolean editable = true;
 
@@ -32,6 +38,7 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
     }
 
     @Override
+    @JsonIgnore
     public int getAuthor() {
         return author;
     }
@@ -53,6 +60,7 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return lastModifiedDate;
     }
 
+    @JsonIgnore
     public int getLastModifier() {
         return lastModifier;
     }
@@ -107,4 +115,19 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return id != null && id.equals(tmp.id);
     }
 
+    public void setAuthorName(IUser user) {
+        authorName = user.getName();
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setLastModifierName(IUser user) {
+        lastModifierName = user.getName();
+    }
+
+    public String getLastModifierName() {
+        return lastModifierName;
+    }
 }

@@ -1,1 +1,1 @@
-SELECT count(id) FROM tasks;
+SELECT count(t.id) FROM tasks AS t, task_rls AS rls WHERE t.id = rls.entity_id AND rls.reader = :reader;

@@ -4,11 +4,14 @@ import com.semantyca.yatt.dao.IUserDAO;
 import com.semantyca.yatt.model.system.User;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
 public class UserService {
+
+    @Inject
     IUserDAO userDAO;
 
     public long getCountOfAll(long reader) {

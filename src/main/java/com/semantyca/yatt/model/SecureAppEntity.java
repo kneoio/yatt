@@ -1,43 +1,22 @@
 package com.semantyca.yatt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.semantyca.yatt.model.embedded.RLS;
+import com.semantyca.yatt.model.embedded.RLSEntry;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class SecureAppEntity<T> extends AppEntity<T> {
 
-    private Set<Integer> editors = new HashSet<>();
+    private Map<Integer, RLSEntry> readers = new HashMap<>();
 
-    private Map<Integer, RLS> readers = new HashMap<>();
-
-    public Set<Integer> getEditors() {
-        return editors;
+    public Collection<RLSEntry> getReaders() {
+        return readers.values();
     }
 
-    public void setEditors(Set<Integer> editors) {
-        this.editors = editors;
-    }
-
-    @JsonIgnore
-    public Map<Integer, RLS> getReaders() {
-        return readers;
-    }
-
-    public SecureAppEntity addReader(RLS reader){
+    public SecureAppEntity addReader(RLSEntry reader){
         readers.put(reader.getReader(), reader);
         return this;
     }
 
-    @Override
-    public boolean isEditable() {
-        return super.isEditable();
-    }
-
-
-    public void setReaders(RLS rls) {
-        Map readersMap = new HashMap();
-        readersMap.put(rls.getReader(), rls);
-        this.readers =  readersMap;
-    }
 }

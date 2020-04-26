@@ -5,7 +5,6 @@ import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
-import com.semantyca.yatt.model.embedded.RLS;
 import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
@@ -27,13 +26,13 @@ public class TaskMapper  extends AbstractMapper<Task> {
         Task entity = new Task();
         transferIdUUID(entity, rs);
         transferCommonData(entity, rs);
-        RLS rls = new RLS();
-        rls.setReader(rs.getInt("reader"));
-        rls.setEditAllowed(rs.getInt("is_edit_allowed"));
+        //RLS rls = new RLS();
+        //rls.setReader(rs.getInt("reader"));
+        //rls.setEditAllowed(rs.getInt("is_edit_allowed"));
         //rls.setReadingTime(getDateTime(rs.getTimestamp("reading_time")));
 
 
-        entity.setReaders(rls);
+        //entity.setReaders(rls);
         entity.setType(TaskType.getType(rs.getInt("type")));
         entity.setStage(StageType.getType(rs.getInt("stage")));
         entity.setStatus(StatusType.getType(rs.getInt("status")));

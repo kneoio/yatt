@@ -1,7 +1,7 @@
 package com.semantyca.yatt.security;
 
 
-public final class SecurityConst {
+public final class JWTConst {
 
     public static final String AUTH_LOGIN_URL = "/do_login";
 
@@ -16,7 +16,7 @@ public final class SecurityConst {
     public static final String TOKEN_ISSUER = "secure-api";
     public static final String TOKEN_AUDIENCE = "secure-app";
 
-    private SecurityConst() {
+    private JWTConst() {
         throw new IllegalStateException("Cannot create instance of static util class");
     }
 }

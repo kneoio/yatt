@@ -17,14 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
+public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-
-        setFilterProcessesUrl(SecurityConst.AUTH_LOGIN_URL);
+        setFilterProcessesUrl(JWTConst.AUTH_LOGIN_URL);
     }
 
     @Override
@@ -46,19 +44,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        var signingKey = SecurityConst.JWT_SECRET.getBytes();
+        var signingKey = JWTConst.JWT_SECRET.getBytes();
 
         var token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
-                .setHeaderParam("typ", SecurityConst.TOKEN_TYPE)
-                .setIssuer(SecurityConst.TOKEN_ISSUER)
-                .setAudience(SecurityConst.TOKEN_AUDIENCE)
+                .setHeaderParam("typ", JWTConst.TOKEN_TYPE)
+                .setIssuer(JWTConst.TOKEN_ISSUER)
+                .setAudience(JWTConst.TOKEN_AUDIENCE)
                 .setSubject(user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .claim("rol", roles)
                 .compact();
 
-        response.addHeader(SecurityConst.TOKEN_HEADER, SecurityConst.TOKEN_PREFIX + token);
+        response.addHeader(JWTConst.TOKEN_HEADER, JWTConst.TOKEN_PREFIX + token);
     }
 }
 
