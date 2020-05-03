@@ -26,7 +26,7 @@ public class UserService {
         return userDAO.findAllUnrestricted(pageSize, calcStartEntry);
     }
 
-    public long post(User user, int userId) {
+    public int post(User user, int userId) {
         if (user.getId() == null) {
             user.setRegDate(ZonedDateTime.now());
             user.setAuthor(userId);
@@ -38,7 +38,7 @@ public class UserService {
         }
     }
 
-    public int put(User user, int userId) {
+    public Integer put(User user, int userId) {
         user.setLastModifiedDate(ZonedDateTime.now());
         user.setLastModifier(userId);
         return userDAO.bareUpdate(user);

@@ -10,6 +10,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @SpringBootApplication
 public class YattApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(YattApplication.class, args);
 	}
@@ -28,5 +29,7 @@ public class YattApplication {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(EnvConst.ENCODING_STRENGHT);
 	}
+
+
 
 }

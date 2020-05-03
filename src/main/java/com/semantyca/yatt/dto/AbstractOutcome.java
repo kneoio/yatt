@@ -10,7 +10,7 @@ import com.semantyca.yatt.controller.ResultType;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class AbstractOutcome<T> {
     protected String identifier = "undefined";
-    protected OutcomeType type = OutcomeType.DEFAULT;
+    protected OutcomeType type = OutcomeType.UNKNOWN;
     protected String title = EnvConst.APP_ID;
     protected String pageName = "";
     protected T payload;
@@ -29,8 +29,9 @@ public abstract class AbstractOutcome<T> {
         return this;
     }
 
-    public void setType(OutcomeType type) {
+    public AbstractOutcome setType(OutcomeType type) {
         this.type = type;
+        return this;
     }
 
     public abstract AbstractOutcome<T> setPayload(T payload);
@@ -61,8 +62,9 @@ public abstract class AbstractOutcome<T> {
         return "identifier=" + identifier + ",type=" + type + ", title=" + title;
     }
 
-    public AbstractOutcome setResult(ResultType success) {
-        type = OutcomeType.SAVING_RESULT;
+    public AbstractOutcome setResult(OutcomeType type, ResultType result) {
+        this.type = type;
+        title = result.name();
         return this;
     }
 }

@@ -2,12 +2,16 @@ package com.semantyca.yatt.shell;
 
 import com.semantyca.yatt.dao.IUserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
 public class ShellCommands {
     public static final String format = "%-10s%s%n";
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     DatabaseService service;
@@ -17,6 +21,9 @@ public class ShellCommands {
 
     @ShellMethod("Show info")
     public String info() {
+        for (String  val:environment.getDefaultProfiles()){
+            System.out.printf(format, val + ": ", "-");
+        }
         service.info();
         return "done";
     }

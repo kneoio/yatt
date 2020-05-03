@@ -26,6 +26,13 @@ public interface ITaskDAO extends IDAO<Task,UUID> {
     List<Task> findAll(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader);
 
     @SqlQuery
+    long getCountAllMyTasks(@Bind("reader") long reader,  long author);
+
+    @SqlQuery
+    @RegisterColumnMapper(TaskMapper.class)
+    List<Task> findAllMyTasks(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader,  long author);
+
+    @SqlQuery
     @RegisterColumnMapper(UnrestrictedTaskMapper.class)
     List<Task> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 

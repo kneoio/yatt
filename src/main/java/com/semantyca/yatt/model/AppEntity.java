@@ -2,6 +2,7 @@ package com.semantyca.yatt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -46,6 +47,11 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
     @Override
     public ZonedDateTime getRegDate() {
         return regDate;
+    }
+
+
+    public Timestamp getRegDateTimestamp() {
+        return new Timestamp(regDate.toInstant().getEpochSecond() * 1000L);
     }
 
     public void setRegDate(ZonedDateTime regDate) {

@@ -1,0 +1,1 @@
+SELECT * FROM tasks AS t, task_rls AS rls WHERE t.author = :author AND t.id = rls.entity_id AND rls.reader = :reader  LIMIT :limit OFFSET :offset;

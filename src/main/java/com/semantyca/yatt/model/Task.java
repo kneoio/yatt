@@ -1,20 +1,25 @@
 package com.semantyca.yatt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.semantyca.yatt.controller.converter.AssigneeDeserializer;
 import com.semantyca.yatt.model.constant.StageType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 
+import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Task  extends SecureAppEntity<UUID> {
-    private StatusType status;
-    private StageType stage;
-    private TaskType type;
+    private StatusType status = StatusType.UNKNOWN;
+    private StageType stage = StageType.UNKNOWN;
+    private TaskType type = TaskType.UNKNOWN;
     private Assignee assignee;
+
+    @NotBlank(message = "{description_is_empty}")
     private String description;
     private ZonedDateTime deadline;
 
@@ -58,12 +63,24 @@ public class Task  extends SecureAppEntity<UUID> {
     }
 
     public UUID getAssigneeId() {
-        return assignee.id;
+        if (assignee != null) {
+            return assignee.id;
+        }
+        return null;
     }
 
     @JsonDeserialize(using = AssigneeDeserializer.class)
     public void setAssignee(Assignee assignee) {
         this.assignee = assignee;
+    }
+
+
+    public void setAssigneeId(String id) {
+        if (assignee == null) {
+            assignee = new Assignee();
+            assignee.setId(UUID.fromString(id));
+        }
+
     }
 
     public String getDescription() {
@@ -79,8 +96,9 @@ public class Task  extends SecureAppEntity<UUID> {
         return type;
     }
 
-    public void setTypeCode(int code) {
+    public int setTypeCode(int code) {
         this.type = TaskType.getType(code);
+        return code;
     }
 
     public int getTypeCode() {
@@ -91,6 +109,7 @@ public class Task  extends SecureAppEntity<UUID> {
         this.type = type;
     }
 
+    //@JsonFormat(pattern="dd.MM.yyyy HH:mm")
     public ZonedDateTime getDeadline() {
         return deadline;
     }

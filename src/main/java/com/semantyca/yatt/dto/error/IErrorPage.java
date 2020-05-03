@@ -6,4 +6,5 @@ public interface IErrorPage extends IPage {
 
     String getMessage();
 
+
 }

@@ -1,7 +1,9 @@
 package com.semantyca.yatt.controller;
 
 import com.semantyca.yatt.EnvConst;
+import com.semantyca.yatt.dto.AbstractOutcome;
 import com.semantyca.yatt.dto.DefaultOutcome;
+import com.semantyca.yatt.dto.OutcomeType;
 import com.semantyca.yatt.dto.document.SecuredDocumentOutcome;
 import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
@@ -17,12 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Validated
 public class TaskController {
 
     @Autowired
@@ -31,10 +36,17 @@ public class TaskController {
     @GetMapping("tasks")
     public ResponseEntity getAll(String pageNum, String pageSize){
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long count = service.getCountOfAll(sessionUser.getUserId());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ViewPageOutcome().setPayload(service.findAll(pageSize, pageNum, sessionUser.getUserId())).setPageName("all tasks"));
+    }
+
+    @GetMapping("my_tasks")
+    public ResponseEntity getAllMyTasks(String pageNum, String pageSize){
+        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        long count = service.getCountOfAllMyTasks(sessionUser.getUserId(), sessionUser.getUserId());
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
         int num = NumberUtil.stringToInt(pageNum, 1);
-        List<Task> result = service.findAll(size, NumberUtil.calcStartEntry(num, size), sessionUser.getUserId());
+        List<Task> result = service.findAllMyTasks(size, NumberUtil.calcStartEntry(num, size), sessionUser.getUserId(), sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ViewPageOutcome().setPayload(new ViewPage(result, count, NumberUtil.countMaxPage(count, size), num, size)).setPageName("all tasks"));
     }
@@ -43,11 +55,16 @@ public class TaskController {
     public ResponseEntity get(@PathVariable(value="id") String id) {
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            UUID documentId = UUID.fromString(id);
-            Task result = service.findById(documentId, sessionUser.getUserId(), true);
+            Task result;
+            if (id.equalsIgnoreCase("new")){
+                result = service.getNewTask(sessionUser.getUserId());
+            } else {
+                UUID documentId = UUID.fromString(id);
+                result = service.findById(documentId, sessionUser.getUserId(), true);
+            }
             if (result != null) {
                 return ResponseEntity.status(HttpStatus.OK)
-                        .body(new SecuredDocumentOutcome().setPayload(result).setPageName("task " + result.getTitle()));
+                        .body(new SecuredDocumentOutcome().setPayload(result).setPageName(result.getTitle()));
             } else {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
@@ -66,15 +83,15 @@ public class TaskController {
     }
 
     @PostMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
-    public ResponseEntity post(@RequestBody Task task){
+    public ResponseEntity<AbstractOutcome> post(@Valid @RequestBody Task task){
+        System.out.println(task);
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (task.getId() == null) {
-            service.post(task, sessionUser.getUserId());
+            UUID id = service.post(task, sessionUser.getUserId());
             return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                     .setIdentifier("saving_of_new_document")
-                    .setResult(ResultType.SUCCESS)
-                    .setTitle("#")
-                    .setPageName("task"));
+                    .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS)
+                    .setPageName(id.toString()));
         } else {
             return putData(task, sessionUser);
         }
@@ -82,7 +99,7 @@ public class TaskController {
     }
 
     @PutMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
-    public ResponseEntity put(Task task){
+    public ResponseEntity put(@Valid @RequestBody Task task){
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return putData(task, sessionUser);
     }
@@ -93,15 +110,15 @@ public class TaskController {
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         long count = service.delete(task, sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new DefaultOutcome().setResult(ResultType.SUCCESS).setPageName("task"));
+                .body(new DefaultOutcome().setResult(OutcomeType.DELETE_RESULT, ResultType.SUCCESS));
     }
 
     private ResponseEntity putData(Task task, SessionUser sessionUser){
         service.put(task, sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                 .setIdentifier("saving_of_" + task.getId())
-                .setResult(ResultType.SUCCESS)
-                .setTitle("#")
-                .setPageName("task"));
+                .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS));
     }
+
+
 }

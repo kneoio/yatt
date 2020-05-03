@@ -2,6 +2,7 @@ package com.semantyca.yatt.controller;
 
 import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dto.DefaultOutcome;
+import com.semantyca.yatt.dto.OutcomeType;
 import com.semantyca.yatt.dto.document.DocumentOutcome;
 import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
@@ -71,7 +72,7 @@ public class UserController {
             service.post(user, reader);
             return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                     .setIdentifier("saving_of_new_document")
-                    .setResult(ResultType.SUCCESS)
+                    .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS)
                     .setTitle("#")
                     .setPageName("task"));
         } else {
@@ -92,7 +93,7 @@ public class UserController {
         int reader = AnonymousUser.ID;
         long count = service.delete(user, reader);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new DefaultOutcome().setResult(ResultType.SUCCESS).setPageName("task"));
+                .body(new DefaultOutcome().setResult(OutcomeType.DELETE_RESULT, ResultType.SUCCESS).setPageName("task"));
     }
 
     private ResponseEntity putData(User user, Authentication authentication){
@@ -100,7 +101,7 @@ public class UserController {
         service.put(user, reader);
         return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                 .setIdentifier("saving_of_" + user.getId())
-                .setResult(ResultType.SUCCESS)
+                .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS)
                 .setTitle("#")
                 .setPageName("task"));
     }

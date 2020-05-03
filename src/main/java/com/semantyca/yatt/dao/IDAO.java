@@ -13,6 +13,7 @@ public interface IDAO<T,I> {
 
     List<T> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
+
     @SqlQuery
     long getCountAll();
 
@@ -24,7 +25,8 @@ public interface IDAO<T,I> {
     I bareInsert(@BindBean T entity);
 
     @SqlUpdate
-    int bareUpdate(@BindBean T entity);
+    @GetGeneratedKeys("id")
+    I bareUpdate(@BindBean T entity);
 
     @SqlUpdate
     int delete(I id);
