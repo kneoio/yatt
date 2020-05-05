@@ -45,7 +45,7 @@ public interface ITaskDAO extends IDAO<Task,UUID> {
     UUID bareInsert(@BindBean Task task);
 
     @Transaction
-    default void insertSecured(Task task) {
+    default UUID insertSecured(Task task) {
         UUID documentId = bareInsert(task);
         for (RLSEntry rlsEntry: task.getReaders()) {
             if (task.getAuthor() == rlsEntry.getReader()){
@@ -54,6 +54,7 @@ public interface ITaskDAO extends IDAO<Task,UUID> {
                 addReader(documentId, rlsEntry.getReader(), null, rlsEntry.getEditAllowed());
             }
         }
+        return documentId;
     }
 
 }

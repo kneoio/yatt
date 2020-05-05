@@ -25,7 +25,7 @@ public class NewTask extends Task {
         return StageType.DRAFT.getCode();
     }
 
-    public int getTypeCode(int code) {
+    public int getTypeCode() {
         return TaskType.DEVELOPING.getCode();
     }
 }

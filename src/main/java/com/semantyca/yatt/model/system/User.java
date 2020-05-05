@@ -1,5 +1,6 @@
 package com.semantyca.yatt.model.system;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semantyca.yatt.model.AppEntity;
 import com.semantyca.yatt.model.IUser;
 import org.jdbi.v3.json.Json;
@@ -25,11 +26,13 @@ public class User extends AppEntity<Integer> implements IUser {
         this.login = login;
     }
 
+    @JsonIgnore
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
 
     @Override
+    @JsonIgnore
     public String getPwd() {
         return pwd;
     }
@@ -68,6 +71,7 @@ public class User extends AppEntity<Integer> implements IUser {
     }
 
     @Json
+    @JsonIgnore
     public List<String> getRolesAsJSON() {
         return roles;
     }

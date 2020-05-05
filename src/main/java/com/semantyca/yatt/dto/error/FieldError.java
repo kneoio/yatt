@@ -4,21 +4,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"fieldName", "errorMessage"})
+@JsonPropertyOrder({"error", "helperText"})
 public class FieldError{
-    String fieldName;
-    String errorMessage;
+    boolean isError = true;
+    String helperText;
 
     public FieldError(String fieldName, String errorMessage) {
-        this.fieldName = fieldName;
-        this.errorMessage = errorMessage;
+        this.helperText = errorMessage;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public boolean isError() {
+        return isError;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public void setError(boolean error) {
+        isError = error;
+    }
+
+
+
+    public String getHelperText() {
+        return helperText;
     }
 }

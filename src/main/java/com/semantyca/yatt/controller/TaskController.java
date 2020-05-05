@@ -72,7 +72,6 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }catch (Exception e){
             String errorId = "Error:" + StringUtil.getRndText(20);
-            System.out.println(errorId);
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorOutcome()
@@ -90,7 +89,7 @@ public class TaskController {
             UUID id = service.post(task, sessionUser.getUserId());
             return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                     .setIdentifier("saving_of_new_document")
-                    .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS)
+                    .setResult(OutcomeType.INFO, ResultType.SUCCESS)
                     .setPageName(id.toString()));
         } else {
             return putData(task, sessionUser);
@@ -110,14 +109,14 @@ public class TaskController {
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         long count = service.delete(task, sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new DefaultOutcome().setResult(OutcomeType.DELETE_RESULT, ResultType.SUCCESS));
+                .body(new DefaultOutcome().setResult(OutcomeType.INFO, ResultType.SUCCESS));
     }
 
     private ResponseEntity putData(Task task, SessionUser sessionUser){
         service.put(task, sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                 .setIdentifier("saving_of_" + task.getId())
-                .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS));
+                .setResult(OutcomeType.INFO, ResultType.SUCCESS));
     }
 
 

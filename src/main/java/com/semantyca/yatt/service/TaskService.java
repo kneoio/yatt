@@ -12,6 +12,8 @@ import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.embedded.RLSEntry;
 import com.semantyca.yatt.service.exception.DocumentNotFoundException;
 import com.semantyca.yatt.util.NumberUtil;
+import com.semantyca.yatt.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -94,25 +96,36 @@ public class TaskService {
          }
     }
 
+    /*public UUID save(String id){
+        UUID documentId = UUID.fromString(id);
+        result = service.findById(documentId, sessionUser.getUserId(), true);
+        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (task.getId() == null) {
+            UUID id = post(task, sessionUser.getUserId());
+            return id;
+        } else {
+            return put(task, sessionUser);
+        }
+
+    }*/
+
     public UUID post(@RequestBody @Valid Task task, int userId) {
         if (task.getId() == null) {
             task.setRegDate(ZonedDateTime.now());
             task.setAuthor(userId);
-            task.setLastModifiedDate(task.getRegDate());
-            task.setLastModifier(userId);
+            updateCommonFileds(task, userId);
             Assignee assignee = assigneeDAO.findById(task.getAssigneeId());
             if (assignee != null){
                 task.setAssignee(assignee);
             }
-            return taskDAO.bareInsert(task);
+            return taskDAO.insertSecured(task);
         } else {
             return put(task, userId);
         }
     }
 
     public UUID put(Task task, int userId) {
-        task.setLastModifiedDate(ZonedDateTime.now());
-        task.setLastModifier(userId);
+        updateCommonFileds(task, userId);
         Assignee assignee = assigneeDAO.findById(task.getAssigneeId());
         if (assignee != null){
             task.setAssignee(assignee);
@@ -122,5 +135,13 @@ public class TaskService {
 
     public int delete(Task task, int reader) {
         return taskDAO.delete(task.getId());
+    }
+
+    private void updateCommonFileds(Task task, int userId) {
+        task.setLastModifiedDate(ZonedDateTime.now());
+        task.setLastModifier(userId);
+        if (task.getTitle().trim().equals("")) {
+            task.setTitle(StringUtils.abbreviate(StringUtil.cleanFromMarkdown(task.getDescription()), 140));
+        }
     }
 }

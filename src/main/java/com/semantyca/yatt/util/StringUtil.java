@@ -6,6 +6,12 @@ import java.util.Random;
 
 public class StringUtil {
 
+    public static String cleanFromMarkdown(String text) {
+        String resultText = text.replace("*", "").replace("**", "").replaceAll("`", "");
+
+        return resultText;
+    }
+
     public static String getRndText() {
         return genRndText("qwertyuiopasdfghjklzxcvbnm", 10);
     }

@@ -47,8 +47,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorOutcome()
                             .setIdentifier(errorId)
+                            .setTitle(error.getMessage())
                             .setPayload(error)
-                            .setType(OutcomeType.SOFT_ERROR));
+                            .setType(OutcomeType.VALIDATION_ERROR));
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorOutcome()

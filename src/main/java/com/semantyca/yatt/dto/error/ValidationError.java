@@ -1,23 +1,22 @@
 package com.semantyca.yatt.dto.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-@JsonPropertyOrder({"timestamp","message", "fields"})
+@JsonPropertyOrder({"timestamp", "errorFields"})
 public class ValidationError implements IErrorPage {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private List<FieldError> fields = new ArrayList<>();
-
+    private Map<String, FieldError> errorFields = new HashMap<>();
 
     public ValidationError(String message) {
         timestamp = LocalDateTime.now();
-
     }
 
     public LocalDateTime getTimestamp() {
@@ -25,16 +24,17 @@ public class ValidationError implements IErrorPage {
     }
 
     public void addError(String fieldName, String error) {
-        fields.add(new FieldError(fieldName, error));
+        errorFields.put(fieldName, new FieldError(fieldName, error));
 
     }
 
+    @JsonIgnore
     public String getMessage() {
-        return fields.stream().map(v -> v.getErrorMessage()).collect(Collectors.joining("", "", "\\n\\n"));
+        return errorFields.values().stream().map(v -> v.getHelperText()).collect(Collectors.joining("", "", "\\n\\n"));
     }
 
 
-    public List<FieldError> getFields() {
-        return fields;
+    public Map<String, FieldError> getErrorFields() {
+        return errorFields;
     }
 }

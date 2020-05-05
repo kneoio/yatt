@@ -72,7 +72,7 @@ public class UserController {
             service.post(user, reader);
             return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                     .setIdentifier("saving_of_new_document")
-                    .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS)
+                    .setResult(OutcomeType.INFO, ResultType.SUCCESS)
                     .setTitle("#")
                     .setPageName("task"));
         } else {
@@ -93,7 +93,7 @@ public class UserController {
         int reader = AnonymousUser.ID;
         long count = service.delete(user, reader);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new DefaultOutcome().setResult(OutcomeType.DELETE_RESULT, ResultType.SUCCESS).setPageName("task"));
+                .body(new DefaultOutcome().setResult(OutcomeType.INFO, ResultType.SUCCESS).setPageName("task"));
     }
 
     private ResponseEntity putData(User user, Authentication authentication){
@@ -101,7 +101,7 @@ public class UserController {
         service.put(user, reader);
         return ResponseEntity.status(HttpStatus.OK).body(new DefaultOutcome()
                 .setIdentifier("saving_of_" + user.getId())
-                .setResult(OutcomeType.SAVING_RESULT, ResultType.SUCCESS)
+                .setResult(OutcomeType.INFO, ResultType.SUCCESS)
                 .setTitle("#")
                 .setPageName("task"));
     }

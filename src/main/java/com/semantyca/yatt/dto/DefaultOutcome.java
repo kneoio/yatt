@@ -8,7 +8,7 @@ public class DefaultOutcome extends AbstractOutcome<Object> {
 
     public DefaultOutcome setPayload(Object result) {
         payload = result;
-        type = OutcomeType.SAVING_RESULT;
+        type = OutcomeType.UNKNOWN;
         return this;
     }
 
