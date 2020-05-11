@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.semantyca.yatt.controller.converter.AssigneeDeserializer;
-import com.semantyca.yatt.model.constant.StageType;
+import com.semantyca.yatt.model.constant.PriorityType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 
@@ -13,9 +13,9 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Task  extends SecureAppEntity<UUID> {
+public class Task  extends SecureDataEntity<UUID> {
+    private PriorityType priority = PriorityType.UNKNOWN;
     private StatusType status = StatusType.UNKNOWN;
-    private StageType stage = StageType.UNKNOWN;
     private TaskType type = TaskType.UNKNOWN;
     private Assignee assignee;
 
@@ -23,13 +23,31 @@ public class Task  extends SecureAppEntity<UUID> {
     private String description;
     private ZonedDateTime deadline;
 
+
+    @JsonIgnore
+    public PriorityType getPriority() {
+        return priority;
+    }
+
+    public void setPriorityCode(int code) {
+        this.priority = PriorityType.getType(code);
+    }
+
+    public int getPriorityCode() {
+        return priority.getCode();
+    }
+
+    public void setPriority(PriorityType priority) {
+        this.priority = priority;
+    }
+
     @JsonIgnore
     public StatusType getStatus() {
         return status;
     }
 
-    public void setStatusCode(int code) {
-        this.status = StatusType.getType(code);
+    public void setStatusCode(int stage) {
+        this.status = StatusType.getType(stage);
     }
 
     public int getStatusCode() {
@@ -38,23 +56,6 @@ public class Task  extends SecureAppEntity<UUID> {
 
     public void setStatus(StatusType status) {
         this.status = status;
-    }
-
-    @JsonIgnore
-    public StageType getStage() {
-        return stage;
-    }
-
-    public void setStageCode(int stage) {
-        this.stage = StageType.getType(stage);
-    }
-
-    public int getStageCode() {
-        return stage.getCode();
-    }
-
-    public void setStage(StageType stage) {
-        this.stage = stage;
     }
 
     @JsonIgnore

@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"count", "pageNum", "maxPage", "pageSize", "keyword", "result"})
+@JsonPropertyOrder({"entityType", "count", "pageNum", "maxPage", "pageSize", "keyword", "result"})
 public class ViewPage {
+    private static final String ENTITY_TYPE = "viewpage";
     private List result;
     private long count;
     private int maxPage;
@@ -78,5 +79,9 @@ public class ViewPage {
 
     public String getKeyword() {
         return keyword;
+    }
+
+    public String getEntityType() {
+        return ENTITY_TYPE;
     }
 }

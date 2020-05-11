@@ -30,7 +30,13 @@ public class NumberUtil {
     }
 
     public static int calcStartEntry(int pageNum, int pageSize) {
-        return pageNum * pageSize;
+        int pageNumMinusOne = pageNum;
+        pageNumMinusOne--;
+        if (pageNumMinusOne < 0) {
+            return 0;
+        }
+        return pageNumMinusOne * pageSize;
+        //return pageNum * pageSize;
     }
 
     public static int stringToInt(String text, int defaultValue) {

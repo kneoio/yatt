@@ -1,6 +1,6 @@
 package com.semantyca.yatt.dto;
 
-public class Login implements IPage {
+public class Login {
 
     private String greetMessage = "welcome dude";
 
@@ -10,5 +10,9 @@ public class Login implements IPage {
 
     public void setGreetMessage(String greetMessage) {
         this.greetMessage = greetMessage;
+    }
+
+    public String getEntityType() {
+        return this.getClass().getSimpleName();
     }
 }

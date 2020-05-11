@@ -1,8 +1,11 @@
 package com.semantyca.yatt.model.constant;
 
 public enum StatusType {
-    UNKNOWN(0, "unknown"),ON_TIME(11, "on_time"), DELAYING(12, "delaying"), NO_ACTION(13, "stopped") , STOPPED(14, "stopped");
-
+    UNKNOWN(0, "unknown"),
+    DRAFT(1, "draft"),
+    IN_PROGRESS(2, "in progress"),
+    DONE(3, "done"),
+    SUSPEND(4, "suspend");
 
     private int code;
     private String alias;
@@ -21,6 +24,7 @@ public enum StatusType {
         return UNKNOWN;
     }
 
+
     public int getCode() {
         return code;
     }
@@ -28,4 +32,6 @@ public enum StatusType {
     public String getAlias() {
         return alias;
     }
+
+
 }

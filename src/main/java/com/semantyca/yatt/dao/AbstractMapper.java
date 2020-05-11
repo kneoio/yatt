@@ -1,6 +1,6 @@
 package com.semantyca.yatt.dao;
 
-import com.semantyca.yatt.model.IAppEntity;
+import com.semantyca.yatt.model.IDataEntity;
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
@@ -29,16 +29,16 @@ public abstract class AbstractMapper<T> implements ColumnMapper<T> {
                 Instant.ofEpochMilli(timestamp.getTime()), ZoneOffset.UTC) : null;
     }
 
-    public static void transferIdInteger(IAppEntity entity, ResultSet rs) throws SQLException {
+    public static void transferIdInteger(IDataEntity entity, ResultSet rs) throws SQLException {
         entity.setId(rs.getInt("id"));
     }
 
-    public static void transferIdUUID(IAppEntity entity, ResultSet rs) throws SQLException {
+    public static void transferIdUUID(IDataEntity entity, ResultSet rs) throws SQLException {
         entity.setId(rs.getObject("id", UUID.class));
 
     }
 
-    public static void transferCommonData(IAppEntity entity, ResultSet rs) throws SQLException {
+    public static void transferCommonData(IDataEntity entity, ResultSet rs) throws SQLException {
         entity.setLastModifiedDate(getDateTime(rs.getTimestamp("last_mod_date")));
         entity.setLastModifier(rs.getInt("last_mod_user"));
         entity.setRegDate(getDateTime(rs.getTimestamp("reg_date")));

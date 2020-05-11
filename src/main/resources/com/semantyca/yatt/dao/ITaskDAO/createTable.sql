@@ -9,7 +9,7 @@ CREATE TABLE tasks
                   assignee uuid,
                   type INT NOT NULL,
                   status INT NOT NULL,
-                  stage INT NOT NULL,
+                  priority INT NOT NULL,
                   description VARCHAR(512),
                   deadline DATE,
                   CONSTRAINT tasks_pkey PRIMARY KEY (id)

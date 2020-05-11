@@ -6,7 +6,7 @@ type = :typeCode,
 description = :description,
 status = :statusCode,
 deadline = :deadline,
-stage = :stageCode,
+priority = :priorityCode,
 assignee = :assigneeId
  WHERE ID = :id;
 

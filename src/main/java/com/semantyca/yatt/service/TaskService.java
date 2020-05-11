@@ -4,22 +4,27 @@ import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dao.IAssigneeDAO;
 import com.semantyca.yatt.dao.ITaskDAO;
 import com.semantyca.yatt.dao.system.IRLSEntryDAO;
+import com.semantyca.yatt.dto.actions.Action;
+import com.semantyca.yatt.dto.actions.ActionType;
+import com.semantyca.yatt.dto.actions.ActionsBuilder;
 import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.model.IUser;
-import com.semantyca.yatt.model.NewTask;
 import com.semantyca.yatt.model.Task;
+import com.semantyca.yatt.model.constant.PriorityType;
+import com.semantyca.yatt.model.constant.StatusType;
+import com.semantyca.yatt.model.constant.TaskType;
 import com.semantyca.yatt.model.embedded.RLSEntry;
+import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
+import com.semantyca.yatt.service.exception.DocumentAccessException;
 import com.semantyca.yatt.service.exception.DocumentNotFoundException;
 import com.semantyca.yatt.util.NumberUtil;
 import com.semantyca.yatt.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +73,11 @@ public class TaskService {
 
     public Task getNewTask(int userId){
         IUser user = allUsers.get(userId);
-        Task task = new NewTask();
+        Task task = new Task();
+        task.setPriority(PriorityType.LOW);
+        task.setStatus(StatusType.DRAFT);
+        task.setType(TaskType.DEVELOPING);
+        task.setTitle("New task");
         task.setAuthorName(user);
         task.setLastModifierName(user);
         task.setRegDate(ZonedDateTime.now());
@@ -84,11 +93,7 @@ public class TaskService {
              if (extendedRepresentation) {
                  task.setAuthorName(allUsers.get(task.getAuthor()));
                  task.setLastModifierName(allUsers.get(task.getLastModifier()));
-                 List<RLSEntry> rls = RLSEntryDAO.findByDocumentId(task.getId());
-                 for (RLSEntry rlsEntry : rls) {
-                     rlsEntry.setReaderName(allUsers.get(rlsEntry.getReader()));
-                     task.addReader(rlsEntry);
-                 }
+                 normalizeRLS(task, userId);
              }
              return task;
          } else {
@@ -96,45 +101,77 @@ public class TaskService {
          }
     }
 
-    /*public UUID save(String id){
-        UUID documentId = UUID.fromString(id);
-        result = service.findById(documentId, sessionUser.getUserId(), true);
-        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (task.getId() == null) {
-            UUID id = post(task, sessionUser.getUserId());
-            return id;
+
+    public List<Action> getActions(Task task, int userId) throws RLSIsNotNormalized {
+        ActionsBuilder builder = new ActionsBuilder();
+        builder.addAction(ActionType.CLOSE_FORM);
+        if (task.isNew()){
+            builder.addAction(ActionType.SAVE);
         } else {
-            return put(task, sessionUser);
+            if (task.getRLS(userId).getAccessLevel() > RLSEntry.EDIT_IS_NOT_ALLOWED) {
+                builder.addAction(ActionType.SAVE);
+            }
+            if (task.getStatus() == StatusType.DRAFT) {
+                builder.addCustomAction("send_to_implementation");
+            }
         }
+        return builder.build();
+    }
 
-    }*/
 
-    public UUID post(@RequestBody @Valid Task task, int userId) {
+    public Task insert(Task task, int userId) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {
         if (task.getId() == null) {
             task.setRegDate(ZonedDateTime.now());
             task.setAuthor(userId);
+            RLSEntry entry = new RLSEntry();
+            entry.setReader(userId);
+            task.addReader(entry);
             updateCommonFileds(task, userId);
             Assignee assignee = assigneeDAO.findById(task.getAssigneeId());
             if (assignee != null){
                 task.setAssignee(assignee);
             }
-            return taskDAO.insertSecured(task);
+            UUID uuid = taskDAO.insertSecured(task);
+            Task updatedTask = taskDAO.findById(uuid, userId);
+            if (updatedTask == null) {
+                throw new DocumentNotFoundException(uuid);
+            }
+            normalizeRLS(updatedTask, userId);
+            return updatedTask;
         } else {
-            return put(task, userId);
+            return update(task, userId);
         }
     }
 
-    public UUID put(Task task, int userId) {
-        updateCommonFileds(task, userId);
-        Assignee assignee = assigneeDAO.findById(task.getAssigneeId());
-        if (assignee != null){
-            task.setAssignee(assignee);
+    public Task update(Task task, int userId) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {
+        normalizeRLS(task, userId);
+        if (task.getRLS(userId).getAccessLevel() > RLSEntry.EDIT_IS_NOT_ALLOWED) {
+            updateCommonFileds(task, userId);
+            Assignee assignee = assigneeDAO.findById(task.getAssigneeId());
+            if (assignee != null) {
+                task.setAssignee(assignee);
+            }
+            UUID uuid = taskDAO.bareUpdate(task);
+            if (uuid != null) {
+                Task updatedTask = taskDAO.findById(uuid, userId);
+                if (updatedTask == null) {
+                    throw new DocumentNotFoundException(uuid);
+                }
+                normalizeRLS(updatedTask, userId);
+                return updatedTask;
+            }
+            return null;
+        } else {
+            throw new DocumentAccessException(task.getId(), RLSEntry.EDIT_IS_ALLOWED);
         }
-        return taskDAO.bareUpdate(task);
     }
 
-    public int delete(Task task, int reader) {
-        return taskDAO.delete(task.getId());
+    public int delete(Task task, int userId) throws RLSIsNotNormalized {
+        normalizeRLS(task, userId);
+        if (task.getRLS(userId).getAccessLevel() == RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED) {
+            return taskDAO.delete(task.getId());
+        }
+        return 0;
     }
 
     private void updateCommonFileds(Task task, int userId) {
@@ -142,6 +179,14 @@ public class TaskService {
         task.setLastModifier(userId);
         if (task.getTitle().trim().equals("")) {
             task.setTitle(StringUtils.abbreviate(StringUtil.cleanFromMarkdown(task.getDescription()), 140));
+        }
+    }
+
+    private void normalizeRLS(Task task, int userId) {
+        List<RLSEntry> rls = RLSEntryDAO.findByDocumentId(task.getId());
+        for (RLSEntry rlsEntry : rls) {
+            rlsEntry.setReaderName(allUsers.get(rlsEntry.getReader()));
+            task.addReader(rlsEntry);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.embedded.RLSEntry;
+import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @UseClasspathSqlLocator
-public interface ITaskDAO extends IDAO<Task,UUID> {
+public interface ITaskDAO extends IDAO<Task, UUID> {
     @SqlQuery
     @RegisterColumnMapper(TaskMapper.class)
     Task findById(@Bind("id") UUID id, @Bind("reader") int reader);
@@ -26,11 +27,11 @@ public interface ITaskDAO extends IDAO<Task,UUID> {
     List<Task> findAll(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader);
 
     @SqlQuery
-    long getCountAllMyTasks(@Bind("reader") long reader,  long author);
+    long getCountAllMyTasks(@Bind("reader") long reader, long author);
 
     @SqlQuery
     @RegisterColumnMapper(TaskMapper.class)
-    List<Task> findAllMyTasks(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader,  long author);
+    List<Task> findAllMyTasks(@Bind("limit") int limit, @Bind("offset") int offset, @Bind("reader") long reader, long author);
 
     @SqlQuery
     @RegisterColumnMapper(UnrestrictedTaskMapper.class)
@@ -45,13 +46,13 @@ public interface ITaskDAO extends IDAO<Task,UUID> {
     UUID bareInsert(@BindBean Task task);
 
     @Transaction
-    default UUID insertSecured(Task task) {
+    default UUID insertSecured(Task task) throws RLSIsNotNormalized {
         UUID documentId = bareInsert(task);
-        for (RLSEntry rlsEntry: task.getReaders()) {
-            if (task.getAuthor() == rlsEntry.getReader()){
+        for (RLSEntry rlsEntry : task.getReaders()) {
+            if (task.getAuthor() == rlsEntry.getReader()) {
                 addReader(documentId, rlsEntry.getReader(), ZonedDateTime.now(), RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED);
             } else {
-                addReader(documentId, rlsEntry.getReader(), null, rlsEntry.getEditAllowed());
+                addReader(documentId, rlsEntry.getReader(), null, rlsEntry.getAccessLevel());
             }
         }
         return documentId;

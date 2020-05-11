@@ -3,12 +3,13 @@ package com.semantyca.yatt.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.semantyca.yatt.com.semantyca.servercore.IAppEntity;
 
 import java.time.ZonedDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"entityType", "id", "author", "regDate", "lastModifier", "lastModifiedDate", "title", "new"})
-public interface IAppEntity<K>{
+public interface IDataEntity<K> extends IAppEntity {
 
     void setId(K id);
 
@@ -24,10 +25,6 @@ public interface IAppEntity<K>{
     String getTitle();
 
     void setTitle(String title);
-
-    default String getEntityType() {
-        return this.getClass().getSimpleName();
-    }
 
     boolean isNew();
 

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDateTime;
 
-@JsonPropertyOrder({"timestamp","message"})
-public class ApplicationError implements IErrorPage {
+@JsonPropertyOrder({"entityType","timestamp","message"})
+public class ApplicationError {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
@@ -23,6 +23,10 @@ public class ApplicationError implements IErrorPage {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getEntityType() {
+        return this.getClass().getSimpleName();
     }
 
 

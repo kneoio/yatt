@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public abstract class AppEntity<K> implements IAppEntity<K> {
+public abstract class DataEntity<K> implements IDataEntity<K> {
 
     protected K id;
 
@@ -38,6 +38,10 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         this.author = author;
     }
 
+    public String getEntityType() {
+        return this.getClass().getSimpleName().toLowerCase();
+    }
+
     @Override
     @JsonIgnore
     public int getAuthor() {
@@ -49,7 +53,7 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         return regDate;
     }
 
-
+    @JsonIgnore
     public Timestamp getRegDateTimestamp() {
         return new Timestamp(regDate.toInstant().getEpochSecond() * 1000L);
     }
@@ -116,7 +120,7 @@ public abstract class AppEntity<K> implements IAppEntity<K> {
         if (getClass() != obj.getClass()) return false;
 
         @SuppressWarnings("unchecked")
-        AppEntity<UUID> tmp = (AppEntity<UUID>) obj;
+        DataEntity<UUID> tmp = (DataEntity<UUID>) obj;
 
         return id != null && id.equals(tmp.id);
     }

@@ -1,6 +1,6 @@
 package com.semantyca.yatt.dto;
 
-public class Home implements IPage {
+public class Home {
 
     private String greetMessage = "welcome to Yatt";
     private String info;
@@ -19,5 +19,9 @@ public class Home implements IPage {
 
     public String getInfo() {
         return info;
+    }
+
+    public String getEntityType() {
+        return this.getClass().getSimpleName();
     }
 }

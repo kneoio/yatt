@@ -1,23 +1,17 @@
 package com.semantyca.yatt.dto.document;
 
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.semantyca.yatt.dto.AbstractOutcome;
 import com.semantyca.yatt.dto.OutcomeType;
-import com.semantyca.yatt.model.IAppEntity;
+import com.semantyca.yatt.model.DataEntity;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DocumentOutcome<T> extends AbstractOutcome<IAppEntity> {
+public class DocumentOutcome extends AbstractOutcome<DocumentOutcome> {
 
-    @JsonGetter("payload")
-    public AbstractOutcome setPayload(IAppEntity entity) {
+    public DocumentOutcome setPayload(DataEntity entity) {
         type = OutcomeType.DOCUMENT;
-        this.payload = entity;
+        payloads.put(entity.getEntityType(), entity);
         return this;
-    }
-
-    public String getIdentifier(){
-        return String.valueOf(payload.getId());
     }
 }

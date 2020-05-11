@@ -5,7 +5,7 @@ import com.semantyca.yatt.model.system.User;
 
 import java.util.UUID;
 
-public class Assignee extends AppEntity<UUID> {
+public class Assignee extends DataEntity<UUID> {
     private String name;
     private User user;
     private int rank;

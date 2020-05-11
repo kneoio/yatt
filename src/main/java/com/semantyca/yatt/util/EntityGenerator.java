@@ -5,7 +5,7 @@ import com.semantyca.yatt.dao.IAssigneeDAO;
 import com.semantyca.yatt.dao.IUserDAO;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.model.Task;
-import com.semantyca.yatt.model.constant.StageType;
+import com.semantyca.yatt.model.constant.PriorityType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 import com.semantyca.yatt.model.embedded.RLSEntry;
@@ -100,8 +100,8 @@ public class EntityGenerator {
             entity.setLastModifiedDate(currentMoment);
             entity.setAuthor(ListUtil.getRndArrayElement(userIds));
             entity.setLastModifier(ListUtil.getRndArrayElement(userIds));
+            entity.setPriority(EnumUtil.getRndElement(PriorityType.values()));
             entity.setStatus(EnumUtil.getRndElement(StatusType.values()));
-            entity.setStage(EnumUtil.getRndElement(StageType.values()));
             entity.setType(EnumUtil.getRndElement(TaskType.values()));
             entity.setAssignee((Assignee) ListUtil.getRndListElement(assignees));
             entity.setTitle(StringUtil.getRndArticle(10));
@@ -109,7 +109,7 @@ public class EntityGenerator {
             entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
             for (int j = 0; j < NumberUtil.getRandomNumber(0,5) ; j++) {
                 entity.addReader(new RLSEntry().setReader(ListUtil.getRndArrayElement(userIds))
-                        .setEditAllowed(NumberUtil.getRandomNumber(0,2))
+                        .setAccessLevel(NumberUtil.getRandomNumber(0,2))
                         .setReadRightNow(BoolUtil.getRandomBoolean()));
             }
             entities.add(entity);

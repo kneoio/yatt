@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@JsonPropertyOrder({"timestamp", "errorFields"})
-public class ValidationError implements IErrorPage {
+@JsonPropertyOrder({"entityType","timestamp", "errorFields"})
+public class ValidationError  {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private Map<String, FieldError> errorFields = new HashMap<>();
@@ -28,6 +28,7 @@ public class ValidationError implements IErrorPage {
 
     }
 
+
     @JsonIgnore
     public String getMessage() {
         return errorFields.values().stream().map(v -> v.getHelperText()).collect(Collectors.joining("", "", "\\n\\n"));
@@ -36,5 +37,9 @@ public class ValidationError implements IErrorPage {
 
     public Map<String, FieldError> getErrorFields() {
         return errorFields;
+    }
+
+    public String getEntityType() {
+        return this.getClass().getSimpleName();
     }
 }

@@ -1,29 +1,25 @@
 package com.semantyca.yatt.model.constant;
 
-public enum StageType {
-    UNKNOWN(0, "unknown"),
-    DRAFT(1, "draft"),
-    IN_PROGRESS(2, "in progress"),
-    DONE(3, "done"),
-    SUSPEND(4, "suspend");
+public enum PriorityType {
+    UNKNOWN(0, "unknown"),LOW(11, "low"), MIDDLE(12, "middle"), HIGH(13, "high") , URGENT(14, "urgent");
+
 
     private int code;
     private String alias;
 
-    StageType(int code, String lang) {
+    PriorityType(int code, String lang) {
         this.code = code;
         this.alias = lang;
     }
 
-    public static StageType getType(int code) {
-        for (StageType type : values()) {
+    public static PriorityType getType(int code) {
+        for (PriorityType type : values()) {
             if (type.code == code) {
                 return type;
             }
         }
         return UNKNOWN;
     }
-
 
     public int getCode() {
         return code;
@@ -32,6 +28,4 @@ public enum StageType {
     public String getAlias() {
         return alias;
     }
-
-
 }

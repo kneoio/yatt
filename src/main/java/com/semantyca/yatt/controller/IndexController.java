@@ -18,6 +18,6 @@ public class IndexController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Home home = new Home();
         home.setInfo("{principal:" + auth.getPrincipal() + ", roles:" + auth.getAuthorities() + "}");
-        return new PageOutcome().setPayload(home).setPageName("home page");
+        return new PageOutcome().addPayload(home).setPageName("home page");
     }
 }

@@ -1,8 +1,8 @@
 package com.semantyca.yatt.model.system;
 
-import com.semantyca.yatt.model.AppEntity;
+import com.semantyca.yatt.model.DataEntity;
 
-public class Role extends AppEntity<Integer> {
+public class Role extends DataEntity<Integer> {
     private String name;
 
     public String getName() {

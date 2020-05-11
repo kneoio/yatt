@@ -2,7 +2,7 @@ package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.configuration.ApplicationContextKeeper;
 import com.semantyca.yatt.model.Task;
-import com.semantyca.yatt.model.constant.StageType;
+import com.semantyca.yatt.model.constant.PriorityType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -27,8 +27,8 @@ public class TaskMapper  extends AbstractMapper<Task> {
         transferIdUUID(entity, rs);
         transferCommonData(entity, rs);
         entity.setType(TaskType.getType(rs.getInt("type")));
-        entity.setStage(StageType.getType(rs.getInt("stage")));
-        entity.setStatus(StatusType.getType(rs.getInt("status")));
+        entity.setStatus(StatusType.getType(rs.getInt("priority")));
+        entity.setPriority(PriorityType.getType(rs.getInt("priority")));
         entity.setDescription(rs.getString("description"));
         entity.setAssignee(assigneeDAO.findById(rs.getObject("assignee", UUID.class)));
         entity.setDeadline(getDateTime(rs.getTimestamp("deadline")));

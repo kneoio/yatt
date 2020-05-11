@@ -20,7 +20,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public @ResponseBody AbstractOutcome getSignInPage(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return new PageOutcome().setPayload(new Login()).setPageName("login page");
+        return new PageOutcome().addPayload(new Login()).setPageName("login page");
     }
 
     @GetMapping("do_login")
@@ -35,7 +35,7 @@ public class AuthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Home home = new Home();
         home.setInfo("{principal:" + auth.getPrincipal() + ", roles:" + auth.getAuthorities() + "}");
-        return new PageOutcome().setPayload(home).setPageName("home page");
+        return new PageOutcome().addPayload(home).setPageName("home page");
     }
 
 }

@@ -1,7 +1,7 @@
 package com.semantyca.yatt.model.system;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.semantyca.yatt.model.AppEntity;
+import com.semantyca.yatt.model.DataEntity;
 import com.semantyca.yatt.model.IUser;
 import org.jdbi.v3.json.Json;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class User extends AppEntity<Integer> implements IUser {
+public class User extends DataEntity<Integer> implements IUser {
     private String login;
     private String pwd;
     private String email;

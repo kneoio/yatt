@@ -9,7 +9,7 @@ import com.semantyca.yatt.model.IUser;
 import java.time.ZonedDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"readerName", "readingTime", "editAllowed"})
+@JsonPropertyOrder({"readerName", "readingTime", "accessLevel"})
 public class RLSEntry {
     public static int EDIT_IS_NOT_ALLOWED = 0;
     public static int EDIT_IS_ALLOWED = 1;
@@ -18,7 +18,7 @@ public class RLSEntry {
     private ZonedDateTime readingTime;
     private int reader;
     private String readerName;
-    private int editAllowed;
+    private int accessLevel;
 
     @JsonIgnore
     public int getReader() {
@@ -30,12 +30,12 @@ public class RLSEntry {
         return this;
     }
 
-    public int getEditAllowed() {
-        return editAllowed;
+    public int getAccessLevel() {
+        return accessLevel;
     }
 
-    public RLSEntry setEditAllowed(int editAllowed) {
-        this.editAllowed = editAllowed;
+    public RLSEntry setAccessLevel(int accessLevel) {
+        this.accessLevel = accessLevel;
         return this;
     }
 
@@ -60,13 +60,13 @@ public class RLSEntry {
     }
 
     public RLSEntry allowEdit() {
-        editAllowed = 1;
+        accessLevel = 1;
         return this;
     }
 
 
     public RLSEntry revokeEdit() {
-        editAllowed = 0;
+        accessLevel = 0;
         return this;
     }
 
