@@ -1,5 +1,9 @@
 package com.semantyca.yatt.controller.exception;
 
+import com.semantyca.yatt.EnvConst;
+import com.semantyca.yatt.dto.IOutcome;
+import com.semantyca.yatt.dto.constant.PayloadType;
+import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
 import com.semantyca.yatt.util.StringUtil;
 import org.slf4j.Logger;
@@ -11,26 +15,32 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@Order(-3)
+@Order(-1)
 @ControllerAdvice
-public class AdditionalExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(AdditionalExceptionHandler.class);
+public class ServerExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(ServerExceptionHandler.class);
 
     @ExceptionHandler(value = {HttpMessageConversionException.class})
     protected ResponseEntity<Object> messageConversionException(HttpMessageConversionException ex) {
         String errorId = "mcerr#" + StringUtil.getRndText(20);
-        ex.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorOutcome()
-                        .setIdentifier(errorId)
-                        .setPageName(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                        .setTitle("Message conversion error"));
+        IOutcome outcome = new ErrorOutcome()
+                .setIdentifier(errorId)
+                .setPageName(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                .setTitle("Message conversion error");
+        if (EnvConst.DEV_MODE) {
+            ex.printStackTrace();
+            ApplicationError error = new ApplicationError(ex.getMessage());
+            outcome.addPayload(PayloadType.EXCEPTION, error);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(outcome);
+
 
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> generalHandleException(Exception exception) {
         String errorId = "err#" + StringUtil.getRndText(20);
+        exception.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorOutcome()
                         .setIdentifier(errorId)

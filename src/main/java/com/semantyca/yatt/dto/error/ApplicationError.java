@@ -25,9 +25,5 @@ public class ApplicationError {
         return message;
     }
 
-    public String getEntityType() {
-        return this.getClass().getSimpleName();
-    }
-
 
 }

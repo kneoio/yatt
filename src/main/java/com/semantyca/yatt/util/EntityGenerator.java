@@ -109,7 +109,7 @@ public class EntityGenerator {
             entity.setDeadline(TimeUtil.getRndDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(30)));
             for (int j = 0; j < NumberUtil.getRandomNumber(0,5) ; j++) {
                 entity.addReader(new RLSEntry().setReader(ListUtil.getRndArrayElement(userIds))
-                        .setAccessLevel(NumberUtil.getRandomNumber(0,2))
+                        .setAccessLevel(NumberUtil.getRandomNumber(0,3))
                         .setReadRightNow(BoolUtil.getRandomBoolean()));
             }
             entities.add(entity);

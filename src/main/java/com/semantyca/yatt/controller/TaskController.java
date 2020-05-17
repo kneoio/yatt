@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,7 +62,7 @@ public class TaskController {
             updatedTask = service.findById(documentId, sessionUser.getUserId(), true);
         }
         if (updatedTask != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(getOutcome(updatedTask, sessionUser.getUserId()));
+            return ResponseEntity.status(HttpStatus.OK).body(getDocumentOutcome(updatedTask, sessionUser.getUserId()));
         } else {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -73,8 +74,8 @@ public class TaskController {
         System.out.println(task);
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = sessionUser.getUserId();
-        Task updatedTask = service.insert(task, userId);
-        return ResponseEntity.status(HttpStatus.OK).body(getOutcome(updatedTask, userId));
+        Task updatedTask = service.save(task, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(getDocumentOutcome(updatedTask, userId));
     }
 
     @PutMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
@@ -95,16 +96,18 @@ public class TaskController {
     private ResponseEntity putData(Task task, SessionUser sessionUser) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {
         int userId = sessionUser.getUserId();
         Task updatedTask = service.update(task, userId);
-        updatedTask.setTitle("hhhh");
-        return ResponseEntity.status(HttpStatus.OK).body(getOutcome(updatedTask, userId));
+        updatedTask.setTitle("updated " + new Date().getTime() + " " + updatedTask.getTitle());
+        return ResponseEntity.status(HttpStatus.OK).body(getDocumentOutcome(updatedTask, userId));
     }
 
 
-    private DocumentOutcome getOutcome(Task task, int userId) throws RLSIsNotNormalized {
-        return new DocumentOutcome()
-                .addPayload(task)
-                .addPayload(PayloadType.ACTIONS, service.getActions(task, userId))
-                .setPageName(task.getTitle());
+    private DocumentOutcome getDocumentOutcome(Task task, int userId) throws RLSIsNotNormalized {
+        DocumentOutcome outcome = new DocumentOutcome();
+        outcome.setIdentifier(String.valueOf(task.getId()));
+        outcome.setPageName(task.getTitle());
+        outcome.addPayload(task);
+        outcome.addPayload(PayloadType.ACTIONS, service.getActions(task, userId));
+        return outcome;
     }
 
 }

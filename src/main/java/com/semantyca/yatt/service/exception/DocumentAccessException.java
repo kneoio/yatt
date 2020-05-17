@@ -14,6 +14,6 @@ public class DocumentAccessException extends Exception {
     }
 
     public String getDeveloperMessage() {
-        return docId.toString() + " restricted to modify, lack of " + absentRight;
+        return "\"" + docId.toString() + "\" restricted to modify, lack of " + absentRight;
     }
 }

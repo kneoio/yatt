@@ -93,7 +93,7 @@ public class TaskService {
              if (extendedRepresentation) {
                  task.setAuthorName(allUsers.get(task.getAuthor()));
                  task.setLastModifierName(allUsers.get(task.getLastModifier()));
-                 normalizeRLS(task, userId);
+                 normalizeRLS(task);
              }
              return task;
          } else {
@@ -108,7 +108,7 @@ public class TaskService {
         if (task.isNew()){
             builder.addAction(ActionType.SAVE);
         } else {
-            if (task.getRLS(userId).getAccessLevel() > RLSEntry.EDIT_IS_NOT_ALLOWED) {
+            if (task.getRLS(userId).getAccessLevel() > RLSEntry.READ_ONLY) {
                 builder.addAction(ActionType.SAVE);
             }
             if (task.getStatus() == StatusType.DRAFT) {
@@ -119,7 +119,7 @@ public class TaskService {
     }
 
 
-    public Task insert(Task task, int userId) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {
+    public Task save(Task task, int userId) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {
         if (task.getId() == null) {
             task.setRegDate(ZonedDateTime.now());
             task.setAuthor(userId);
@@ -136,7 +136,7 @@ public class TaskService {
             if (updatedTask == null) {
                 throw new DocumentNotFoundException(uuid);
             }
-            normalizeRLS(updatedTask, userId);
+            normalizeRLS(updatedTask);
             return updatedTask;
         } else {
             return update(task, userId);
@@ -144,8 +144,8 @@ public class TaskService {
     }
 
     public Task update(Task task, int userId) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {
-        normalizeRLS(task, userId);
-        if (task.getRLS(userId).getAccessLevel() > RLSEntry.EDIT_IS_NOT_ALLOWED) {
+        normalizeRLS(task);
+        if (task.getRLS(userId).getAccessLevel() > RLSEntry.READ_ONLY) {
             updateCommonFileds(task, userId);
             Assignee assignee = assigneeDAO.findById(task.getAssigneeId());
             if (assignee != null) {
@@ -157,7 +157,7 @@ public class TaskService {
                 if (updatedTask == null) {
                     throw new DocumentNotFoundException(uuid);
                 }
-                normalizeRLS(updatedTask, userId);
+                normalizeRLS(updatedTask);
                 return updatedTask;
             }
             return null;
@@ -167,7 +167,7 @@ public class TaskService {
     }
 
     public int delete(Task task, int userId) throws RLSIsNotNormalized {
-        normalizeRLS(task, userId);
+        normalizeRLS(task);
         if (task.getRLS(userId).getAccessLevel() == RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED) {
             return taskDAO.delete(task.getId());
         }
@@ -182,7 +182,7 @@ public class TaskService {
         }
     }
 
-    private void normalizeRLS(Task task, int userId) {
+    private void normalizeRLS(Task task) {
         List<RLSEntry> rls = RLSEntryDAO.findByDocumentId(task.getId());
         for (RLSEntry rlsEntry : rls) {
             rlsEntry.setReaderName(allUsers.get(rlsEntry.getReader()));

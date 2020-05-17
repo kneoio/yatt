@@ -28,7 +28,11 @@ public abstract class SecureDataEntity<T> extends DataEntity<T> {
     @JsonIgnore
     public RLSEntry getRLS(int reader) throws RLSIsNotNormalized {
         if (readers != null) {
-            return readers.get(reader);
+            RLSEntry entry = readers.get(reader);
+            if (entry == null) {
+                entry = new RLSEntry();
+            }
+            return entry;
         } else {
             throw new RLSIsNotNormalized();
         }

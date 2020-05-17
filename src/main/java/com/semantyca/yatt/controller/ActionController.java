@@ -28,7 +28,7 @@ public class ActionController {
 /*        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         task.setPriority(PriorityType.ON_TIME);
         task.setStatus(StatusType.IN_PROGRESS);
-        Task result = taskService.insert(task, sessionUser.getUserId());
+        Task result = taskService.save(task, sessionUser.getUserId());
         AbstractOutcome outcome = new SecuredDocumentOutcome()
                 .setPageName("saved at " + task.getRegDate())
                 .setPayload(result)

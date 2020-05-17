@@ -1,7 +1,9 @@
 package com.semantyca.yatt.controller.exception;
 
+import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dto.IOutcome;
 import com.semantyca.yatt.dto.OutcomeType;
+import com.semantyca.yatt.dto.constant.PayloadType;
 import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
 import com.semantyca.yatt.service.exception.DocumentAccessException;
@@ -19,11 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Order(-1)
+@Order(-3)
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class ApplicationExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationExceptionHandler.class);
 
 
     @ExceptionHandler(value = { AccessDeniedException.class })
@@ -57,12 +59,15 @@ public class GlobalExceptionHandler {
     ResponseEntity<IOutcome> documentErrorHandler(HttpServletRequest request, DocumentAccessException e) {
         String errorId = "daerr#" + StringUtil.getRndText(20);
         logger.error("Error tracking Id: {}, dev message: {}:", errorId, e.getDeveloperMessage());
+
         ErrorOutcome outcome = new ErrorOutcome();
         outcome.setIdentifier(errorId);
         outcome.setPageName(HttpStatus.FORBIDDEN.toString());
         outcome.setType(OutcomeType.SOFT_ERROR);
         outcome.setTitle("Document access restricted");
-        outcome.addPayload(new ApplicationError(errorId));
+        if (EnvConst.DEV_MODE) {
+            outcome.addPayload(PayloadType.EXCEPTION, e.getDeveloperMessage());
+        }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(outcome);
     }
 }

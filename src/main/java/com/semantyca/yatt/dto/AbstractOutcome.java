@@ -3,7 +3,6 @@ package com.semantyca.yatt.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.controller.ResultType;
 import com.semantyca.yatt.dto.constant.PayloadType;
@@ -11,7 +10,6 @@ import com.semantyca.yatt.dto.constant.PayloadType;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@JsonPropertyOrder({"identifier", "type", "title", "pageName", "payloads"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AbstractOutcome<T extends AbstractOutcome> implements IOutcome {
     protected String identifier = "undefined";
