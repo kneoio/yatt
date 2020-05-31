@@ -86,9 +86,9 @@ public class TaskController {
 
 
     @DeleteMapping("/tasks")
-    public ResponseEntity delete(Task task) throws RLSIsNotNormalized {
+    public ResponseEntity delete(@RequestParam("ids") String ids) throws RLSIsNotNormalized {
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long count = service.delete(task, sessionUser.getUserId());
+        //long count = service.delete(task, sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new PageOutcome().setResult(OutcomeType.INFO, ResultType.SUCCESS));
     }

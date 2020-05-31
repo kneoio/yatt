@@ -17,6 +17,10 @@ public class ApplicationError {
         this.message = message;
     }
 
+    public ApplicationError() {
+        
+    }
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -26,4 +30,6 @@ public class ApplicationError {
     }
 
 
+    public void add(String objectName, String field, String code) {
+    }
 }

@@ -27,7 +27,7 @@ public class TaskMapper  extends AbstractMapper<Task> {
         transferIdUUID(entity, rs);
         transferCommonData(entity, rs);
         entity.setType(TaskType.getType(rs.getInt("type")));
-        entity.setStatus(StatusType.getType(rs.getInt("priority")));
+        entity.setStatus(StatusType.getType(rs.getInt("status")));
         entity.setPriority(PriorityType.getType(rs.getInt("priority")));
         entity.setDescription(rs.getString("description"));
         entity.setAssignee(assigneeDAO.findById(rs.getObject("assignee", UUID.class)));

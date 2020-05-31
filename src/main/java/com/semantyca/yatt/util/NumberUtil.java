@@ -31,7 +31,7 @@ public class NumberUtil {
 
     public static int calcStartEntry(int pageNum, int pageSize) {
         int pageNumMinusOne = pageNum;
-        pageNumMinusOne--;
+        //pageNumMinusOne--;
         if (pageNumMinusOne < 0) {
             return 0;
         }

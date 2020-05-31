@@ -2,6 +2,7 @@ package com.semantyca.yatt.controller.exception;
 
 import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dto.IOutcome;
+import com.semantyca.yatt.dto.OutcomeType;
 import com.semantyca.yatt.dto.constant.PayloadType;
 import com.semantyca.yatt.dto.error.ApplicationError;
 import com.semantyca.yatt.dto.error.ErrorOutcome;
@@ -25,6 +26,7 @@ public class ServerExceptionHandler {
         String errorId = "mcerr#" + StringUtil.getRndText(20);
         IOutcome outcome = new ErrorOutcome()
                 .setIdentifier(errorId)
+                .setType(OutcomeType.HARD_ERROR)
                 .setPageName(HttpStatus.INTERNAL_SERVER_ERROR.toString())
                 .setTitle("Message conversion error");
         if (EnvConst.DEV_MODE) {
@@ -41,11 +43,17 @@ public class ServerExceptionHandler {
     public ResponseEntity<Object> generalHandleException(Exception exception) {
         String errorId = "err#" + StringUtil.getRndText(20);
         exception.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorOutcome()
-                        .setIdentifier(errorId)
-                        .setPageName(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                        .setTitle("Unknown internal server error"));
+        IOutcome outcome = new ErrorOutcome()
+                .setIdentifier(errorId)
+                .setType(OutcomeType.HARD_ERROR)
+                .setPageName(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                .setTitle("Unknown internal server error");
+        if (EnvConst.DEV_MODE) {
+            exception.printStackTrace();
+            ApplicationError error = new ApplicationError(exception.getMessage());
+            outcome.addPayload(PayloadType.EXCEPTION, error);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(outcome);
     }
 
 

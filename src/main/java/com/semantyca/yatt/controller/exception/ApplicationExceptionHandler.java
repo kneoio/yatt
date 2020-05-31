@@ -56,7 +56,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(value = { DocumentAccessException.class })
     public @ResponseBody
-    ResponseEntity<IOutcome> documentErrorHandler(HttpServletRequest request, DocumentAccessException e) {
+    ResponseEntity<IOutcome> documentErrorHandler(DocumentAccessException e) {
         String errorId = "daerr#" + StringUtil.getRndText(20);
         logger.error("Error tracking Id: {}, dev message: {}:", errorId, e.getDeveloperMessage());
 

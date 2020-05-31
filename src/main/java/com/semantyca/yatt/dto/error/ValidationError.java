@@ -15,9 +15,7 @@ public class ValidationError  {
     private LocalDateTime timestamp;
     private Map<String, FieldError> errorFields = new HashMap<>();
 
-    public ValidationError(String message) {
-        timestamp = LocalDateTime.now();
-    }
+
 
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -41,5 +39,9 @@ public class ValidationError  {
 
     public String getEntityType() {
         return this.getClass().getSimpleName();
+    }
+
+    public void add(String objectName, String field, String message) {
+        errorFields.put(field, new FieldError(field, message));
     }
 }
