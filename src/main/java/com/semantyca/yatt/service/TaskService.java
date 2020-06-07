@@ -166,8 +166,8 @@ public class TaskService {
         }
     }
 
-    public int delete(Task task, int userId) throws RLSIsNotNormalized {
-        normalizeRLS(task);
+    public int delete(UUID id, int userId) throws RLSIsNotNormalized {
+        Task task = taskDAO.findById(id, userId);
         if (task.getRLS(userId).getAccessLevel() == RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED) {
             return taskDAO.delete(task.getId());
         }

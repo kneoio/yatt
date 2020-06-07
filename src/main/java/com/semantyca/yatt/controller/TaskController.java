@@ -86,11 +86,19 @@ public class TaskController {
 
 
     @DeleteMapping("/tasks")
-    public ResponseEntity delete(@RequestParam("ids") String ids) throws RLSIsNotNormalized {
+    public ResponseEntity delete(@RequestBody List<String> ids) throws RLSIsNotNormalized {
+        int result = 0;
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //long count = service.delete(task, sessionUser.getUserId());
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new PageOutcome().setResult(OutcomeType.INFO, ResultType.SUCCESS));
+        for (String id: ids) {
+            result += service.delete(UUID.fromString(id), sessionUser.getUserId());
+        }
+        if (result > 0) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new PageOutcome().setResult(OutcomeType.INFO, ResultType.SUCCESS));
+        } else {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new PageOutcome().setResult(OutcomeType.INFO, ResultType.NOT_SUCCESS));
+        }
     }
 
     private ResponseEntity putData(Task task, SessionUser sessionUser) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {

@@ -1,7 +1,7 @@
 package com.semantyca.yatt.controller;
 
 public enum ResultType {
-    UNKNOWN(0, "unknown"),SUCCESS(100, "success");
+    UNKNOWN(0, "unknown"),SUCCESS(100, "success"), NOT_SUCCESS(101, "not successful" );
 
     private int code;
     private String alias;

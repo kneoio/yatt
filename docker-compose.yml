@@ -1,0 +1,18 @@
+version: '3'
+services:
+  juka_data:
+    image: "postgres:12-alpine"
+    volumes:
+      - /home/aida/pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: superyatt
+      POSTGRES_PASSWORD: 3287
+      POSTGRES_DB: yatt
+    ports:
+      - 5432:5432
+  juka:
+    image: "juka"
+    environment:
+      JUKA_DB_HOST: juka_data
+      JUKA_DB_USER: superyatt
+      JUKA_DB_PASSWORD: 3287
