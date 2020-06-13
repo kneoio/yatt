@@ -16,19 +16,10 @@ import java.util.Optional;
 public class UsrDetailsService implements UserDetailsService {
     private static List<IUser> users = new ArrayList();
 
-    public UsrDetailsService() {
-        try {
-            IUserDAO userDAO = ApplicationContextKeeper.getContext().getBean(IUserDAO.class);
-            for (IUser user : userDAO.findAllUnrestricted(999, 0)) {
-                users.add(user);
-            }
-        } catch (UnableToExecuteStatementException e){
-            System.out.println(e);
-        }
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (users.size() == 0) initUserDetails();
         Optional<IUser> user = users.stream()
                 .filter(u -> u.getLogin().equals(username))
                 .findAny();
@@ -45,6 +36,17 @@ public class UsrDetailsService implements UserDetailsService {
                 .build();
     }
 
+
+    private void initUserDetails() {
+        try {
+            IUserDAO userDAO = ApplicationContextKeeper.getContext().getBean(IUserDAO.class);
+            for (IUser user : userDAO.findAllUnrestricted(999, 0)) {
+                users.add(user);
+            }
+        } catch (UnableToExecuteStatementException e){
+            System.out.println(e);
+        }
+    }
 
 
 }

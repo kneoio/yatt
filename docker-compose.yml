@@ -3,16 +3,23 @@ services:
   juka_data:
     image: "postgres:12-alpine"
     volumes:
-      - /home/aida/pg_data:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_USER: superyatt
       POSTGRES_PASSWORD: 3287
       POSTGRES_DB: yatt
     ports:
-      - 5432:5432
+      - 5433:5432
   juka:
     image: "juka"
     environment:
       JUKA_DB_HOST: juka_data
       JUKA_DB_USER: superyatt
       JUKA_DB_PASSWORD: 3287
+    ports:
+      - 9090:8080
+
+volumes:
+  postgres:
+  db-data:

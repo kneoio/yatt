@@ -22,6 +22,7 @@ import com.semantyca.yatt.util.NumberUtil;
 import com.semantyca.yatt.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -33,15 +34,19 @@ import java.util.UUID;
 @Service
 public class TaskService {
 
+    @Lazy
     @Autowired
     ITaskDAO taskDAO;
 
-    @Inject
+    @Lazy
+    @Autowired
     IAssigneeDAO assigneeDAO;
 
+    @Lazy
     @Autowired
     IRLSEntryDAO RLSEntryDAO;
 
+    @Lazy
     @Inject
     Map<Integer,IUser> allUsers;
 

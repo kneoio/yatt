@@ -13,6 +13,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.util.List;
 
 @UseClasspathSqlLocator
+@RepositoryDAO("users")
 public interface IUserDAO extends IDAO<User, Integer> {
 
     @SqlQuery

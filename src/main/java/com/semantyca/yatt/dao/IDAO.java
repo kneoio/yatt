@@ -1,5 +1,6 @@
 package com.semantyca.yatt.dao;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
@@ -11,8 +12,13 @@ import java.util.List;
 
 public interface IDAO<T,I> {
 
-    List<T> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
+    default String[] getInvolvedTables(){
+        return ArrayUtils.EMPTY_STRING_ARRAY;
+    }
+
+
+    List<T> findAllUnrestricted(@Bind("limit") int limit, @Bind("offset") int offset);
 
     @SqlQuery
     long getCountAll();
@@ -37,6 +43,8 @@ public interface IDAO<T,I> {
     @Transaction
     @SqlUpdate
     int dropTable();
+
+
 
 
 

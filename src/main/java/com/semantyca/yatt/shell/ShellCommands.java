@@ -2,24 +2,26 @@ package com.semantyca.yatt.shell;
 
 import com.semantyca.yatt.dao.IUserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
 
-@ShellComponent
+//@ShellComponent
 public class ShellCommands {
     public static final String format = "%-10s%s%n";
 
+    @Lazy
     @Autowired
     private Environment environment;
 
+    @Lazy
     @Autowired
     DatabaseService service;
 
+    @Lazy
     @Autowired
     IUserDAO userDAO;
 
-    @ShellMethod("Show info")
+    //@ShellMethod("Show info")
     public String info() {
         for (String  val:environment.getDefaultProfiles()){
             System.out.printf(format, val + ": ", "-");
@@ -28,7 +30,7 @@ public class ShellCommands {
         return "done";
     }
 
-    @ShellMethod("Initialize database")
+    //@ShellMethod("Initialize database")
     public String init_db() {
         if (service.init()){
             return "initialized succesfully";
@@ -38,7 +40,7 @@ public class ShellCommands {
 
     }
 
-    @ShellMethod("Populate data")
+    //@ShellMethod("Populate data")
     public String populate() {
         if (service.populate()){
             return "loaded";
@@ -48,7 +50,7 @@ public class ShellCommands {
 
     }
 
-    @ShellMethod("Purge database")
+    //@ShellMethod("Purge database")
     public String purge_db() {
         if (service.purge()){
             return "purged without pity";
@@ -58,7 +60,7 @@ public class ShellCommands {
 
     }
 
-    @ShellMethod("Show all users")
+    //@ShellMethod("Show all users")
     public String show_users() {
         userDAO.findAllUnrestricted(999, 0).forEach(u -> System.out.printf(format, u.getId() + ": ", u.getLogin()));
         return "done";

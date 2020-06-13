@@ -10,6 +10,7 @@ import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
 import com.semantyca.yatt.util.EntityGenerator;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -17,15 +18,19 @@ import java.io.IOException;
 
 public class DatabaseService {
 
+    @Lazy
     @Autowired
     ITaskDAO taskDAO;
 
+    @Lazy
     @Autowired
     IUserDAO userDAO;
 
+    @Lazy
     @Autowired
     IAssigneeDAO assigneeDAO;
 
+    @Lazy
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -46,7 +51,7 @@ public class DatabaseService {
         IDAO daos[] = {userDAO, taskDAO, assigneeDAO};
         for (IDAO dao : daos) {
             try {
-                dao.dropTable();
+               // dao.dropTable();
             } catch (UnableToExecuteStatementException e) {
                 System.out.println(e.getMessage());
             }

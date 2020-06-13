@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @UseClasspathSqlLocator
+@RepositoryDAO("assignees")
 public interface IAssigneeDAO extends IDAO<Assignee, UUID> {
 
     @SqlQuery

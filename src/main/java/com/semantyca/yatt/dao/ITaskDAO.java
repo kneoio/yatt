@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.UUID;
 
 @UseClasspathSqlLocator
+@RepositoryDAO({"tasks", "task_rls"})
 public interface ITaskDAO extends IDAO<Task, UUID> {
+
     @SqlQuery
     @RegisterColumnMapper(TaskMapper.class)
     Task findById(@Bind("id") UUID id, @Bind("reader") int reader);

@@ -6,6 +6,7 @@ import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Service
 public class AssigneeService {
 
+    @Lazy
     @Autowired
     IAssigneeDAO assigneeDAO;
 
