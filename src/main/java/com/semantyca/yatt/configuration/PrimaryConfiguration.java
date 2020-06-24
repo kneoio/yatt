@@ -56,7 +56,7 @@ public class PrimaryConfiguration {
         String plugin = dataEngineService.getPlugin(UUID_PLUGIN_NAME);
         if (plugin == null) {
             log.error("no " + UUID_PLUGIN_NAME + " extension");
-            System.exit(0);
+            //System.exit(0);
         }
         List<String> tables = dataEngineService.findAllTables();
         Map<String, Class<? extends IDAO>> involvedTables = getAllDAOs();

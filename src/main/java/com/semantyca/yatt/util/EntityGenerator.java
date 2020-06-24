@@ -65,8 +65,8 @@ public class EntityGenerator {
     }
 
     public List<Assignee> generateAssignees() throws IOException {
-        NameGenerator nameGeneratorLastName = new NameGenerator(EntityGenerator.class.getClassLoader().getResource(LAST_NAME_SOURCE).getFile());
-        NameGenerator nameGeneratorFirstName = new NameGenerator(EntityGenerator.class.getClassLoader().getResource(FIRST_NAME_SOURCE).getFile());
+        NameGenerator nameGeneratorLastName = new NameGenerator(LAST_NAME_SOURCE);
+        NameGenerator nameGeneratorFirstName = new NameGenerator(FIRST_NAME_SOURCE);
         List entities = new ArrayList();
         List<User> users = userDAO.findAllUnrestricted(100, 0);
         for (User user : users) {

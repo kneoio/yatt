@@ -56,7 +56,10 @@ CREATE TABLE task_rls
 );
 
 
-
+ALTER TABLE users OWNER TO superyatt;
+ALTER TABLE assignees OWNER TO superyatt;
+ALTER TABLE tasks OWNER TO superyatt;
+ALTER TABLE task_rls OWNER TO superyatt;
 
 
 

@@ -1,8 +1,11 @@
 package com.semantyca.yatt.util;
 
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class NameGenerator {
@@ -28,18 +31,11 @@ public class NameGenerator {
     }
 
     public void refresh() throws IOException {
-
-        FileReader input = null;
-        BufferedReader bufRead;
-        String line;
-
-        input = new FileReader(fileName);
-
-        bufRead = new BufferedReader(input);
-        line = "";
-
-        while (line != null) {
-            line = bufRead.readLine();
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+        InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        BufferedReader reader = new BufferedReader(streamReader);
+        for (String line; (line = reader.readLine()) != null;) {
             if (line != null && !line.equals("")) {
                 if (line.charAt(0) == '-') {
                     pre.add(line.substring(1).toLowerCase());
@@ -50,7 +46,9 @@ public class NameGenerator {
                 }
             }
         }
-        bufRead.close();
+
+
+
     }
 
     private String upper(String s) {
