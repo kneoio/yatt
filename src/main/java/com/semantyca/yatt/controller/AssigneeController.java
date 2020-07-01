@@ -19,9 +19,9 @@ public class AssigneeController {
     private AssigneeService service;
 
     @GetMapping("assignees")
-    public ResponseEntity getAll(String pageNum, String pageSize) {
+    public ResponseEntity getAll(String pageNum, String pageSize, @RequestParam(defaultValue = "ENTITY") String pattern) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ViewPageOutcome().setPayload(service.findAll(pageSize, pageNum)).setPageName("all assignee"));
+                .body(new ViewPageOutcome().setPayload(service.findAll(pageSize, pageNum, pattern)).setPageName("all assignee"));
     }
 
 
