@@ -1,11 +1,7 @@
 package com.semantyca.yatt.controller;
 
-import com.semantyca.yatt.EnvConst;
-import com.semantyca.yatt.dto.OutcomeType;
-import com.semantyca.yatt.dto.PageOutcome;
 import com.semantyca.yatt.dto.constant.PayloadType;
 import com.semantyca.yatt.dto.document.DocumentOutcome;
-import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.dto.view.ViewPageOutcome;
 import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
@@ -13,7 +9,6 @@ import com.semantyca.yatt.security.SessionUser;
 import com.semantyca.yatt.service.TaskService;
 import com.semantyca.yatt.service.exception.DocumentAccessException;
 import com.semantyca.yatt.service.exception.DocumentNotFoundException;
-import com.semantyca.yatt.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,18 +32,14 @@ public class TaskController {
     public ResponseEntity getAll(String pageNum, String pageSize) {
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ViewPageOutcome().setPayload(service.findAll(pageSize, pageNum, sessionUser.getUserId())).setPageName("all tasks"));
+                .body(new ViewPageOutcome().setPayload(service.findAll(pageSize, pageNum, sessionUser.getUserId())).setPageName("All tasks"));
     }
 
     @GetMapping("my_tasks")
     public ResponseEntity getAllMyTasks(String pageNum, String pageSize) {
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long count = service.getCountOfAllMyTasks(sessionUser.getUserId(), sessionUser.getUserId());
-        int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
-        int num = NumberUtil.stringToInt(pageNum, 1);
-        List<Task> result = service.findAllMyTasks(size, NumberUtil.calcStartEntry(num, size), sessionUser.getUserId(), sessionUser.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ViewPageOutcome().setPayload(new ViewPage(result, count, NumberUtil.countMaxPage(count, size), num, size)).setPageName("all tasks"));
+                .body(new ViewPageOutcome().setPayload(service.findAllMyTasks(pageSize, pageNum, sessionUser.getUserId(), sessionUser.getUserId())).setPageName("My tasks"));
     }
 
     @RequestMapping("tasks/{id}")
@@ -87,18 +78,9 @@ public class TaskController {
 
     @DeleteMapping("/tasks")
     public ResponseEntity delete(@RequestBody List<String> ids) throws RLSIsNotNormalized {
-        int result = 0;
         SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        for (String id: ids) {
-            result += service.delete(UUID.fromString(id), sessionUser.getUserId());
-        }
-        if (result > 0) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new PageOutcome().setResult(OutcomeType.INFO, ResultType.SUCCESS));
-        } else {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new PageOutcome().setResult(OutcomeType.INFO, ResultType.NOT_SUCCESS));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(service.delete(ids, sessionUser.getUserId()));
+
     }
 
     private ResponseEntity putData(Task task, SessionUser sessionUser) throws DocumentNotFoundException, DocumentAccessException, RLSIsNotNormalized {

@@ -1,0 +1,1 @@
+DELETE FROM task_rls AS rls WHERE rls.entity_id = :id;

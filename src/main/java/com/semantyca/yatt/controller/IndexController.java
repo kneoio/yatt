@@ -1,6 +1,6 @@
 package com.semantyca.yatt.controller;
 
-import com.semantyca.yatt.dto.Home;
+import com.semantyca.yatt.dto.page.Home;
 import com.semantyca.yatt.dto.AbstractOutcome;
 import com.semantyca.yatt.dto.PageOutcome;
 import org.springframework.security.core.Authentication;

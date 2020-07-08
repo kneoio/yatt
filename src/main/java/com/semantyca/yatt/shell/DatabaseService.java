@@ -6,7 +6,6 @@ import com.semantyca.yatt.dao.IDAO;
 import com.semantyca.yatt.dao.ITaskDAO;
 import com.semantyca.yatt.dao.IUserDAO;
 import com.semantyca.yatt.model.IDataEntity;
-import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
 import com.semantyca.yatt.util.EntityGenerator;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +75,7 @@ public class DatabaseService {
 
             generator.generateTasks(100).forEach(task -> {
                 System.out.println(task.getTitle());
-                try {
-                    taskDAO.insertSecured(task);
-                } catch (RLSIsNotNormalized e) {
-                    e.printStackTrace();
-                }
+                 taskDAO.insert(task);
             });
 
 

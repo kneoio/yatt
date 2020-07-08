@@ -2,7 +2,6 @@ package com.semantyca.yatt.dao;
 
 import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.embedded.RLSEntry;
-import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -48,7 +47,7 @@ public interface ITaskDAO extends IDAO<Task, UUID> {
     UUID bareInsert(@BindBean Task task);
 
     @Transaction
-    default UUID insertSecured(Task task) throws RLSIsNotNormalized {
+    default UUID insert(Task task) {
         UUID documentId = bareInsert(task);
         for (RLSEntry rlsEntry : task.getReaders()) {
             if (task.getAuthor() == rlsEntry.getReader()) {
@@ -59,6 +58,23 @@ public interface ITaskDAO extends IDAO<Task, UUID> {
         }
         return documentId;
     }
+
+    @Transaction
+    default int delete(Task task) {
+        UUID id = task.getId();
+        int result = bareDelete(id);
+        if (result != 0){
+            removeRLSEntries(id);
+        }
+        return result;
+    }
+
+    @SqlUpdate
+    int bareDelete(UUID id);
+
+
+    @SqlUpdate
+    int removeRLSEntries(UUID id);
 
 }
 

@@ -1,4 +1,4 @@
-package com.semantyca.yatt.dto;
+package com.semantyca.yatt.dto.page;
 
 public class Home {
 

@@ -7,6 +7,9 @@ import com.semantyca.yatt.dao.system.IRLSEntryDAO;
 import com.semantyca.yatt.dto.actions.Action;
 import com.semantyca.yatt.dto.actions.ActionType;
 import com.semantyca.yatt.dto.actions.ActionsBuilder;
+import com.semantyca.yatt.dto.constant.MessageLevel;
+import com.semantyca.yatt.dto.page.FeedbackEntry;
+import com.semantyca.yatt.dto.page.ProcessFeedback;
 import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.model.Assignee;
 import com.semantyca.yatt.model.IUser;
@@ -16,6 +19,7 @@ import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 import com.semantyca.yatt.model.embedded.RLSEntry;
 import com.semantyca.yatt.model.exception.RLSIsNotNormalized;
+import com.semantyca.yatt.security.SessionUser;
 import com.semantyca.yatt.service.exception.DocumentAccessException;
 import com.semantyca.yatt.service.exception.DocumentNotFoundException;
 import com.semantyca.yatt.util.NumberUtil;
@@ -23,6 +27,7 @@ import com.semantyca.yatt.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -72,8 +77,14 @@ public class TaskService {
         return taskDAO.getCountAllMyTasks(reader, author);
     }
 
-    public List<Task> findAllMyTasks(int pageSize, int calcStartEntry, int i, int author) {
-        return taskDAO.findAllMyTasks(pageSize, calcStartEntry, i, author);
+    public ViewPage findAllMyTasks(String pageSizeAsString, String pageNumAsString, int reader, int author) {
+        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int size = NumberUtil.stringToInt(pageSizeAsString, EnvConst.DEFAULT_PAGE_SIZE);
+        int num = NumberUtil.stringToInt(pageNumAsString, 0);
+        long count = getCountOfAllMyTasks(sessionUser.getUserId(), sessionUser.getUserId());
+        int startEntry = NumberUtil.calcStartEntry(num, size);
+        List<Task> result = taskDAO.findAllMyTasks(size, startEntry, reader, author);
+        return new ViewPage(result, count, startEntry, num, size);
     }
 
     public Task getNewTask(int userId){
@@ -136,7 +147,7 @@ public class TaskService {
             if (assignee != null){
                 task.setAssignee(assignee);
             }
-            UUID uuid = taskDAO.insertSecured(task);
+            UUID uuid = taskDAO.insert(task);
             Task updatedTask = taskDAO.findById(uuid, userId);
             if (updatedTask == null) {
                 throw new DocumentNotFoundException(uuid);
@@ -171,13 +182,31 @@ public class TaskService {
         }
     }
 
-    public int delete(UUID id, int userId) throws RLSIsNotNormalized {
-        Task task = taskDAO.findById(id, userId);
-        if (task.getRLS(userId).getAccessLevel() == RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED) {
-            return taskDAO.delete(task.getId());
+    public ProcessFeedback delete (List<String> ids, int userId) throws RLSIsNotNormalized {
+        ProcessFeedback feedback = new ProcessFeedback();
+        for (String id : ids) {
+            FeedbackEntry feedbackEntry = new FeedbackEntry();
+            feedbackEntry.setId(id);
+            Task task = taskDAO.findById(UUID.fromString(id), userId);
+            normalizeRLS(task);
+            if (task.getRLS(userId).getAccessLevel() == RLSEntry.EDIT_AND_DELETE_ARE_ALLOWED) {
+                int result = taskDAO.delete(task);
+                if (result == 1) {
+                    feedbackEntry.setLevel(MessageLevel.SUCCESS);
+                    feedbackEntry.setDescription("Document has been deleted");
+                } else {
+                    feedbackEntry.setLevel(MessageLevel.FAILURE);
+                    feedbackEntry.setDescription("Something wrong happened during deleting process");
+                }
+            } else {
+                feedbackEntry.setLevel(MessageLevel.MISFORTUNE);
+                feedbackEntry.setDescription("Document has not been deleted, due to not enought rights");
+            }
+            feedback.addEntry(feedbackEntry);
         }
-        return 0;
+        return feedback;
     }
+
 
     private void updateCommonFileds(Task task, int userId) {
         task.setLastModifiedDate(ZonedDateTime.now());
