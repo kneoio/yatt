@@ -3,7 +3,7 @@ package com.semantyca.yatt.dao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.semantyca.yatt.model.system.User;
+import com.semantyca.juka.model.user.User;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.postgresql.util.PGobject;
 

@@ -1,13 +1,14 @@
-package com.semantyca.yatt.controller;
+package com.semantyca.juka.controller;
 
 import com.semantyca.yatt.EnvConst;
+import com.semantyca.yatt.controller.ResultType;
 import com.semantyca.yatt.dto.OutcomeType;
 import com.semantyca.yatt.dto.PageOutcome;
 import com.semantyca.yatt.dto.document.DocumentOutcome;
 import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.dto.view.ViewPageOutcome;
-import com.semantyca.yatt.model.system.AnonymousUser;
-import com.semantyca.yatt.model.system.User;
+import com.semantyca.juka.model.user.AnonymousUser;
+import com.semantyca.juka.model.user.User;
 import com.semantyca.yatt.security.SessionUser;
 import com.semantyca.yatt.service.UserService;
 import com.semantyca.yatt.util.NumberUtil;
@@ -27,8 +28,8 @@ public class UserController {
     private UserService service;
 
     @GetMapping("users")
-    public ResponseEntity getAll(String pageNum, String pageSize) {
-        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity getAll(Authentication authentication, String pageNum, String pageSize) {
+        SessionUser sessionUser = (SessionUser) authentication.getPrincipal();
         long count = service.getCountOfAll(sessionUser.getUserId());
         int size = NumberUtil.stringToInt(pageSize, EnvConst.DEFAULT_PAGE_SIZE);
         int num = NumberUtil.stringToInt(pageNum, 1);

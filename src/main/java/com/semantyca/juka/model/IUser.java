@@ -1,4 +1,4 @@
-package com.semantyca.yatt.model;
+package com.semantyca.juka.model;
 
 import java.util.List;
 

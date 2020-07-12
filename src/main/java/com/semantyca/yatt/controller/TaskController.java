@@ -12,6 +12,7 @@ import com.semantyca.yatt.service.exception.DocumentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @Validated
@@ -29,8 +29,8 @@ public class TaskController {
     private TaskService service;
 
     @GetMapping("tasks")
-    public ResponseEntity getAll(String pageNum, String pageSize) {
-        SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity getAll(Authentication authentication, String pageNum, String pageSize) {
+        SessionUser sessionUser = (SessionUser) authentication.getPrincipal();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ViewPageOutcome().setPayload(service.findAll(pageSize, pageNum, sessionUser.getUserId())).setPageName("All tasks"));
     }
@@ -49,8 +49,7 @@ public class TaskController {
         if (id.equalsIgnoreCase("new")) {
             updatedTask = service.getNewTask(sessionUser.getUserId());
         } else {
-            UUID documentId = UUID.fromString(id);
-            updatedTask = service.findById(documentId, sessionUser.getUserId(), true);
+            updatedTask = service.findById(id, sessionUser.getUserId());
         }
         if (updatedTask != null) {
             return ResponseEntity.status(HttpStatus.OK).body(getDocumentOutcome(updatedTask, sessionUser.getUserId()));

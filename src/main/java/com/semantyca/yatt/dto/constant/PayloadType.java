@@ -1,7 +1,7 @@
 package com.semantyca.yatt.dto.constant;
 
 public enum PayloadType {
-    ACTIONS("actions"), EXCEPTION("exception");
+    ACTIONS("actions"), EXCEPTION("exception"), TEXT("text");
 
     private String alias;
 

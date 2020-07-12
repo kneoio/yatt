@@ -1,6 +1,8 @@
 package com.semantyca.yatt.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.semantyca.juka.model.IDataEntity;
+import com.semantyca.juka.model.IUser;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;

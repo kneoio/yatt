@@ -1,8 +1,8 @@
-package com.semantyca.yatt.model.system;
+package com.semantyca.juka.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semantyca.yatt.model.DataEntity;
-import com.semantyca.yatt.model.IUser;
+import com.semantyca.juka.model.IUser;
 import org.jdbi.v3.json.Json;
 
 import java.util.ArrayList;

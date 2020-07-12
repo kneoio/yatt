@@ -1,4 +1,4 @@
-package com.semantyca.yatt.model.system;
+package com.semantyca.juka.model.user;
 
 
 public class AnonymousUser extends SystemUser {

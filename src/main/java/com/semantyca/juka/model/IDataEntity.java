@@ -1,9 +1,8 @@
-package com.semantyca.yatt.model;
+package com.semantyca.juka.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.semantyca.yatt.com.semantyca.servercore.IAppEntity;
 
 import java.time.ZonedDateTime;
 

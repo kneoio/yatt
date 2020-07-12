@@ -1,6 +1,6 @@
-package com.semantyca.yatt.model.system;
+package com.semantyca.juka.model.user;
 
-import com.semantyca.yatt.model.IUser;
+import com.semantyca.juka.model.IUser;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.semantyca.servercore.exception;
+package com.semantyca.juka.exception;
 
 import com.semantyca.yatt.util.StringUtil;
 

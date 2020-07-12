@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ServerExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(ServerExceptionHandler.class);
 
+
     @ExceptionHandler(value = {HttpMessageConversionException.class})
     protected ResponseEntity<Object> messageConversionException(HttpMessageConversionException ex) {
         String errorId = "mcerr#" + StringUtil.getRndText(20);
@@ -33,6 +34,8 @@ public class ServerExceptionHandler {
             ex.printStackTrace();
             ApplicationError error = new ApplicationError(ex.getMessage());
             outcome.addPayload(PayloadType.EXCEPTION, error);
+        } else {
+            logger.error(errorId + " " + ex.getMessage());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(outcome);
 
@@ -42,7 +45,6 @@ public class ServerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> generalHandleException(Exception exception) {
         String errorId = "err#" + StringUtil.getRndText(20);
-        exception.printStackTrace();
         IOutcome outcome = new ErrorOutcome()
                 .setIdentifier(errorId)
                 .setType(OutcomeType.HARD_ERROR)
@@ -52,9 +54,13 @@ public class ServerExceptionHandler {
             exception.printStackTrace();
             ApplicationError error = new ApplicationError(exception.getMessage());
             outcome.addPayload(PayloadType.EXCEPTION, error);
+        } else {
+            logger.error(errorId + " " + exception.getMessage());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(outcome);
     }
+
+
 
 
 }

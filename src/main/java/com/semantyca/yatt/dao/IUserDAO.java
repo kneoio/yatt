@@ -1,6 +1,6 @@
 package com.semantyca.yatt.dao;
 
-import com.semantyca.yatt.model.system.User;
+import com.semantyca.juka.model.user.User;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;

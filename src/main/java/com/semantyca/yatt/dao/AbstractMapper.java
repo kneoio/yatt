@@ -1,6 +1,6 @@
 package com.semantyca.yatt.dao;
 
-import com.semantyca.yatt.model.IDataEntity;
+import com.semantyca.juka.model.IDataEntity;
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 

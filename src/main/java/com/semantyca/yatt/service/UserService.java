@@ -1,7 +1,7 @@
 package com.semantyca.yatt.service;
 
 import com.semantyca.yatt.dao.IUserDAO;
-import com.semantyca.yatt.model.system.User;
+import com.semantyca.juka.model.user.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 

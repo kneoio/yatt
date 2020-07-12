@@ -1,6 +1,6 @@
 package com.semantyca.yatt.controller.exception;
 
-import com.semantyca.servercore.exception.ExceptionUtil;
+import com.semantyca.juka.exception.ExceptionUtil;
 import com.semantyca.yatt.EnvConst;
 import com.semantyca.yatt.dto.IOutcome;
 import com.semantyca.yatt.dto.OutcomeType;

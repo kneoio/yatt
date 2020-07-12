@@ -1,7 +1,7 @@
 package com.semantyca.yatt.model;
 
 
-import com.semantyca.yatt.model.system.User;
+import com.semantyca.juka.model.user.User;
 
 import java.util.UUID;
 

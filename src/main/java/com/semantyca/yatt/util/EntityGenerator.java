@@ -9,9 +9,8 @@ import com.semantyca.yatt.model.constant.PriorityType;
 import com.semantyca.yatt.model.constant.StatusType;
 import com.semantyca.yatt.model.constant.TaskType;
 import com.semantyca.yatt.model.embedded.RLSEntry;
-import com.semantyca.yatt.model.system.AnonymousUser;
-import com.semantyca.yatt.model.system.Role;
-import com.semantyca.yatt.model.system.User;
+import com.semantyca.juka.model.user.AnonymousUser;
+import com.semantyca.juka.model.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -52,11 +51,9 @@ public class EntityGenerator {
                 entity.setAuthor(AnonymousUser.ID);
                 entity.setLastModifier(AnonymousUser.ID);
                 entity.setTitle(entity.getLogin());
-                Role role = new Role();
-                role.setName("fake");
-                ArrayList roles = new ArrayList();
-                roles.add(role.getName());
-                roles.add(new Role().setName("super").getName());
+                ArrayList<String> roles = new ArrayList();
+                roles.add("supervisor");
+                roles.add("manager");
                 entity.setRoles(roles);
                 users.add(entity);
             }

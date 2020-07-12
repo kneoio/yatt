@@ -12,7 +12,7 @@ import com.semantyca.yatt.dto.page.FeedbackEntry;
 import com.semantyca.yatt.dto.page.ProcessFeedback;
 import com.semantyca.yatt.dto.view.ViewPage;
 import com.semantyca.yatt.model.Assignee;
-import com.semantyca.yatt.model.IUser;
+import com.semantyca.juka.model.IUser;
 import com.semantyca.yatt.model.Task;
 import com.semantyca.yatt.model.constant.PriorityType;
 import com.semantyca.yatt.model.constant.StatusType;
@@ -103,6 +103,10 @@ public class TaskService {
         return task;
     }
 
+    public Task findById(String id, int userId) throws DocumentNotFoundException {
+        return findById(UUID.fromString(id), userId, true);
+    }
+
     public Task findById(UUID id, int userId, boolean extendedRepresentation) throws DocumentNotFoundException {
          Task task = taskDAO.findById(id, userId);
          if (task != null) {
@@ -124,7 +128,7 @@ public class TaskService {
         if (task.isNew()){
             builder.addAction(ActionType.SAVE);
         } else {
-            if (task.getRLS(userId).getAccessLevel() > RLSEntry.READ_ONLY) {
+            if (task.getRLS(userId).getAccessLevel() >= RLSEntry.READ_ONLY) {
                 builder.addAction(ActionType.SAVE);
             }
             if (task.getStatus() == StatusType.DRAFT) {

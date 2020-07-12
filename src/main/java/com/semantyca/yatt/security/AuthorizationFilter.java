@@ -1,9 +1,7 @@
 package com.semantyca.yatt.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import com.semantyca.yatt.EnvConst;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,23 +46,24 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         var token = request.getHeader(JWTConst.TOKEN_HEADER);
         if (StringUtils.isNotEmpty(token) && token.startsWith(JWTConst.TOKEN_PREFIX)) {
             try {
-                var signingKey = JWTConst.JWT_SECRET.getBytes();
+                byte[] signingKey = JWTConst.JWT_SECRET.getBytes();
 
-                var parsedToken = Jwts.parser()
+                Jws<Claims> parsedToken = Jwts.parser()
                         .setSigningKey(signingKey)
                         .parseClaimsJws(token.replace("Bearer ", ""));
-
-                var username = parsedToken
-                        .getBody()
-                        .getSubject();
-
-                var authorities = ((List<?>) parsedToken.getBody()
+                String username = parsedToken.getBody().getSubject();
+                List<SimpleGrantedAuthority> authorities = ((List<?>) parsedToken.getBody()
                         .get("rol")).stream()
                         .map(authority -> new SimpleGrantedAuthority((String) authority))
                         .collect(Collectors.toList());
 
                 if (StringUtils.isNotEmpty(username)) {
-                    return new UsernamePasswordAuthenticationToken(allUsers.get(username), null, authorities);
+                    SessionUser user = allUsers.get(username);
+                    if (user != null) {
+                        return new UsernamePasswordAuthenticationToken(user, null, authorities);
+                    } else {
+                        throw new UnsupportedJwtException("User is not " + EnvConst.APP_ID + "'s user");
+                    }
                 }
             } catch (ExpiredJwtException exception) {
                 log.warn("Request to parse expired JWT : {} failed : {}", token, exception.getMessage());
@@ -78,8 +77,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
                 log.warn("Request to parse empty or null JWT : {} failed : {}", token, exception.getMessage());
             }
         }
-
         return null;
+        //return new UsernamePasswordAuthenticationToken( new SessionUser(AnonymousUser.ID, AnonymousUser.USER_NAME), null,  new ArrayList<>());
+
     }
 }
 

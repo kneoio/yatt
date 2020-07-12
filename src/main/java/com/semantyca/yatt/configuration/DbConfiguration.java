@@ -4,7 +4,7 @@ import com.semantyca.yatt.dao.IAssigneeDAO;
 import com.semantyca.yatt.dao.ITaskDAO;
 import com.semantyca.yatt.dao.IUserDAO;
 import com.semantyca.yatt.dao.system.IRLSEntryDAO;
-import com.semantyca.yatt.model.IUser;
+import com.semantyca.juka.model.IUser;
 import com.semantyca.yatt.security.SessionUser;
 import com.semantyca.yatt.shell.DatabaseService;
 import org.jdbi.v3.core.Jdbi;

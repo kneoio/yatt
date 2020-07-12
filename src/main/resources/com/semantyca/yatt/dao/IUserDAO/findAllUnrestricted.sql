@@ -1,1 +1,1 @@
-SELECT * FROM users LIMIT :limit OFFSET :offset;
+SELECT * FROM yatt.users LIMIT :limit OFFSET :offset;

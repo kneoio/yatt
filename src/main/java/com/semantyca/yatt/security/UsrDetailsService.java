@@ -2,7 +2,7 @@ package com.semantyca.yatt.security;
 
 import com.semantyca.yatt.configuration.ApplicationContextKeeper;
 import com.semantyca.yatt.dao.IUserDAO;
-import com.semantyca.yatt.model.IUser;
+import com.semantyca.juka.model.IUser;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
