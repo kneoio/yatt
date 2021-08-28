@@ -25,7 +25,7 @@ public class AssigneeDeserializer extends StdDeserializer<Assignee> {
     public Assignee deserialize(JsonParser jp, DeserializationContext context) throws IOException {
         TreeNode treeNode = jp.getCodec().readTree(jp);
         UUID id = UUID.fromString(treeNode.toString());
-        IAssigneeDAO assigneeDAO = ApplicationContextKeeper.getContext().getBean(IAssigneeDAO .class);
+        IAssigneeDAO assigneeDAO = ApplicationContextKeeper.getContext().getBean(IAssigneeDAO.class);
         return assigneeDAO.findById(id);
     }
 }

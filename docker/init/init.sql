@@ -1,7 +1,4 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE SCHEMA yatt;
-
-create table yatt.users
+create table users
 (
 	id SERIAL PRIMARY KEY,
 	reg_date TIMESTAMP with TIME zone not null,
@@ -18,7 +15,7 @@ create table yatt.users
 	roles jsonb
 );
 
-CREATE TABLE yatt.languages
+CREATE TABLE languages
 (
 	  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
 	  reg_date TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -33,7 +30,7 @@ CREATE TABLE yatt.languages
 	  code VARCHAR(3)
 );
 
-CREATE TABLE yatt.subscriptions
+CREATE TABLE subscriptions
 (
 	  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
 	  reg_date TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -47,7 +44,7 @@ CREATE TABLE yatt.subscriptions
 	  address VARCHAR(50)
 );
 
-CREATE TABLE yatt.assignees
+CREATE TABLE assignees
 (
 	  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
 	  reg_date TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -60,7 +57,7 @@ CREATE TABLE yatt.assignees
 	  user_id INT NOT NULL
 );
 
-CREATE TABLE yatt.labels
+CREATE TABLE labels
 (
 	  id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
 	  reg_date TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -76,7 +73,7 @@ CREATE TABLE yatt.labels
 	  color INT NOT NULL
 );
 
-CREATE TABLE yatt.tasks
+CREATE TABLE tasks
 (
       id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
       reg_date TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -94,7 +91,7 @@ CREATE TABLE yatt.tasks
       impl_description VARCHAR(512)
 );
 
-CREATE TABLE yatt.task_rls
+CREATE TABLE task_rls
 (
      entity_id uuid NOT NULL,
      reader INT NOT NULL,
@@ -104,7 +101,7 @@ CREATE TABLE yatt.task_rls
 );
 
 
-CREATE TABLE yatt.task_labels
+CREATE TABLE task_labels
 (
      entity_id uuid NOT NULL,
      label_id INT NOT NULL,
@@ -113,5 +110,5 @@ CREATE TABLE yatt.task_labels
 
 
 
-INSERT INTO yatt.users (reg_date, author, last_mod_date, last_mod_user, status, login, pwd, roles)
+INSERT INTO users (reg_date, author, last_mod_date, last_mod_user, status, login, pwd, roles)
 VALUES (current_timestamp , 1, current_timestamp, 0, 0, 'test1','$2a$10$CDfPJUCxyHtIVv9jrPX7AeGmdg7qxzVOwUdUpVFwFWU5ylivzCvHm','["supervisor"]')

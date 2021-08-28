@@ -2,7 +2,7 @@
 
 source .env
 
-sql="$(cat purge.sql)"
+sql="$(cat purge.sql_)"
 
 if ! command -v psql > /dev/null; then
   echo "PostgreSQL is required..."

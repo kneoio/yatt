@@ -17,6 +17,7 @@ target/
 /mvnw.cmd
 /spring-shell.log
 
+*.service
 README.md
 build-info
 logs/
