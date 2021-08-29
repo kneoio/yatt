@@ -35,7 +35,7 @@ jobs:
          username: ${{ secrets.REMOTE_USER }}
          key: ${{ secrets.SSH_KEY }}
          passphrase: ${{ secrets.SSH_KEY_PASSPHRASE }}
-         rm: false
+         rm: true
          source: "target/yatt-1-SNAPSHOT.jar"
          target: "${{ secrets.REMOTE_DIR }}"
 
